@@ -9,6 +9,7 @@ import LockIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import './Login.css'
+import { Link } from '@material-ui/core';
 
 export class Login extends React.Component{
 
@@ -26,10 +27,8 @@ export class Login extends React.Component{
                 <CssBaseline />
                 <main className="layout">
                     <Paper className="paper">
-                        <Avatar className="avatar">
-                            <LockIcon />
-                        </Avatar>
-                        <Typography variant="headline">Sign in</Typography>
+                        
+                        <Typography variant="headline">BiciRoute</Typography>
                         <form className="form" onSubmit={this.handleSubmit}>
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="email">Email Address</InputLabel>
@@ -53,6 +52,11 @@ export class Login extends React.Component{
                                 className="submit">
                                 Sign in
                             </Button>
+                            <br></br>
+                            <br></br>
+                            <div>
+                                Don´t you have an account yet? <Link to="/signup">Sign up!</Link>
+                            </div>
                         </form>
                     </Paper>
                 </main>

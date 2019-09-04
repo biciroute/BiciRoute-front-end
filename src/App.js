@@ -4,10 +4,12 @@ import './App.css';
 //import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 //import moment from "moment";
-import { Login } from './component/Login.js';
-import { Home } from './component/Home.js';
+
 //import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { Login } from './component/Login.js';
+import { Home } from './component/Home.js';
+import { SignUp } from './component/SignUp.js';
 
 class App extends Component {
 
@@ -21,6 +23,10 @@ class App extends Component {
     const LoginView = () => (
       <div>{localStorage.getItem('isLoggedIn') != null ? <Home /> : <Login />} </div>
     );
+    
+    const SignUpView = () => (
+      <SignUp/>
+    );
 
     const HomeView = () => (
       <div>{localStorage.getItem('isLoggedIn') != null ? <Home /> : <Login />} </div>
@@ -32,6 +38,7 @@ class App extends Component {
           <div>
             <Route exact path="/" component={LoginView} />
             <Route path="/home" component={HomeView} />
+            <Route path="/signup" component={SignUpView} />
           </div>
         </div>
       </Router>
