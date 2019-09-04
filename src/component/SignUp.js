@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from '@material-ui/core';
+import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'; //this is important for routing
 
 export class SignUp extends React.Component{
     render(){
