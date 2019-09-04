@@ -1,26 +1,42 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+//import logo from './logo.svg';
 import './App.css';
+//import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+//import moment from "moment";
+import { Login } from './component/Login.js';
+import { Home } from './component/Home.js';
+//import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends Component {
+
+  constructor(props) {
+    super(props);
+    localStorage.setItem('email=camilo@biciroute.com', 'camilo');
+  }
+
+  render() {
+
+    const LoginView = () => (
+      <div>{localStorage.getItem('isLoggedIn') != null ? <Home /> : <Login />} </div>
+    );
+
+    const HomeView = () => (
+      <div>{localStorage.getItem('isLoggedIn') != null ? <Home /> : <Login />} </div>
+    );
+
+    return (
+      <Router>
+        <div className="App">
+          <div>
+            <Route exact path="/" component={LoginView} />
+            <Route path="/home" component={HomeView} />
+          </div>
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;
