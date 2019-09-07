@@ -1,0 +1,19 @@
+#buttonSearch{
+    position: absolute;
+    top: 90%;
+    left: 40%;
+    align-items: center;
+    border: 1px solid gray;
+    background-color: cornsilk; 
+    color: rgb(3, 3, 3);
+    width: 20em ;
+}
+
+#buttonSearch:hover {
+    cursor: help;
+    
+}
+
+#searchModal{
+    background-color: aliceblue
+}
