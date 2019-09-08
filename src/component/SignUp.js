@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
+import Hidden from '@material-ui/core/Hidden';
 import './SignUp.css';
 
 export class SignUp extends React.Component{
@@ -31,9 +32,11 @@ export class SignUp extends React.Component{
                 <CssBaseline />
                 <main className="layoutSignUp">
                     <Grid container>
-                        <Grid item xs={false} sm={4} md={7}>
-                            <div className="imageBackground"></div>
-                        </Grid>
+                        <Hidden only='xs'>
+                            <Grid item xs={false} sm={4} md={7}>
+                                <div className="imageBackground"></div>
+                            </Grid>
+                        </Hidden>
                         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                             <Paper class="paper">
                                 <Avatar className="avatar">
@@ -46,15 +49,17 @@ export class SignUp extends React.Component{
                                     <Grid container spacing={8}>
                                         <Grid item xs={12} sm={6}>
                                             <TextField
-                                                autoComplete="fname" name="firstName" variant="outlined"
+                                                variant="outlined" margin="dense"                                          
                                                 required fullWidth
-                                                id="firstName" label="First Name" autoFocus
+                                                id="firstName" label="First Name"
+                                                name="firstName" autoComplete="fname" autoFocus
                                                 onChange={this.handleFirstNameChange}
                                             />
                                         </Grid>
                                         <Grid item xs={12} sm={6}>
                                             <TextField
-                                                variant="outlined" required fullWidth
+                                                variant="outlined" margin="dense"
+                                                required fullWidth
                                                 id="lastName" label="Last Name"
                                                 name="lastName" autoComplete="lname"
                                                 onChange={this.handleLastNameChange}
@@ -62,7 +67,7 @@ export class SignUp extends React.Component{
                                         </Grid>
                                         <Grid item xs={12}>
                                             <TextField
-                                                variant="outlined" margin="normal"
+                                                variant="outlined" margin="dense"
                                                 required fullWidth
                                                 id="email" label="Email Address"
                                                 name="email" autoComplete="email"
@@ -71,7 +76,7 @@ export class SignUp extends React.Component{
                                         </Grid>
                                         <Grid item xs={12}>
                                             <TextField
-                                                variant="outlined" margin="normal"
+                                                variant="outlined" margin="dense"
                                                 required fullWidth
                                                 name="password" label="Password"
                                                 type="password" id="password" autoComplete="current-password"
@@ -85,8 +90,8 @@ export class SignUp extends React.Component{
                                                 label="I want to receive inspiration, marketing promotions and updates via email."
                                             />
                                         </Grid>
-
                                     </Grid>
+                                    
 
                                     <Button type="submit" fullWidth variant="contained"
                                         color="primary" className="submit">
