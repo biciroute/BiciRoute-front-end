@@ -8,16 +8,11 @@
 }
 
 .paper {
-    margin-top: 10%;
+    margin-top: 5%;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
-}
-
-.avatar {
-    margin: 10px;
-    background-color: #00C4CC;
 }
 
 .imageBackground {
@@ -31,7 +26,7 @@
 
 .form {
     width: 100%;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .submit {

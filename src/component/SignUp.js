@@ -34,14 +34,20 @@ export class SignUp extends React.Component{
                     <Grid container>
                         <Hidden only='xs'>
                             <Grid item xs={false} sm={4} md={7}>
-                                <div className="imageBackground"></div>
+                                <div
+                                    className="imageBackground"
+                                />
                             </Grid>
                         </Hidden>
                         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
                             <Paper class="paper">
-                                <Avatar className="avatar">
-                                    <LockOutlinedIcon />
-                                </Avatar>
+                                <Grid container justify="center" alignItems="center">
+                                    <Avatar alt="biciroute Logo" src={process.env.PUBLIC_URL+ "/images/logo.jpg"}
+                                        style={{margin: 10,
+                                                width: 150,
+                                                height: 150,}}
+                                        className="bigAvatar" />
+                                </Grid>
                                 <Typography component="h1" variant="h5">
                                     Sign Up
                                 </Typography>
@@ -55,7 +61,7 @@ export class SignUp extends React.Component{
                                                 name="firstName" autoComplete="fname" autoFocus
                                                 onChange={this.handleFirstNameChange}
                                             />
-                                        </Grid>
+                                        </Grid>                                 
                                         <Grid item xs={12} sm={6}>
                                             <TextField
                                                 variant="outlined" margin="dense"
@@ -65,6 +71,9 @@ export class SignUp extends React.Component{
                                                 onChange={this.handleLastNameChange}
                                             />
                                         </Grid>
+                                    </Grid>
+
+                                    <Grid container spacing={0}>
                                         <Grid item xs={12}>
                                             <TextField
                                                 variant="outlined" margin="dense"

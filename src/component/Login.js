@@ -20,8 +20,6 @@ export class Login extends React.Component{
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
-
     render(){
 
         return (
@@ -30,6 +28,7 @@ export class Login extends React.Component{
                 <main className="layout">
                     <Paper className="paper">
                         <br></br>
+                        
                         <Avatar className="avatar">
                             <LockOutlinedIcon />
                         </Avatar>
