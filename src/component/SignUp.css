@@ -1,0 +1,40 @@
+.layout {
+    height: 100vh;
+    width: 100vw;
+    background-color: #373734;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.paper {
+    margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.avatar {
+    margin: 10px;
+    background-color: #00C4CC;
+}
+
+.imageBackground {
+    width: 100vw;
+    height: 100vh;
+    background-image: url('https://source.unsplash.com/random');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.form {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.submit {
+    margin-top: 20px;
+    background-color: #373734;
+}

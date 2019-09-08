@@ -36,8 +36,8 @@ export class Login extends React.Component{
                 <main className="layout">
                     <Paper className="paper">
                         <br></br>
-                        <img src={process.env.PUBLIC_URL + '/logo.png'}
-                            alt="logo" style={{width: '309.5px', height: '200px'}}/>
+                        {/*<img src={process.env.PUBLIC_URL + '/logo.png'}
+                            alt="logo" style={{width: '309.5px', height: '200px'}}/>*/}
                         <Typography variant="headline" style={{color: '#00C4CC'}}>BiciRoute</Typography>
                         <form className="form" onSubmit={this.handleSubmit}>
                             <FormControl margin="normal" required fullWidth>
