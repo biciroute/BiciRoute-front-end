@@ -3,9 +3,6 @@ import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControl from '@material-ui/core/FormControl';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -19,20 +16,20 @@ export class SignUp extends React.Component{
 
     constructor(props){
         super(props);
-        this.state = {'email':"", 'password':"", "confirmPassword":""};
+        this.state = {"firstName":"", "lastName":"", "email":"", "password":""};
+        this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
+        this.handleLastNameChange = this.handleLastNameChange.bind(this);
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
-        this.handleConfirmPasswordChange = this.handleConfirmPasswordChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
     
     render(){
 
-
         return(
             <React.Fragment>
                 <CssBaseline />
-                <main className="layout">
+                <main className="layoutSignUp">
                     <Grid container>
                         <Grid item xs={false} sm={4} md={7}>
                             <div className="imageBackground"></div>
@@ -45,21 +42,22 @@ export class SignUp extends React.Component{
                                 <Typography component="h1" variant="h5">
                                     Sign Up
                                 </Typography>
-                                <form className="form" style={{padding: 20}}>
-                                    <Grid container spacing={2}>
-                                        <Grid item xs={12} sm={5}>
+                                <form className="form" onSubmit={this.handleSubmit}>
+                                    <Grid container spacing={8}>
+                                        <Grid item xs={12} sm={6}>
                                             <TextField
                                                 autoComplete="fname" name="firstName" variant="outlined"
                                                 required fullWidth
                                                 id="firstName" label="First Name" autoFocus
+                                                onChange={this.handleFirstNameChange}
                                             />
                                         </Grid>
-                                        
-                                        <Grid item xs={12} sm={5}>
+                                        <Grid item xs={12} sm={6}>
                                             <TextField
                                                 variant="outlined" required fullWidth
                                                 id="lastName" label="Last Name"
                                                 name="lastName" autoComplete="lname"
+                                                onChange={this.handleLastNameChange}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -68,7 +66,7 @@ export class SignUp extends React.Component{
                                                 required fullWidth
                                                 id="email" label="Email Address"
                                                 name="email" autoComplete="email"
-                                                autoFocus
+                                                onChange={this.handleEmailChange}
                                             />
                                         </Grid>
                                         <Grid item xs={12}>
@@ -77,6 +75,7 @@ export class SignUp extends React.Component{
                                                 required fullWidth
                                                 name="password" label="Password"
                                                 type="password" id="password" autoComplete="current-password"
+                                                onChange={this.handlePasswordChange}
                                             />
                                         </Grid>
 
@@ -90,16 +89,15 @@ export class SignUp extends React.Component{
                                     </Grid>
 
                                     <Button type="submit" fullWidth variant="contained"
-                                    color="primary" className="submit"
-                                    >
+                                        color="primary" className="submit">
                                         Sign Up
                                     </Button>
 
                                     <Grid container justify="flex-end">
                                         <Grid item>
-                                        <Link to="/signup">
-                                            Already have an account? Sign in
-                                        </Link>
+                                            <Link to="/login">
+                                                Already have an account? Sign in
+                                            </Link>
                                         </Grid>
                                     </Grid>
 
@@ -114,6 +112,18 @@ export class SignUp extends React.Component{
         );
     }
 
+    handleFirstNameChange(e) {
+        this.setState({
+            firstName: e.target.value
+        });
+    }
+
+    handleLastNameChange(e) {
+        this.setState({
+            lastName: e.target.value
+        });
+    }
+
     handleEmailChange(e) {
         this.setState({
             email: e.target.value
@@ -122,27 +132,17 @@ export class SignUp extends React.Component{
 
     handlePasswordChange(e) {
         this.setState({
-            password: e.target.value
-        });
-    }
-
-    handleConfirmPasswordChange(e) {
-        this.setState({
-            confirmPassword: e.target.value
+            password: e.target
         });
     }
 
     handleSubmit(e) {
-        if(this.state.password !==this.state.confirmPassword){
-            e.preventDefault();
-            alert("The passwords doesn't match!. Please reenter your passwords");
-        }
-        else if(!localStorage.getItem("email="+this.state.email)){
-            e.preventDefault();
-            alert("This email does already exist. Please sign up with other email");
+        e.preventDefault();
+        if(localStorage.getItem("email="+this.state.email)!==null){
+            alert("This email does already exist!. Please sign up with other email.");
         }else{
-            e.preventDefault();
-            alert("The email or password is incorrect");
+            alert("You have signed up successfully!");
+            window.location.href = "/login";
         }
     }
 

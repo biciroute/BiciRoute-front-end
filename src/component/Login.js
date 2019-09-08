@@ -1,21 +1,15 @@
 import React from 'react';
-import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
-import LockIcon from '@material-ui/icons/LockOutlined';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import { Route, Link, BrowserRouter as Router, Switch } from 'react-router-dom'; //this is important for routing
 import './Login.css';
-
-const styles = theme => ({
-    cssLabel: {
-        color:'blue',//required color 
-    }
-});
+import Avatar from '@material-ui/core/Avatar';
 
 export class Login extends React.Component{
 
@@ -36,9 +30,10 @@ export class Login extends React.Component{
                 <main className="layout">
                     <Paper className="paper">
                         <br></br>
-                        {/*<img src={process.env.PUBLIC_URL + '/logo.png'}
-                            alt="logo" style={{width: '309.5px', height: '200px'}}/>*/}
-                        <Typography variant="headline" style={{color: '#00C4CC'}}>BiciRoute</Typography>
+                        <Avatar className="avatar">
+                            <LockOutlinedIcon />
+                        </Avatar>
+                        <Typography variant="headline"> BiciRoute </Typography>
                         <form className="form" onSubmit={this.handleSubmit}>
                             <FormControl margin="normal" required fullWidth>
                                 <InputLabel htmlFor="email" class="email">Email Address</InputLabel>

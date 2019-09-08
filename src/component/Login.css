@@ -16,7 +16,7 @@
 
 .avatar {
     margin: 10px;
-    background: floralwhite;
+    background: 00C4CC;
 }
 
 .form {
@@ -32,40 +32,10 @@
     background: #373734;
 }
 
-a {
+/*a {
     color: #00C4CC;
 }
 
 a:hover {
     color: #373734;
-}
-/*
-.MuiFormLabel-root-79{
-    color: #00C4CC;
-}
-.MuiFormLabel-required-84{
-    color: #00C4CC;
-}
-.MuiInputLabel-required-72{
-    color: #00C4CC;
-}
-.MuiInputLabel-root-68{
-    color: #00C4CC;
-}
-.MuiInputLabel-formControl-73{
-    color: #00C4CC;
-}
-.MuiInputLabel-animated-76{
-    color: #00C4CC;
 }*/
-
-.MuiFormLabel-root-79{
-    color: #00C4CC;
-}
-.MuiFormLabel-focused-80{
-    color: #00C4CC;
-}
-
-.MuiInput-underline-90:after{
-    border-bottom: #00C4CC;
-}
