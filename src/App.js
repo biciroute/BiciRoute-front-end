@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import ProfileView from './ProfileView';
+import ProfileView from './component/ProfileView';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import { Login } from './component/Login.js';
 import { Home } from './component/Home.js';
