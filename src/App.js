@@ -1,26 +1,36 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import 'react-datepicker/dist/react-datepicker.css';
+import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
+import { Login } from './Login.js';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+class App extends React.Component{
+
+  constructor(props){
+    super(props);
+    localStorage.setItem('email=diego@biciroute.com', 'diego');
+  }
+
+  render(){
+    const LoginView = () => (
+      <Login/>
+    );
+
+    const NotFoundView = () => (
+      <div>Page not found, we are working in it, try later!</div>
+    );
+
+    return(
+      <Router>
+        <div className = "App">
+          <Switch>
+            <Route exact path = "/login" component={LoginView} />
+            <Route component={NotFoundView} />
+          </Switch>
+        </div>
+      </Router>
+    );
+  }
 }
 
 export default App;
