@@ -1,21 +1,17 @@
 import React, { Component } from 'react';
 import './App.css';
+import ProfileView from './ProfileView';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
 import { Login } from './component/Login.js';
 import { Home } from './component/Home.js';
 import { SignUp } from './component/SignUp.js';
 
-
-
 class App extends Component {
-
   constructor(props) {
     super(props);
     localStorage.setItem('email=camilo@biciroute.com', 'camilo');
   }
-
-  render() {
-
+  render(){
     const LoginView = () => (
       <div>{localStorage.getItem('isLoggedIn') != null ? <Home /> : <Login />} </div>
     );
@@ -23,7 +19,9 @@ class App extends Component {
     const SignUpView = () => (
       <SignUp/>
     );
-
+    const ViewProfile = () => (
+      <ProfileView/>
+    );
     const HomeView = () => (
       <div>{localStorage.getItem('isLoggedIn') != null ? <Home /> : <Login />} </div>
     );
@@ -32,7 +30,7 @@ class App extends Component {
       <div>Page not found!</div>
     );
 
-    return (
+  return (
       <Router>
         <div className="App">
           <Switch>
@@ -40,10 +38,12 @@ class App extends Component {
             <Route exact path="/login" component={LoginView} />
             <Route path="/home" component={HomeView} />
             <Route path="/signup" component={SignUpView} />
+            <Route path="/myProfile" component={ViewProfile} />
             <Route component={NotFoundView}/>
           </Switch>
         </div>
       </Router>
+    
     );
   }
 }
