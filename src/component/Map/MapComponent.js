@@ -41,10 +41,7 @@ const useStyles = theme => ({
 
 });
 
-
-
-
-class MapComponent extends React.Component {
+export class MapComponent extends React.Component {
 
     constructor(props) {
         super(props);
