@@ -17,3 +17,8 @@
 #searchModal{
     background-color: aliceblue
 }
+
+#modal {
+    z-index: 20  !important;
+    top : 50%,
+}

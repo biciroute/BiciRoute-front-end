@@ -7,6 +7,7 @@ import Modal from '@material-ui/core/Modal';
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
+import { flexbox } from '@material-ui/system';
 
 
 
@@ -19,7 +20,6 @@ const mapStyles = {
 
 const useStyles = theme => ({
     paper: {
-        position: 'absolute',
         width: 400,
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
@@ -31,6 +31,14 @@ const useStyles = theme => ({
         marginRight: theme.spacing(1),
         width: 200,
     },
+    Modal: {
+        display:'flex',
+        alignItems:'center',
+        justifyContent:'center',
+        margin:'auto'
+
+    }
+
 });
 
 
@@ -73,8 +81,6 @@ class MapComponent extends React.Component {
     getModalStyle() {
         const top = 50 + this.rand();
         const left = 50 + this.rand();
-        console.log(" test " + top + "  " + left)
-
         return {
             top: `${top}%`,
             left: `${left}%`,
@@ -88,18 +94,18 @@ class MapComponent extends React.Component {
         })
     }
 
-    async setDirectionRoute(){
+    async setDirectionRoute() {
         var newPathRoute = await this.calculateRoute();
 
         console.log(newPathRoute);
-        this.setState({pathRoute: newPathRoute.overview_path});
+        this.setState({ pathRoute: newPathRoute.overview_path });
 
-     
+
     }
 
 
     autocomplete() {
-        const { google, map } = this.props;
+        const { google, map , ...rest } = this.props;
         if (!google || !map) return;
         var src = document.getElementById("source");
         var tgt = document.getElementById('target');
@@ -113,11 +119,10 @@ class MapComponent extends React.Component {
 
 
     calculateRoute(travelMode, origin, destination, dateUniversity) {
-        const { google, map } = this.props;
+        const { google, map, ...rest } = this.props;
         if (!google || !map) return;
         const directionsService = new google.maps.DirectionsService();
         let pathRoute;
-        window.alert("Entro "  + document.getElementById("source").value +  "  "  );
         const request = {
             origin: document.getElementById("source").value,
             destination: document.getElementById("target").value,
@@ -125,7 +130,7 @@ class MapComponent extends React.Component {
         };
         return new Promise((resolve, reject) => {
             directionsService.route(request, (response, status) => {
-                if (status === 'OK'){
+                if (status === 'OK') {
                     window.alert("OK PASS");
                     pathRoute = response.routes[0];
                     resolve(pathRoute)
@@ -139,13 +144,13 @@ class MapComponent extends React.Component {
         )
     }
 
-    
+
 
 
 
     //https://stackoverflow.com/questions/26059762/callback-when-dom-is-loaded-in-react-js
     componentDidMount() {
-        this.autocomplete();
+        //this.autocomplete();
         if (navigator && navigator.geolocation) {
             //navigator.geolocation.getCurrentPosition(this.setCurrentPosition)
         }
@@ -170,6 +175,7 @@ class MapComponent extends React.Component {
                     zoom={15}
                     style={mapStyles}
                     initialCenter={this.state.university}>
+
                     <Marker
                         title={'Escuela colombiana de ingenieria Julio Garavito'}
                         position={this.state.university}
@@ -177,6 +183,7 @@ class MapComponent extends React.Component {
                         name={'Escuela colombiana de ingenieria Julio Garavito'}
                         description={'AK 45 #205-59 Bogota\nInstitucion universitaria'}
                     />
+
 
                     <Polyline
                         path={this.state.pathRoute}
@@ -194,35 +201,20 @@ class MapComponent extends React.Component {
 
                 </Map>
 
-                <TextField
-                    id="source"
-                    type="search"
-                    label="trip's start"
-                    className={classes.textField}
-                    margin="normal"
-                />
-
-                <TextField
-                    id="target"
-                    type="search"
-                    label="trip's end"
-                    className={classes.textField}
-                    margin="normal"
-                />
-
-                <Button variant="contained" color="primary" onClick={this.setDirectionRoute}>
-                    Search possible trips
-                </Button>
 
 
-                <Modal onLoad={this.autocomplete}
-                    open={this.state.open}
+                <Modal open={this.state.open}
                     onClose={this.handleClose}
+                    keepMounted={true}
+                    id="modal"
+                    style={modalStyle}
+               //     nameClass = {classes.Modal}
                 >
                     <div className={classes.paper}>
                         <TextField
                             id="source"
                             type="search"
+                            label="trip's start"
                             className={classes.textField}
                             margin="normal"
                         />
@@ -230,19 +222,21 @@ class MapComponent extends React.Component {
                         <TextField
                             id="target"
                             type="search"
+                            label="trip's end"
                             className={classes.textField}
                             margin="normal"
                         />
+                        <br></br>
+                        <Button variant="contained" color="primary" onClick={this.setDirectionRoute}>
+                            Search possible trips
+                        </Button>
 
 
 
 
-                        <h2 id="simple-modal-title">Text in a modal</h2>
-                        <p id="simple-modal-description">
-                            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                        </p>
                     </div>
                 </Modal>
+
             </div>
         );
     }
@@ -262,6 +256,6 @@ const MapWrapper = props => (
 );
 
 export default withStyles(useStyles)(GoogleApiWrapper({
-    apiKey: 'AIzaSyAC9GvNPhAIg4NDnqeCBItE0SzmYLLUBtY',
+    apiKey: 'AIzaSyBiVrbSr4j_pen7_BCwmFUJa-xZgbX-D9s',
     language: "es",
 })(MapWrapper));
