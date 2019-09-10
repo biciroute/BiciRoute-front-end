@@ -1,24 +1,16 @@
 img{
     width: 100px;
     height: 100px;
-    margin-left: 10px;
     border-radius: 10%;
 }
 
 .logo-content{
-    float: left;
-}
-
-.name-content{
-    display: inline;
     margin: auto;
 }
 
-.text{
-    display: inline;
-}
-
-.text-name{
-    display: inline;
+.tab-container{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-bottom: 10px;
 }
 
