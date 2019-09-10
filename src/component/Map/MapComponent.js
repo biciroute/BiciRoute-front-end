@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleApiWrapper, Map, Marker, Polyline } from 'google-maps-react';
+import { GoogleApiWrapper, Map, Marker, Polyline , DirectionsRenderer } from 'google-maps-react';
 import "./Map.css"
 import Button from '@material-ui/core/Button';
 import NavigationIcon from '@material-ui/icons/Navigation';
@@ -43,7 +43,8 @@ class MapComponent extends React.Component {
         this.state = {
             university: { lat: 4.782715, lng: -74.042611 },
             open: false,
-            pathRoute: [],
+            pathRoute: null,
+            
         };
 
         // Modal
@@ -53,6 +54,9 @@ class MapComponent extends React.Component {
         this.autocomplete = this.autocomplete.bind(this);
         this.setDirectionRoute = this.setDirectionRoute.bind(this);
         //this.renderDirections =  this.renderDirections.bind(this);
+        
+   
+
 
     }
 
@@ -90,11 +94,19 @@ class MapComponent extends React.Component {
 
     async setDirectionRoute(){
         var newPathRoute = await this.calculateRoute();
-
+        const { google, map } = this.props;
+       
         console.log(newPathRoute);
-        this.setState({pathRoute: newPathRoute.overview_path});
 
-     
+        this.setState({pathRoute: newPathRoute.routes[0].overview_path});
+        var directionsRenderer = new google.maps.DirectionsRenderer({
+            draggable: false,
+            suppressMarkers: true,
+        });
+        directionsRenderer.setMap(map);
+        directionsRenderer.setDirections(newPathRoute);
+
+
     }
 
 
@@ -104,7 +116,9 @@ class MapComponent extends React.Component {
         var src = document.getElementById("source");
         var tgt = document.getElementById('target');
         var autoSrc = new google.maps.places.Autocomplete(src);
+        autoSrc.setComponentRestrictions({'country': ['co']});
         var autoTgt = new google.maps.places.Autocomplete(tgt);
+        autoTgt.setComponentRestrictions({'country': ['co']});
         autoSrc.bindTo('bounds', map);
         autoSrc.setFields(['address_components', 'geometry', 'icon', 'name']);
         autoTgt.bindTo('bounds', map);
@@ -128,7 +142,7 @@ class MapComponent extends React.Component {
                 if (status === 'OK'){
                     window.alert("OK PASS");
                     pathRoute = response.routes[0];
-                    resolve(pathRoute)
+                    resolve(response)
                 } else {
 
                     window.alert('Directions request failed due to ' + status);
@@ -165,34 +179,32 @@ class MapComponent extends React.Component {
         return (
             <div >
                 <Map
-                    className="map"
+
+                    id = "mapita"
                     google={this.props.google}
                     zoom={15}
                     style={mapStyles}
-                    initialCenter={this.state.university}>
+                    mapTypeControl={false}
+                    initialCenter = {this.state.university}
+                    >
                     <Marker
                         title={'Escuela colombiana de ingenieria Julio Garavito'}
                         position={this.state.university}
                         animation={this.props.google.maps.Animation.DROP}
                         name={'Escuela colombiana de ingenieria Julio Garavito'}
                         description={'AK 45 #205-59 Bogota\nInstitucion universitaria'}
-                    />
-
-                    <Polyline
-                        path={this.state.pathRoute}
-                        geodesic={false}
-                        options={{
-                            strokeColor: '#38B44F',
-                            strokeOpacity: 1,
-                            strokeWeight: 7,
-                        }}
-                    />
+                    />  
+                  
+                 
                     <Button title="Begin your route with biciRoute" variant="contained" color="primary" onClick={this.handleOpen} id="buttonSearch" aria-label="delete" >
                         <NavigationIcon /> Search trip
                     </Button>
+                        
 
 
                 </Map>
+                
+                  
 
                 <TextField
                     id="source"
@@ -215,34 +227,7 @@ class MapComponent extends React.Component {
                 </Button>
 
 
-                <Modal onLoad={this.autocomplete}
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                >
-                    <div className={classes.paper}>
-                        <TextField
-                            id="source"
-                            type="search"
-                            className={classes.textField}
-                            margin="normal"
-                        />
-
-                        <TextField
-                            id="target"
-                            type="search"
-                            className={classes.textField}
-                            margin="normal"
-                        />
-
-
-
-
-                        <h2 id="simple-modal-title">Text in a modal</h2>
-                        <p id="simple-modal-description">
-                            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
-                        </p>
-                    </div>
-                </Modal>
+                
             </div>
         );
     }
