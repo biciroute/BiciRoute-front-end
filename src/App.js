@@ -1,11 +1,15 @@
 import React from 'react'
-import {Menu} from './Menu';
 import './App.css';
+import {Container} from "./Container";
 
 function App() {
+  const Test = () => (
+    <div><h1>Hola</h1></div>
+  );
+
   return (
     <div className="App">
-      <Menu/>
+      <Container view={<Test/ >} />
     </div>
   );
 }

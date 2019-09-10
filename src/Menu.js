@@ -6,12 +6,24 @@ import SideNav, { NavIcon, NavItem, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
-import logo from './logo.svg';
+import logo from './man.png';
 import './Menu.css';
+import {UserTab} from "./UserTab";
 
 
 export class Menu extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { toggle: false }
+        this.onToggleNav = this.onToggleNav.bind(this);
+    }
+
     render() {
+        let img
+        if (this.state.toggle) {
+            img = <UserTab eventKey="profile"/>
+        }
         return (
             <Router>
                 <Route render={({ location, history }) => (
@@ -24,13 +36,17 @@ export class Menu extends React.Component {
                                     console.log(history)
                                 }
                             }}
+
+                            onToggle={this.onToggleNav}
+
+                            className={ this.state.toggle ? "nav-toogle" : null }
                         >
                             <SideNav.Toggle />
                             <SideNav.Nav defaultSelected="route">
-                                <img src={logo}></img>
+                                {img}
                                 <NavItem eventKey="route">
                                     <NavIcon>
-                                        <LocationOnIcon/>
+                                        <LocationOnIcon />
                                     </NavIcon>
                                     <NavText>
                                         <span className="nav-text">Find Route</span>
@@ -38,7 +54,7 @@ export class Menu extends React.Component {
                                 </NavItem>
                                 <NavItem eventKey="trip">
                                     <NavIcon>
-                                        <DirectionsBikeIcon/>
+                                        <DirectionsBikeIcon />
                                     </NavIcon>
                                     <NavText>
                                         <span>My trips</span>
@@ -46,7 +62,7 @@ export class Menu extends React.Component {
                                 </NavItem>
                                 <NavItem eventKey="notifications">
                                     <NavIcon>
-                                        <NotificationsIcon/>
+                                        <NotificationsIcon />
                                     </NavIcon>
                                     <NavText>
                                         <span>Notifications</span>
@@ -72,5 +88,9 @@ export class Menu extends React.Component {
                 />
             </Router>
         );
+    }
+
+    onToggleNav(value) {
+        this.setState({ toggle: value });
     }
 }

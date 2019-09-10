@@ -5,3 +5,7 @@
 svg{
     vertical-align: middle;
 }
+
+.nav-toogle{
+   min-width: 260px !important; 
+}
