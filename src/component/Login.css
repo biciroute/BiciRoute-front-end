@@ -1,0 +1,41 @@
+.layout {
+    width: 60%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    color: #373734;
+}
+
+.paper {
+    margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.avatar {
+    margin: 10px;
+    background: #00C4CC;
+}
+
+.form {
+    width: 100%;
+    margin-top: 30px;
+}
+
+.submit {
+    margin-top: 20px;
+}
+
+#buttonLogin {
+    background: #373734;
+}
+
+/*a {
+    color: #00C4CC;
+}
+
+a:hover {
+    color: #373734;
+}*/
