@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import ProfileView from './component/ProfileView';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
-import { Login } from './component/Login.js';
+import { Login } from './component/login.js';
 import { Home } from './component/Home.js';
 import { SignUp } from './component/SignUp.js';
 
@@ -13,7 +13,7 @@ class App extends Component {
   }
   render(){
     const LoginView = () => (
-      <div>{localStorage.getItem('isLoggedIn') != null ? <Home /> : <Login />} </div>
+      <div>{localStorage.getItem('isLoggedIn') != null ? <Login /> : <Home />} </div>
     );
     
     const SignUpView = () => (
@@ -43,7 +43,6 @@ class App extends Component {
           </Switch>
         </div>
       </Router>
-    
     );
   }
 }

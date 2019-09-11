@@ -1,41 +1,40 @@
-.layout {
-    width: 60%;
+.layoutSignIn {
+    height: 100vh;
+    width: 100vw;
+    background-color: #373734;
     display: block;
     margin-left: auto;
     margin-right: auto;
-    color: #373734;
 }
 
 .paper {
-    margin-top: 10%;
+    margin-top: 5%;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
 }
 
-.avatar {
-    margin: 10px;
-    background: #00C4CC;
+.imageBackground {
+    width: 100vw;
+    height: 100vh;
+    background-image: url('https://source.unsplash.com/random');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .form {
     width: 100%;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .submit {
     margin-top: 20px;
+    background-color: #373734;
 }
 
-#buttonLogin {
-    background: #373734;
+.inputBox {
+    margin-top: 15px;
+    margin-bottom: 7px;
 }
-
-/*a {
-    color: #00C4CC;
-}
-
-a:hover {
-    color: #373734;
-}*/
