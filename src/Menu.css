@@ -9,3 +9,7 @@ svg{
 .nav-toogle{
    min-width: 260px !important; 
 }
+
+.fixed-nav{
+    position: fixed;
+}

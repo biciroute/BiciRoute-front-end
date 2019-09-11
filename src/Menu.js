@@ -1,14 +1,16 @@
 import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
+import HelpIcon from '@material-ui/icons/Help';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import HelpIcon from '@material-ui/icons/Help';
 import SideNav, { NavIcon, NavItem, NavText } from '@trendmicro/react-sidenav';
 import '@trendmicro/react-sidenav/dist/react-sidenav.css';
 import React from 'react';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
-import logo from './man.png';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './Menu.css';
-import {UserTab} from "./UserTab";
+import { UserTab } from "./UserTab";
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
+import { Home } from './component/Home.js';
+import ProfileView from './component/ProfileView';
 
 
 export class Menu extends React.Component {
@@ -22,7 +24,7 @@ export class Menu extends React.Component {
     render() {
         let img
         if (this.state.toggle) {
-            img = <UserTab eventKey="profile"/>
+            img = <UserTab eventKey="profile" />
         }
         return (
             <Router>
@@ -38,18 +40,26 @@ export class Menu extends React.Component {
                             }}
 
                             onToggle={this.onToggleNav}
-
-                            className={ this.state.toggle ? "nav-toogle" : null }
+                            
+                            className={this.state.toggle ? "nav-toogle" : null , "fixed-nav"}
                         >
                             <SideNav.Toggle />
-                            <SideNav.Nav defaultSelected="route">
+                            <SideNav.Nav defaultSelected="home">
                                 {img}
-                                <NavItem eventKey="route">
+                                <NavItem eventKey="home">
                                     <NavIcon>
                                         <LocationOnIcon />
                                     </NavIcon>
                                     <NavText>
                                         <span className="nav-text">Find Route</span>
+                                    </NavText>
+                                </NavItem>
+                                <NavItem eventKey="myProfile">
+                                    <NavIcon>
+                                        <AssignmentIndIcon />
+                                    </NavIcon>
+                                    <NavText>
+                                        <span className="nav-text">My Account</span>
                                     </NavText>
                                 </NavItem>
                                 <NavItem eventKey="trip">
@@ -79,9 +89,10 @@ export class Menu extends React.Component {
                             </SideNav.Nav>
                         </SideNav>
                         <main>
-                            {/*<Route path="/" exact component={props => <RootComponent />} />
-                            <Route path="/home" component={props => <Home />} />
-                        <Route path="/devices" component={props => <Devices />} />*/}
+                            <Switch>
+                                <Route path="/home" component={props => <Home />} />
+                                <Route path="/myProfile" component={props => <ProfileView />} />
+                            </Switch>
                         </main>
                     </React.Fragment>
                 )}
@@ -89,6 +100,8 @@ export class Menu extends React.Component {
             </Router>
         );
     }
+
+
 
     onToggleNav(value) {
         this.setState({ toggle: value });

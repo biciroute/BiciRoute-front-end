@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './man.png';
 import './UserTab.css';
 
 export class UserTab extends React.Component {
@@ -8,11 +7,11 @@ export class UserTab extends React.Component {
         return (
             <div className="tab-container">
                 <div className="logo-content">
-                    <img src={logo}></img>
+                    <img src="https://bootdey.com/img/Content/avatar/avatar2.png"></img>
                 </div>
                 <div className="name-content">
                     <p>Hola,</p>
-                    <h1>Santiago</h1>
+                    <h1>{localStorage.getItem('nombre')}</h1>
                 </div>
             </div>
         );

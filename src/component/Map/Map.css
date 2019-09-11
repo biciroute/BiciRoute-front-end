@@ -1,0 +1,20 @@
+#buttonSearch{
+    top: 90%;
+    display: flex;
+    margin: auto;
+    border: 1px solid gray;
+}
+
+#buttonSearch:hover {
+    cursor: help;
+    
+}
+
+#searchModal{
+    background-color: aliceblue
+}
+
+#modal {
+    z-index: 20  !important;
+    top : 50%,
+}
