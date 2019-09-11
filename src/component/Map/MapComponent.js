@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleApiWrapper, Map, Marker, Polyline , DirectionsRenderer } from 'google-maps-react';
+import { GoogleApiWrapper, Map, Marker, Polyline } from 'google-maps-react';
 import "./Map.css"
 import Button from '@material-ui/core/Button';
 import NavigationIcon from '@material-ui/icons/Navigation';
@@ -7,6 +7,7 @@ import Modal from '@material-ui/core/Modal';
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
+import { flexbox } from '@material-ui/system';
 
 
 
@@ -19,7 +20,6 @@ const mapStyles = {
 
 const useStyles = theme => ({
     paper: {
-        position: 'absolute',
         width: 400,
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
@@ -31,6 +31,13 @@ const useStyles = theme => ({
         marginRight: theme.spacing(1),
         width: 200,
     },
+    Modal: {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+
+    }
+
 });
 
 
@@ -43,8 +50,8 @@ class MapComponent extends React.Component {
         this.state = {
             university: { lat: 4.782715, lng: -74.042611 },
             open: false,
-            pathRoute: null,
-            
+            pathRoute: [],
+            position: null
         };
 
         // Modal
@@ -54,9 +61,6 @@ class MapComponent extends React.Component {
         this.autocomplete = this.autocomplete.bind(this);
         this.setDirectionRoute = this.setDirectionRoute.bind(this);
         //this.renderDirections =  this.renderDirections.bind(this);
-        
-   
-
 
     }
 
@@ -77,8 +81,6 @@ class MapComponent extends React.Component {
     getModalStyle() {
         const top = 50 + this.rand();
         const left = 50 + this.rand();
-        console.log(" test " + top + "  " + left)
-
         return {
             top: `${top}%`,
             left: `${left}%`,
@@ -92,46 +94,91 @@ class MapComponent extends React.Component {
         })
     }
 
-    async setDirectionRoute(){
+    async getLanLnt(address) {
+        const { google, map } = this.props;
+        const geocoder = new google.maps.Geocoder();
+        return new Promise((resolve, reject) => {
+            geocoder.geocode({ 'address': address }, function (results, status) {
+                if (status == 'OK') {
+                    resolve(results[0].geometry.location)
+                } else {
+                    window.alert('Directions ' + address + ' request failed due to ' + status);
+                    reject(status)
+                }
+            });
+        })
+    }
+
+    async getCenterMap() {
+
+        const { google, map } = this.props;
+        const temporalRoutes = []
+        const sourceRoute = document.getElementById("source").value
+        const targetRoute = document.getElementById("target").value
+        var bounds = new google.maps.LatLngBounds();
+        const coordinatesDestinations = []
+        var x = await this.getLanLnt(sourceRoute)
+        var y = await this.getLanLnt(targetRoute)
+        //coordinatesDestinations.push();
+        //coordinatesDestinations.push(await this.getLanLnt(targetRoute));
+        //window.alert(coordinatesDestinations);
+    }
+
+
+    async setDirectionRoute() {
         var newPathRoute = await this.calculateRoute();
         const { google, map } = this.props;
-       
-        console.log(newPathRoute);
-
-        this.setState({pathRoute: newPathRoute.routes[0].overview_path});
-        var directionsRenderer = new google.maps.DirectionsRenderer({
-            draggable: false,
-            suppressMarkers: true,
+        this.setState({
+            pathRoute: newPathRoute.routes[0].overview_path,
+            open: false
         });
-        directionsRenderer.setMap(map);
-        directionsRenderer.setDirections(newPathRoute);
+        
+        /*
+        this.getCenterMap();
+
+        for (var i = 0; i < newPathRoute.length; i++) {
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(newPathRoute[i][1], newPathRoute[i][2]),
+                map: map
+            });
+
+            //extend the bounds to include each marker's position
+            bounds.extend(marker.position);
+
+        }
+        map.fitBounds(markerBounds);
+        */
 
 
     }
 
 
     autocomplete() {
-        const { google, map } = this.props;
+        const { google, map, ...rest } = this.props;
         if (!google || !map) return;
         var src = document.getElementById("source");
         var tgt = document.getElementById('target');
         var autoSrc = new google.maps.places.Autocomplete(src);
-        autoSrc.setComponentRestrictions({'country': ['co']});
         var autoTgt = new google.maps.places.Autocomplete(tgt);
-        autoTgt.setComponentRestrictions({'country': ['co']});
         autoSrc.bindTo('bounds', map);
         autoSrc.setFields(['address_components', 'geometry', 'icon', 'name']);
         autoTgt.bindTo('bounds', map);
         autoTgt.setFields(['address_components', 'geometry', 'icon', 'name']);
+
+        autoSrc.setComponentRestrictions(
+            { 'country': ['co'] });
+        autoTgt.setComponentRestrictions(
+            { 'country': ['co'] });
+
+
     }
 
 
     calculateRoute(travelMode, origin, destination, dateUniversity) {
-        const { google, map } = this.props;
+        const { google, map, ...rest } = this.props;
         if (!google || !map) return;
         const directionsService = new google.maps.DirectionsService();
         let pathRoute;
-        window.alert("Entro "  + document.getElementById("source").value +  "  "  );
         const request = {
             origin: document.getElementById("source").value,
             destination: document.getElementById("target").value,
@@ -139,7 +186,7 @@ class MapComponent extends React.Component {
         };
         return new Promise((resolve, reject) => {
             directionsService.route(request, (response, status) => {
-                if (status === 'OK'){
+                if (status === 'OK') {
                     window.alert("OK PASS");
                     pathRoute = response.routes[0];
                     resolve(response)
@@ -153,7 +200,7 @@ class MapComponent extends React.Component {
         )
     }
 
-    
+
 
 
 
@@ -166,7 +213,12 @@ class MapComponent extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.map !== prevProps.map) this.autocomplete();
+        if (this.props.map !== prevProps.map) {
+            this.autocomplete();
+
+        }
+
+
     }
 
 
@@ -175,59 +227,79 @@ class MapComponent extends React.Component {
     render() {
         const { classes } = this.props;
         const modalStyle = this.getModalStyle;
-        // const {modalStyle} = React.useState(getModalStyle);
         return (
             <div >
                 <Map
-
-                    id = "mapita"
+                    className="map"
                     google={this.props.google}
                     zoom={15}
                     style={mapStyles}
+                    initialCenter={this.state.university}
+                    centerAroundCurrentLocation={false}
                     mapTypeControl={false}
-                    initialCenter = {this.state.university}
-                    >
+                    center={this.state.position}
+
+                >
+
                     <Marker
                         title={'Escuela colombiana de ingenieria Julio Garavito'}
                         position={this.state.university}
                         animation={this.props.google.maps.Animation.DROP}
                         name={'Escuela colombiana de ingenieria Julio Garavito'}
                         description={'AK 45 #205-59 Bogota\nInstitucion universitaria'}
-                    />  
-                  
-                 
+                    />
+
+
+                    <Polyline
+                        path={this.state.pathRoute}
+                        geodesic={false}
+                        options={{
+                            strokeColor: '#38B44F',
+                            strokeOpacity: 1,
+                            strokeWeight: 7,
+                        }}
+                    />
                     <Button title="Begin your route with biciRoute" variant="contained" color="primary" onClick={this.handleOpen} id="buttonSearch" aria-label="delete" >
                         <NavigationIcon /> Search trip
                     </Button>
-                        
 
 
                 </Map>
-                
-                  
-
-                <TextField
-                    id="source"
-                    type="search"
-                    label="trip's start"
-                    className={classes.textField}
-                    margin="normal"
-                />
-
-                <TextField
-                    id="target"
-                    type="search"
-                    label="trip's end"
-                    className={classes.textField}
-                    margin="normal"
-                />
-
-                <Button variant="contained" color="primary" onClick={this.setDirectionRoute}>
-                    Search possible trips
-                </Button>
 
 
-                
+
+                <Modal open={this.state.open}
+                    onClose={this.handleClose}
+                    keepMounted={true}
+                    id="modal"
+                    //style={modalStyle}
+                    className = {classes.Modal}
+                >
+                    <div className={classes.paper}>
+                        <TextField
+                            id="source"
+                            type="search"
+                            label="trip's start"
+                            className={classes.textField}
+                            margin="normal"
+                        />
+
+                        <br></br>
+                        <TextField
+                            id="target"
+                            type="search"
+                            label="trip's end"
+                            className={classes.textField}
+                            margin="normal"
+                        />
+                        <br></br>
+                        <Button variant="contained" color="primary" onClick={this.setDirectionRoute}>
+                            Search possible trips
+                        </Button>
+
+                    </div>
+                </Modal>
+
             </div>
         );
     }
@@ -247,6 +319,6 @@ const MapWrapper = props => (
 );
 
 export default withStyles(useStyles)(GoogleApiWrapper({
-    apiKey: 'AIzaSyAC9GvNPhAIg4NDnqeCBItE0SzmYLLUBtY',
+    apiKey: 'AIzaSyCJuZIQnX6XR1vs6dBHuZHj8J5TrWmVi-8',
     language: "es",
 })(MapWrapper));
