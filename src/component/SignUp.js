@@ -127,12 +127,14 @@ export class SignUp extends React.Component{
     }
 
     handleFirstNameChange(e) {
+        localStorage.setItem("nombre", e.target.value);
         this.setState({
             firstName: e.target.value
         });
     }
 
     handleLastNameChange(e) {
+        localStorage.setItem("apellido", e.target.value);
         this.setState({
             lastName: e.target.value
         });
@@ -156,6 +158,7 @@ export class SignUp extends React.Component{
             alert("This email does already exist!. Please sign up with other email.");
         }else{
             localStorage.setItem("email="+this.state.email,this.state.password);
+            localStorage.setItem('correo', this.state.email);
             alert("You have signed up successfully!");
             window.location.href = "/login";
         }

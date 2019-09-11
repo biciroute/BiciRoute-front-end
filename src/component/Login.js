@@ -88,6 +88,7 @@ export class Login extends React.Component{
         e.preventDefault();
         if(localStorage.getItem("email="+this.state.email)===this.state.password){
             localStorage.setItem('isLoggedIn',true);
+            localStorage.setItem('correo', this.state.email);
             window.location.href = "/home";
         }else{
             alert("The email or password is incorrect");

@@ -10,7 +10,7 @@ import ModalModify from './ModalModify';
 export default class ProfileView extends Component {
     constructor(props) {
         super(props);
-        this.state = { name:'John Due', email:'JohnDue@mail.com', ciudad:'Bogotá, Colombia',followers:200,following:200,trips:0};
+        this.state = { name:localStorage.getItem("nombre")+" "+localStorage.getItem("apellido"), email: localStorage.getItem('correo'), ciudad:'Bogotá, Colombia',followers:200,following:200,trips:0};
     }
     
     setCiudad(newCiudad) {
@@ -77,7 +77,7 @@ export default class ProfileView extends Component {
 
 const styles = StyleSheet.create({
   header:{
-    backgroundColor: "#00CED1",
+    backgroundColor: "#051424",
   },
   headerContent:{
     padding:30,
@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
     height: 'auto',
   },
   photosCard:{
+    margin:'auto',
     marginTop:10,
     marginLeft:50,
     marginRight:10,
@@ -142,7 +143,7 @@ const styles = StyleSheet.create({
   },
   title:{
     fontSize:20,
-    color: "#00CED1"
+    color: "#095d7b"
   },
   count:{
     fontSize:18,
@@ -152,11 +153,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding:30,
     marginTop:40
-  },
-  textInfo:{
-    fontSize:18,
-    marginTop:20,
-    color: "#696969",
   },
   buttonContainer: {
     marginTop:10,
@@ -171,7 +167,7 @@ const styles = StyleSheet.create({
   },
   description:{
     fontSize:20,
-    color: "#00CED1",
+    color: "#095d7b",
     marginTop:10,
     textAlign: 'center'
   },

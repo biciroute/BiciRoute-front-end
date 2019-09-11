@@ -14,7 +14,7 @@ export default class ModalModify extends Component{
   
   constructor(props) {
     super(props);
-    this.state = { name:'John Due', email:'JohnDue@mail.com', city:'Bogotá, Colombia'};
+    this.state = { name:localStorage.getItem("nombre")+" "+localStorage.getItem("apellido"), email:localStorage.getItem("correo"), city:'Bogotá, Colombia'};
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleCityChange = this.handleCityChange.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
@@ -25,12 +25,13 @@ export default class ModalModify extends Component{
   handleCityChange(e) {
     this.setState({city:  e.target.value});}
   handleEmailChange(e) {
+    localStorage.setItem("correo", e.target.value);
     this.setState({email:  e.target.value});}
 
   render(){
   return(
   <Popup trigger={<TouchableOpacity style={styles.buttonContainer} activeOpacity={.7}>
-                      <Text>Edit Profile</Text>  
+                      <Text style={styles.button}>Edit Profile</Text>  
                   </TouchableOpacity>
     } modal>
     {close => (
@@ -108,6 +109,11 @@ export default class ModalModify extends Component{
       color:"#FFFFFF",
       fontWeight:'600',
     },
+    button:{
+      fontSize:22,
+      color:"#FFFFFF",
+      fontWeight:'600',
+    },
     buttonContainer: {
       marginTop:10,
       height:45,
@@ -117,7 +123,7 @@ export default class ModalModify extends Component{
       marginBottom:20,
       width:250,
       borderRadius:30,
-      backgroundColor: "#00CED1",
+      backgroundColor: "#0b396b",
     },
     popupContent: {
       //alignItems: 'center',
