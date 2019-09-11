@@ -100,6 +100,7 @@ class MapComponent extends React.Component {
         return new Promise((resolve, reject) => {
             geocoder.geocode({ 'address': address }, function (results, status) {
                 if (status == 'OK') {
+
                     resolve(results[0].geometry.location)
                 } else {
                     window.alert('Directions ' + address + ' request failed due to ' + status);
@@ -115,13 +116,33 @@ class MapComponent extends React.Component {
         const temporalRoutes = []
         const sourceRoute = document.getElementById("source").value
         const targetRoute = document.getElementById("target").value
-        var bounds = new google.maps.LatLngBounds();
         const coordinatesDestinations = []
         var x = await this.getLanLnt(sourceRoute)
         var y = await this.getLanLnt(targetRoute)
-        //coordinatesDestinations.push();
-        //coordinatesDestinations.push(await this.getLanLnt(targetRoute));
-        //window.alert(coordinatesDestinations);
+        coordinatesDestinations.push(x);
+        coordinatesDestinations.push(y);
+        var bounds = new google.maps.LatLngBounds();     
+        console.log("aqui " + coordinatesDestinations + " " + coordinatesDestinations.length)
+        for (var i = 0; i < coordinatesDestinations.length; i++) {
+            console.log(coordinatesDestinations[i].lat()+ " " + coordinatesDestinations[i].lng());
+            
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng(coordinatesDestinations[i].lat(), coordinatesDestinations[i].lng()),
+                map: map
+            });
+            //extend the bounds to include each marker's position
+            bounds.extend(marker.position);
+
+        }
+        this.setState({
+            position : bounds.getCenter()
+        });
+        console.log("Aca   "  + bounds.getCenter());
+        map.fitBounds(bounds);
+        
+
+        console.log(coordinatesDestinations);
+        return coordinatesDestinations
     }
 
 
@@ -132,24 +153,8 @@ class MapComponent extends React.Component {
             pathRoute: newPathRoute.routes[0].overview_path,
             open: false
         });
-        
-        /*
         this.getCenterMap();
-
-        for (var i = 0; i < newPathRoute.length; i++) {
-            var marker = new google.maps.Marker({
-                position: new google.maps.LatLng(newPathRoute[i][1], newPathRoute[i][2]),
-                map: map
-            });
-
-            //extend the bounds to include each marker's position
-            bounds.extend(marker.position);
-
-        }
-        map.fitBounds(markerBounds);
-        */
-
-
+        
     }
 
 
