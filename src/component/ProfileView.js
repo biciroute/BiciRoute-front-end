@@ -11,7 +11,8 @@ export default class ProfileView extends Component {
     constructor(props) {
         super(props);
         this.state = { name:localStorage.getItem("nombre")+" "+localStorage.getItem("apellido"), email: localStorage.getItem('correo'), ciudad:'Bogotá, Colombia',followers:200,following:200,trips:0};
-    }
+        this.handleCorreo=this.handleCorreo.bind();
+      }
     
     setCiudad(newCiudad) {
         this.setState({ciudad: newCiudad});
@@ -19,6 +20,9 @@ export default class ProfileView extends Component {
     setCorreo(newCorreo) {
         this.setState({email: newCorreo});
     }
+    handleCorreo(){
+      this.setState({email:  this.state.email});}
+     
   render() {
     return (
       <View style={styles.container}>

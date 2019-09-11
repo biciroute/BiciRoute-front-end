@@ -65,6 +65,7 @@ export default class ModalModify extends Component{
                 </TextField>
                 <br></br>
                 <TextField
+                    disabled
                     id="city"
                     label="City"                  
                     margin="normal"
@@ -79,7 +80,7 @@ export default class ModalModify extends Component{
         </div>
         <View style={styles.popupButtons}>
         <div className="actions">
-          <TouchableOpacity style={styles.btnSave} activeOpacity={.7} onClick={() => {close();}}>
+          <TouchableOpacity style={styles.btnSave} activeOpacity={.7} onClick={() => {close();window.location.reload(true);}}>
             <Text>Save</Text>  
           </TouchableOpacity>
           
