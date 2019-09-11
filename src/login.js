@@ -99,13 +99,14 @@ export class Login extends React.Component {
 
     handlePasswordChange(e) {
         this.setState({
-            password: e.target
+            password: e.target.value
         });
     }
 
     handleSubmit(e) {
         if (localStorage.getItem("email=" + this.state.email) === this.state.password) {
             localStorage.setItem('isLoggedIn', true);
+			alert("Acabas de iniciar sesion correctamente");
         } else {
             e.preventDefault();
             alert("The email or password is incorrect");

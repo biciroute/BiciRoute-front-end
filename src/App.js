@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import 'react-datepicker/dist/react-datepicker.css';
 import { Route, BrowserRouter as Router, Switch } from 'react-router-dom'
-import { Login } from './Login.js';
+import { Login } from './login.js';
 
 class App extends React.Component{
 
