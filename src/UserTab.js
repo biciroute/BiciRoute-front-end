@@ -10,7 +10,7 @@ export class UserTab extends React.Component {
                     <img src="https://bootdey.com/img/Content/avatar/avatar2.png"></img>
                 </div>
                 <div className="name-content">
-                    <p>Hola,</p>
+                    <p>Welcome,</p>
                     <h1>{localStorage.getItem('nombre')}</h1>
                 </div>
             </div>

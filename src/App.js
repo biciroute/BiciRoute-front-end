@@ -16,36 +16,34 @@ class App extends Component {
 
   render() {
 
-    const HomeVar = () => (
-      <Container onMenu="true">
-        <Home />
-      </Container>
-
+    const HomeView = () => (
+      <div>
+        {localStorage.getItem('isLoggedIn') ? <Container onMenu="true"><Home /></Container> : <Login/>}
+      </div>
     );
 
     const LoginView = () => (
-      <Login />
+      <div>
+        {localStorage.getItem('isLoggedIn') ? <Container onMenu="true"><Home /></Container> : <Login/>}
+      </div>
     );
 
     const SignUpView = () => (
-      <SignUp />
+      <div>
+        {localStorage.getItem('isLoggedIn') ? <Container onMenu="true"><Home /></Container> : <SignUp />}
+      </div>
     );
 
-    if (!localStorage.getItem('isLoggedIn')) {
-      return (
-        <Router>
-          <Switch>
-            <Route exact path="/" component={LoginView} />
-            <Route exact path="/login" component={LoginView} />
-            <Route exact path="/signup" component={SignUpView} />
-            <Route exact path="/home" component={LoginView} />
-          </Switch>
-        </Router>
-      );
-    }
-    else {
-      return <HomeVar />
-    }
+    return (
+      <Router>
+        <Switch>
+          <Route exact path="/" component={HomeView} />
+          <Route exact path="/login" component={LoginView} />
+          <Route exact path="/signup" component={SignUpView} />
+          <Route exact path="/home" component={HomeView} />
+        </Switch>
+      </Router>
+    );
   }
 }
 

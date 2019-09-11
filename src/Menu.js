@@ -12,7 +12,6 @@ import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import { Home } from './component/Home.js';
 import ProfileView from './component/ProfileView';
 
-
 export class Menu extends React.Component {
 
     constructor(props) {
@@ -90,6 +89,7 @@ export class Menu extends React.Component {
                         </SideNav>
                         <main>
                             <Switch>
+                                <Route exact path="/home" component={props => <Home />} />
                                 <Route path="/home" component={props => <Home />} />
                                 <Route path="/myProfile" component={props => <ProfileView />} />
                             </Switch>
