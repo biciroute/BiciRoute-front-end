@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import React from 'react';
+import { Link } from 'react-router-dom'; //this is important for routing
 import './Login.css';
 
 
@@ -18,7 +19,6 @@ export class Login extends React.Component {
         this.handleEmailChange = this.handleEmailChange.bind(this);
         this.handlePasswordChange = this.handlePasswordChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-
     }
 
     render() {
@@ -69,18 +69,19 @@ export class Login extends React.Component {
                                             />
                                         </Grid>
                                     </Grid>
+                                    <br/>
                                     <Button type="submit" fullWidth variant="contained"
                                         color="primary" className="submit">
                                         Sign In
                                     </Button>
 
-                                    {/* <Grid container justify="flex-end">
+                                    <Grid container justify="flex-end">
                                         <Grid item>
                                             <Link to="/signup">
                                                 Don't you have an account yet? Sign up!
                                             </Link>
                                         </Grid>
-                                    </Grid> */}
+                                    </Grid>
                                 </form>
                             </Paper>
                         </Grid>

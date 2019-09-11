@@ -51,10 +51,10 @@ export class SignUp extends React.Component{
                                     Sign Up
                                 </Typography>
                                 <form className="form" onSubmit={this.handleSubmit}>
-                                    <Grid container spacing={8}>
+                                    <Grid container spacing={1}>
                                         <Grid item xs={12} sm={6}>
                                             <TextField
-                                                variant="outlined" margin="dense"                                          
+                                                variant="outlined" margin="dense"                              
                                                 required fullWidth
                                                 id="firstName" label="First Name"
                                                 name="firstName" autoComplete="fname" autoFocus
@@ -71,12 +71,11 @@ export class SignUp extends React.Component{
                                             />
                                         </Grid>
                                     </Grid>
-
                                     <Grid container spacing={0}>
                                         <Grid item xs={12}>
                                             <TextField
-                                                variant="outlined" margin="dense"
-                                                required fullWidth
+                                                variant="outlined"
+                                                required fullWidth margin="dense"
                                                 id="email" label="Email Address"
                                                 name="email" autoComplete="email"
                                                 onChange={this.handleEmailChange}
@@ -84,28 +83,19 @@ export class SignUp extends React.Component{
                                         </Grid>
                                         <Grid item xs={12}>
                                             <TextField
-                                                variant="outlined" margin="dense"
-                                                required fullWidth
+                                                variant="outlined"
+                                                required fullWidth margin="dense"
                                                 name="password" label="Password"
                                                 type="password" id="password" autoComplete="current-password"
                                                 onChange={this.handlePasswordChange}
                                             />
                                         </Grid>
-
-                                        <Grid item xs={12}>
-                                            <FormControlLabel
-                                                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                                                label="I want to receive inspiration, marketing promotions and updates via email."
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                    
-
-                                    <Button type="submit" fullWidth variant="contained"
+                                    </Grid>                                 
+                                    <br/>
+                                    <Button type="submit" fullWidth variant="contained" margin="dense"
                                         color="primary" className="submit">
                                         Sign Up
                                     </Button>
-
                                     <Grid container justify="flex-end">
                                         <Grid item>
                                             <Link to="/login">
@@ -157,7 +147,6 @@ export class SignUp extends React.Component{
             alert("This email does already exist!. Please sign up with other email.");
         }else{
             localStorage.setItem("email="+this.state.email,this.state.password);
-            localStorage.setItem('correo', this.state.email);
             alert("You have signed up successfully!");
             window.location.href = "/login";
         }
