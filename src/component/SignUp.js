@@ -1,16 +1,8 @@
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import Checkbox from '@material-ui/core/Checkbox';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Grid from '@material-ui/core/Grid';
-import Hidden from '@material-ui/core/Hidden';
-import Paper from '@material-ui/core/Paper';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import React from 'react';
 import { Link } from 'react-router-dom'; //this is important for routing
 import './SignUp.css';
+import { MDBCard, MDBCardTitle, MDBCardText, MDBContainer } from "mdbreact";
+import { MDBRow, MDBCol, MDBBtn } from "mdbreact";
 
 export class SignUp extends React.Component{
 
@@ -27,122 +19,91 @@ export class SignUp extends React.Component{
     render(){
 
         return(
-            <React.Fragment>
-                <CssBaseline />
-                <main className="layoutSignUp">
-                    <Grid container>
-                        <Hidden only='xs'>
-                            <Grid item xs={false} sm={4} md={7}>
-                                <div
-                                    className="imageBackground"
-                                />
-                            </Grid>
-                        </Hidden>
-                        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
-                            <Paper class="paper">
-                                <Grid container justify="center" alignItems="center">
-                                    <Avatar alt="biciroute Logo" src={process.env.PUBLIC_URL+ "/images/logo.jpg"}
-                                        style={{margin: 10,
-                                                width: 150,
-                                                height: 150,}}
-                                        className="bigAvatar" />
-                                </Grid>
-                                <Typography component="h1" variant="h5">
-                                    Sign Up
-                                </Typography>
-                                <form className="form" onSubmit={this.handleSubmit}>
-                                    <Grid container spacing={1}>
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                variant="outlined" margin="dense"                              
-                                                required fullWidth
-                                                id="firstName" label="First Name"
-                                                name="firstName" autoComplete="fname" autoFocus
-                                                onChange={this.handleFirstNameChange}
-                                            />
-                                        </Grid>                                 
-                                        <Grid item xs={12} sm={6}>
-                                            <TextField
-                                                variant="outlined" margin="dense"
-                                                required fullWidth
-                                                id="lastName" label="Last Name"
-                                                name="lastName" autoComplete="lname"
-                                                onChange={this.handleLastNameChange}
-                                            />
-                                        </Grid>
-                                    </Grid>
-                                    <Grid container spacing={0}>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                variant="outlined"
-                                                required fullWidth margin="dense"
-                                                id="email" label="Email Address"
-                                                name="email" autoComplete="email"
-                                                onChange={this.handleEmailChange}
-                                            />
-                                        </Grid>
-                                        <Grid item xs={12}>
-                                            <TextField
-                                                variant="outlined"
-                                                required fullWidth margin="dense"
-                                                name="password" label="Password"
-                                                type="password" id="password" autoComplete="current-password"
-                                                onChange={this.handlePasswordChange}
-                                            />
-                                        </Grid>
-                                    </Grid>                                 
-                                    <br/>
-                                    <Button type="submit" fullWidth variant="contained" margin="dense"
-                                        color="primary" className="submit">
-                                        Sign Up
-                                    </Button>
-                                    <Grid container justify="flex-end">
-                                        <Grid item>
-                                            <Link to="/login">
-                                                Already have an account? Sign in
-                                            </Link>
-                                        </Grid>
-                                    </Grid>
+            <div className="bg">
+                <MDBContainer>
+                    <MDBCard className="card-body" style={{ width: "22rem", marginTop: "1rem" }}>
 
-                                </form>
-
-
-                            </Paper>
-                        </Grid>
-                    </Grid>
-                </main>
-            </React.Fragment>
+                    <form
+          className="needs-validation"
+          onSubmit={this.submitHandler}
+          noValidate
+        >
+          <MDBRow>
+            <MDBCol md="4" className="mb-3">
+              <label
+                htmlFor="defaultFormRegisterNameEx"
+                className="grey-text"
+              >
+                First name
+              </label>
+              <input
+                value={this.state.fname}
+                name="fname"
+                onChange={this.changeHandler}
+                type="text"
+                id="defaultFormRegisterNameEx"
+                className="form-control"
+                placeholder="First name"
+                required
+              />
+              <div className="valid-feedback">Looks good!</div>
+            </MDBCol>
+            <MDBCol md="4" className="mb-3">
+              <label
+                htmlFor="defaultFormRegisterEmailEx2"
+                className="grey-text"
+              >
+                Last name
+              </label>
+              <input
+                value={this.state.lname}
+                name="lname"
+                onChange={this.changeHandler}
+                type="text"
+                id="defaultFormRegisterEmailEx2"
+                className="form-control"
+                placeholder="Last name"
+                required
+              />
+              <div className="valid-feedback">Looks good!</div>
+            </MDBCol>
+            </MDBRow>
+            </form>
+            </MDBCard>
+                </MDBContainer>
+            </div>
         );
     }
 
-    handleFirstNameChange(e) {
-        localStorage.setItem("nombre", e.target.value);
+    handleFirstNameChange(event) {
+        localStorage.setItem("nombre", event.target.value);
         this.setState({
-            firstName: e.target.value
+            firstName: event.target.value
         });
     }
 
-    handleLastNameChange(e) {
-        localStorage.setItem("apellido", e.target.value);
+    handleLastNameChange(event) {
+        localStorage.setItem("apellido", event.target.value);
         this.setState({
-            lastName: e.target.value
+            lastName: event.target.value
         });
     }
 
-    handleEmailChange(e) {
+    handleEmailChange(event) {
         this.setState({
-            email: e.target.value
+            email: event.target.value
         });
     }
 
-    handlePasswordChange(e) {
+    handlePasswordChange(event) {
         this.setState({
-            password: e.target.value
+            password: event.target.value
         });
     }
 
-    handleSubmit(e) {
-        e.preventDefault();
+    handleSubmit(event) {
+        event.preventDefault();
+        //event.target.className += " was-validated";
         if(localStorage.getItem("email="+this.state.email)!==null){
             alert("This email does already exist!. Please sign up with other email.");
         }else{
