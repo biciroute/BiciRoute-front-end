@@ -3,3 +3,8 @@ ul{
     padding: 0;
     margin: 0;
 }
+
+.text-list{
+    vertical-align: super;
+    padding-left: 10px;
+}

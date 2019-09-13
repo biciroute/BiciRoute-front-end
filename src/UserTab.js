@@ -11,7 +11,7 @@ export class UserTab extends React.Component {
                 </div>
                 <div className="name-content">
                     <p>Welcome,</p>
-                    <h1>{localStorage.getItem('nombre')}</h1>
+                    <h1>{localStorage.getItem('nombre')}Santiago</h1>
                 </div>
             </div>
         );
