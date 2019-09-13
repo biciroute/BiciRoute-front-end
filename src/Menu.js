@@ -1,109 +1,43 @@
+import React from 'react';
+import SideNav, { MenuIcon } from 'react-simple-sidenav';
+import "./Menu.css"
+import {UserTab} from './UserTab'
 import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
 import HelpIcon from '@material-ui/icons/Help';
 import LocationOnIcon from '@material-ui/icons/LocationOn';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import SideNav, { NavIcon, NavItem, NavText } from '@trendmicro/react-sidenav';
-import '@trendmicro/react-sidenav/dist/react-sidenav.css';
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import './Menu.css';
-import { UserTab } from "./UserTab";
-import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
-import { Home } from './component/Home.js';
-import ProfileView from './component/ProfileView';
+import AssignmentIndIcon from '@material-ui/icons/AssignmentInd'
+
 
 export class Menu extends React.Component {
-
     constructor(props) {
         super(props);
-        this.state = { toggle: false }
-        this.onToggleNav = this.onToggleNav.bind(this);
+        this.state = { showNav: true };
     }
 
     render() {
-        let img
-        if (this.state.toggle) {
-            img = <UserTab eventKey="profile" />
-        }
         return (
-            <Router>
-                <Route render={({ location, history }) => (
-                    <React.Fragment>
-                        <SideNav
-                            onSelect={(selected) => {
-                                const to = '/' + selected;
-                                if (location.pathname !== to) {
-                                    history.push(to);
-                                    console.log(history)
-                                }
-                            }}
+            <div>
+                <MenuIcon onClick={() => this.setState({ showNav: true })} style={{fill:"black"}}/>
 
-                            onToggle={this.onToggleNav}
-                            
-                            className={this.state.toggle ? "nav-toogle" : null , "fixed-nav"}
-                        >
-                            <SideNav.Toggle />
-                            <SideNav.Nav defaultSelected="home">
-                                {img}
-                                <NavItem eventKey="home">
-                                    <NavIcon>
-                                        <LocationOnIcon />
-                                    </NavIcon>
-                                    <NavText>
-                                        <span className="nav-text">Find Route</span>
-                                    </NavText>
-                                </NavItem>
-                                <NavItem eventKey="myProfile">
-                                    <NavIcon>
-                                        <AssignmentIndIcon />
-                                    </NavIcon>
-                                    <NavText>
-                                        <span className="nav-text">My Account</span>
-                                    </NavText>
-                                </NavItem>
-                                <NavItem eventKey="trip">
-                                    <NavIcon>
-                                        <DirectionsBikeIcon />
-                                    </NavIcon>
-                                    <NavText>
-                                        <span>My trips</span>
-                                    </NavText>
-                                </NavItem>
-                                <NavItem eventKey="notifications">
-                                    <NavIcon>
-                                        <NotificationsIcon />
-                                    </NavIcon>
-                                    <NavText>
-                                        <span>Notifications</span>
-                                    </NavText>
-                                </NavItem>
-                                <NavItem eventKey="help">
-                                    <NavIcon>
-                                        <HelpIcon />
-                                    </NavIcon>
-                                    <NavText>
-                                        <span>Help</span>
-                                    </NavText>
-                                </NavItem>
-                            </SideNav.Nav>
-                        </SideNav>
-                        <main>
-                            <Switch>
-                                <Route exact path="/home" component={props => <Home />} />
-                                <Route path="/home" component={props => <Home />} />
-                                <Route path="/myProfile" component={props => <ProfileView />} />
-                            </Switch>
-                        </main>
-                    </React.Fragment>
-                )}
-                />
-            </Router>
+                <SideNav
+                    showNav={this.state.showNav}
+                    onHideNav={() => this.setState({ showNav: false })}
+                    title={<UserTab />}
+                    navStyle={{maxWidth : "300px" }}
+                    items={[
+                            <LocationOnIcon />,
+                            <AssignmentIndIcon />,
+                            <DirectionsBikeIcon />,
+                            <NotificationsIcon />,
+                            <HelpIcon />
+                        
+                    ]}
+                    titleStyle={{ backgroundColor: '#4CAF50', lineHeight : "normal" }}
+                    itemStyle={{ backgroundColor: '#fff' }}
+                    itemHoverStyle={{ backgroundColor: '#CDDC39' }} />
+            </div>
+
         );
-    }
-
-
-
-    onToggleNav(value) {
-        this.setState({ toggle: value });
     }
 }

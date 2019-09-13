@@ -1,15 +1,5 @@
-.nav-text{
-    text-align: initial !important;
-}
-
-svg{
-    vertical-align: middle;
-}
-
-.nav-toogle{
-   min-width: 260px !important; 
-}
-
-.fixed-nav{
-    position: fixed;
+ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }

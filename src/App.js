@@ -5,6 +5,7 @@ import { Login } from './component/Login.js';
 import { SignUp } from './component/SignUp.js';
 import { Container } from './Container';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Menu } from './Menu';
 
 
 class App extends Component {
@@ -34,6 +35,7 @@ class App extends Component {
       </div>
     );
 
+    /*
     return (
       <Router>
         <Switch>
@@ -43,7 +45,8 @@ class App extends Component {
           <Route exact path="/home" component={HomeView} />
         </Switch>
       </Router>
-    );
+    );*/
+    return(<Menu/>)
   }
 }
 
