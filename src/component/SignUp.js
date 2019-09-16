@@ -23,11 +23,11 @@ export class SignUp extends React.Component{
                   <MDBCol sm="4" md="7" className="d-none d-md-block" id="viewBackground" > {/* it's not shown in screen xs*/}
                   </MDBCol>
                   <MDBCol xs="12" sm="8" md="5">
-                      <MDBCard className="card-body">
+                      <MDBCard className="card-body" id="cardForm">
                           <img src={process.env.PUBLIC_URL+ "/images/logo.jpg"}
                             className="avatar" alt="Cinque Terre"
                           />
-                        <MDBCardTitle style={{ alignSelf: "center"}}>
+                        <MDBCardTitle className="sign-post-biciroute" style={{ alignSelf: "center"}}>
                           BiciRoute
                         </MDBCardTitle>
                         
@@ -81,13 +81,14 @@ export class SignUp extends React.Component{
                               />
                               <div className="valid-feedback">Looks good!</div>
                               <div className="invalid-feedback">
-                                The password must contain at least one number, one lowercase letter, one uppercase letter,
-                                and a minimum length of 6 characters.
+                                You must enter a valid password.
+                                {/*The password must contain at least one number, one lowercase letter, one uppercase letter,
+                                and a minimum length of 6 characters.*/}
                               </div>
                             </MDBCol>
                           </MDBRow>
 
-                          <MDBCol md="6" className="mb-1">
+                          <MDBCol md="12" className="mb-1">
                             <div className="custom-control custom-checkbox pl-3">
                               <input value={this.state.checked} onChange={this.changeCheckTermsHandler} type="checkbox"
                                 id="invalidCheck" className="custom-control-input"
@@ -96,12 +97,10 @@ export class SignUp extends React.Component{
                               <label className="custom-control-label" htmlFor="invalidCheck">
                                 Agree to terms and conditions
                               </label>
-                              <div className="invalid-feedback">
-                                You must agree before submitting.
-                              </div>
+                              
                             </div>
                           </MDBCol>
-                          <MDBBtn color="elegant" type="submit">
+                          <MDBBtn color="elegant" type="submit" id="submit">
                             Sign Up
                           </MDBBtn>
 
