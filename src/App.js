@@ -5,7 +5,7 @@ import { Login } from './component/Login.js';
 import { SignUp } from './component/SignUp.js';
 import { Container } from './Container';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
+import {PublicHome} from './component/PublicHome.js';
 
 class App extends Component {
   constructor(props) {
@@ -16,36 +16,40 @@ class App extends Component {
 
   render() {
 
-    const HomeVar = () => (
-      <Container onMenu="true">
-        <Home />
-      </Container>
-
+    const HomeView = () => (
+      <div>
+        {localStorage.getItem('isLoggedIn') ? <Container onMenu="true"><Home /></Container> : <PublicHome/>}
+      </div>
+    );
+    
+    const PublicHomeView = () => (
+      <div>
+        {localStorage.getItem('isLoggedIn') ? <Container onMenu="true"><Home /></Container> : <PublicHome/>}
+      </div>
     );
 
     const LoginView = () => (
-      <Login />
+      <div>
+        {localStorage.getItem('isLoggedIn') ? <Container onMenu="true"><Home /></Container> : <Login/>}
+      </div>
     );
 
     const SignUpView = () => (
-      <SignUp />
+      <div>
+        {localStorage.getItem('isLoggedIn') ? <Container onMenu="true"><Home /></Container> : <SignUp />}
+      </div>
     );
 
-    if (!localStorage.getItem('isLoggedIn')) {
-      return (
-        <Router>
-          <Switch>
-            <Route exact path="/" component={LoginView} />
-            <Route exact path="/login" component={LoginView} />
-            <Route exact path="/signup" component={SignUpView} />
-            <Route exact path="/home" component={LoginView} />
-          </Switch>
-        </Router>
-      );
-    }
-    else {
-      return <HomeVar />
-    }
+    return (
+      <Router>
+        <Switch>
+          <Route exact path="/" component={PublicHomeView} />
+          <Route exact path="/login" component={LoginView} />
+          <Route exact path="/signup" component={SignUpView} />
+          <Route exact path="/home" component={HomeView} />
+        </Switch>
+      </Router>
+    );
   }
 }
 

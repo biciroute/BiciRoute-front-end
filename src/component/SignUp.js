@@ -1,5 +1,5 @@
 import React from 'react';
-import { MDBBtn, MDBCol, MDBRow, MDBCard,MDBContainer, MDBCardTitle, MDBAvatar} from "mdbreact";
+import { MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardTitle} from "mdbreact";
 import "./SignUp.css";
 
 export class SignUp extends React.Component{
