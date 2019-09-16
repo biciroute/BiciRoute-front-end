@@ -103,7 +103,7 @@ export class SignUp extends React.Component{
                           <MDBBtn color="elegant" type="submit" id="submit">
                             Sign Up
                           </MDBBtn>
-
+                          <a href="/login">Do you already have an account? Login</a>
                         </form>
 
                       </MDBCard>
