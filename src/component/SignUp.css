@@ -1,44 +1,41 @@
-body, html {
-    height: 100%;
-}
-.bg {
-    background-image: url("https://source.unsplash.com/random");
+.card-body{
     height: 100vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
 }
 
-.layoutSignUp {
+#viewBackground {
     height: 100vh;
     width: 100vw;
-    background-color: #373734;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-.paper {
-    margin-top: 5%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    height: -webkit-fill-available;
-}
-
-.imageBackground {
-    width: 100vw;
-    height: 100vh;
     background-image: url('https://source.unsplash.com/random');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
 }
 
+.rowBackground{
+    background-color: #212121;  
+    height: 100vh;
+}
+
+.avatar{
+    margin: 5px;
+    width: 150px;
+    height: 150px;
+    align-self: center;
+}
+
+.imageBackground {
+    background-image: url('https://source.unsplash.com/random');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+
+
 .form {
     width: 100%;
-    margin-top: 20px;
+    height: 100vh;
+    margin-top: 30px;
 }
 
 .submit {
