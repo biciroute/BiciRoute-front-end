@@ -125,10 +125,10 @@ export class PublicHome extends Component{
                                 BiciRoute
                             </h6>
                             <p>
-                            BiciRoute seeks to fight the security issues bikers face on the streets. Biciroute pairs verified cyclists with each other, so they don’t ride alone, as many have been robbed riding
-                            alone. Our main goal is to
-                            improve cyclists safety and encourage biking as a safe and environmental alternative to traditional modes of
-                            transport.
+                                BiciRoute seeks to fight the security issues bikers face on the streets. Biciroute pairs verified cyclists with each other, so they don’t ride alone, as many have been robbed riding
+                                alone. Our main goal is to
+                                improve cyclists safety and encourage biking as a safe and environmental alternative to traditional modes of
+                                transport.
                             </p>
                         </MDBCol>
                         <hr className="w-100 clearfix d-md-none" />

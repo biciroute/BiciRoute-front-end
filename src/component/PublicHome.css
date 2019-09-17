@@ -13,8 +13,12 @@
     height: 100vh;
 }
 
-.container {
+.publicHomeLayout > .container{
     height: 70%;
+}
+
+footer > .container{
+    height: 100%;
 }
 
 .carousel{
