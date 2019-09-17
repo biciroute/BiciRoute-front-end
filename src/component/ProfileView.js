@@ -6,7 +6,9 @@ import {
   Image,
 } from 'react-native';
 import ModalModify from './ModalModify';
-
+import ModalModifyBici from './ModalModifyBici';
+import Box from '@material-ui/core/Box';
+import './ModalModify.css';
 export default class ProfileView extends Component {
     constructor(props) {
         super(props);
@@ -28,7 +30,10 @@ export default class ProfileView extends Component {
       <View style={styles.container}>
           <View style={styles.header}>
             <View style={styles.headerContent}>
+            <Box display="flex">
                 <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar2.png'}}/>
+                <Image style={styles.bici} source={{uri: 'https://i.pinimg.com/originals/6e/58/54/6e58549a9aeaa45c97bfc525b8b3aa0f.jpg'}}/>
+              </Box>
                 <Text id="name" style={styles.name}>
                   {this.state.name}
                 </Text>
@@ -51,8 +56,12 @@ export default class ProfileView extends Component {
           </View>
 
           <View style={styles.body}>
-            <View style={styles.bodyContent}>  
-            <ModalModify style={styles.buttonContainer}></ModalModify> 
+            <View style={styles.bodyContent}>
+            <Text style={styles.cardTittle} id="textEdit">Edit profiles</Text>
+            <Box display="flex">
+              <ModalModify style={styles.buttonContainer}></ModalModify>
+              <ModalModifyBici style={styles.buttonContainer}></ModalModifyBici>
+            </Box>  
             <Text id="email" style={styles.description}>{this.state.email}</Text>
             <Text id="ciudad" style={styles.description}>{this.state.ciudad}</Text>
             </View>
@@ -107,6 +116,16 @@ const styles = StyleSheet.create({
     borderRadius: 63,
     borderWidth: 4,
     borderColor: "white",
+    marginBottom:10,
+  },
+  bici: {
+    width: 90,
+    height: 90,
+    borderRadius: 53,
+    borderWidth: 2,
+    borderColor: "white",
+    marginTop:40,
+    marginLeft:10,
     marginBottom:10,
   },
   name:{
@@ -165,7 +184,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom:20,
-    width:250,
+    width:100,
     borderRadius:30,
     backgroundColor: "#00CED1",
   },

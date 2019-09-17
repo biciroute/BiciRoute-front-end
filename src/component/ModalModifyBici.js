@@ -12,7 +12,7 @@ import {
 import './ModalModify.css';
 import Box from '@material-ui/core/Box';
 
-export default class ModalModify extends Component{
+export default class ModalModifyBici extends Component{
   
   constructor(props) {
     super(props);
@@ -33,16 +33,16 @@ export default class ModalModify extends Component{
   render(){
   return(
   <Popup trigger={<TouchableOpacity style={styles.buttonContainer} activeOpacity={.7}>
-                      <Text style={styles.button}>Profile</Text>  
+                      <Text style={styles.button}>My Bici</Text>  
                   </TouchableOpacity>
     } modal>
     {close => (
       <div className="modal">
-        <View style={styles.header}><Text style={styles.title}>My Profile</Text></View>
+        <View style={styles.header}><Text style={styles.title}>My Bici Profile</Text></View>
         <div className="content">
         <View style={styles.popupContent}>
             <ScrollView contentContainerStyle={styles.modalInfo}>
-                <Image style={styles.image} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar2.png'}}/>
+                <Image style={styles.image} source={{uri: 'https://i.pinimg.com/originals/6e/58/54/6e58549a9aeaa45c97bfc525b8b3aa0f.jpg'}}/>
                 <hr/>
                 <form noValidate autoComplete="off" className="form" id="formModify">
                 <TextField
