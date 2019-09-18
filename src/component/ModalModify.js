@@ -33,7 +33,7 @@ export default class ModalModify extends Component{
   render(){
   return(
   <Popup trigger={<TouchableOpacity style={styles.buttonContainer} activeOpacity={.7}>
-                      <Text style={styles.button}>Profile</Text>  
+                      <Text style={styles.button}>Edit</Text>  
                   </TouchableOpacity>
     } modal>
     {close => (
@@ -121,13 +121,13 @@ export default class ModalModify extends Component{
       fontWeight:'600',
     },
     buttonContainer: {
-      marginTop:10,
+      marginTop:30,
       height:45,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom:20,
-      width:100,
+      width:120,
       marginLeft:5,
       borderRadius:30,
       backgroundColor: "#0b396b",

@@ -9,11 +9,19 @@ import ModalModify from './ModalModify';
 import ModalModifyBici from './ModalModifyBici';
 import Box from '@material-ui/core/Box';
 import './ModalModify.css';
-export default class ProfileView extends Component {
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
+import HomeIcon from '@material-ui/icons/Home';
+import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
+import Fab from '@material-ui/core/Fab';
+import Typography from '@material-ui/core/Typography';
+
+export default class ProfileView extends React.Component{
     constructor(props) {
         super(props);
-        this.state = { name:localStorage.getItem("nombre")+" "+localStorage.getItem("apellido"), email: localStorage.getItem('correo'), ciudad:'Bogotá, Colombia',followers:200,following:200,trips:0};
-        this.handleCorreo=this.handleCorreo.bind();
+        this.state = { profile:true, name:localStorage.getItem("nombre")+" "+localStorage.getItem("apellido"), email: localStorage.getItem('correo'), ciudad:'Bogotá, Colombia',followers:200,following:200,trips:0};
+        this.handleCorreo=this.handleCorreo.bind(this);
+        this.handleProfile=this.handleProfile.bind(this);
       }
     
     setCiudad(newCiudad) {
@@ -24,7 +32,10 @@ export default class ProfileView extends Component {
     }
     handleCorreo(){
       this.setState({email:  this.state.email});}
-     
+    
+    handleProfile(profile){
+      this.setState({profile: profile});}
+    
   render() {
     return (
       <View style={styles.container}>
@@ -54,16 +65,30 @@ export default class ProfileView extends Component {
               <Text id="following" style={styles.count}>{this.state.following}</Text>
             </View>
           </View>
-
           <View style={styles.body}>
-            <View style={styles.bodyContent}>
-            <Text style={styles.cardTittle} id="textEdit">Edit profiles</Text>
-            <Box display="flex">
+          <View style={styles.bodyContent}>
+            <Breadcrumbs aria-label="breadcrumb">
+                <Link color="inherit" onClick={() => this.handleProfile(true)} >
+                  <HomeIcon style={{marginRight:'3px'}} />
+                   My Profile
+                </Link>
+                <Link color="inherit"  onClick={() => this.handleProfile(false)}  >
+                  <DirectionsBikeIcon style={{marginRight:'5px'}} />
+                  My Bici Profile
+                </Link>
+            </Breadcrumbs>
+            {this.state.profile ? (
+            <View id="myProfile" style={styles.bodyContent2}>
+              <Text id="email" style={styles.description}>{this.state.email}</Text>
+              <Text id="ciudad" style={styles.description}>{this.state.ciudad}</Text>
               <ModalModify style={styles.buttonContainer}></ModalModify>
-              <ModalModifyBici style={styles.buttonContainer}></ModalModifyBici>
-            </Box>  
-            <Text id="email" style={styles.description}>{this.state.email}</Text>
-            <Text id="ciudad" style={styles.description}>{this.state.ciudad}</Text>
+            </View>
+            ) : (
+              <View id="myBiciProfile" style={styles.bodyContent2}> 
+                <Text id="marca" style={styles.description}>Marca: Pajarito</Text>
+                <Text id="color" style={styles.description}>Color: Negro</Text>
+                <ModalModifyBici style={styles.buttonContainer}></ModalModifyBici>
+              </View> )}
             </View>
             <View style={styles.photosCard}>
                 <Text style={styles.cardTittle}>Friends</Text>   
@@ -95,6 +120,9 @@ const styles = StyleSheet.create({
   headerContent:{
     padding:30,
     alignItems: 'center',
+  },
+  icons:{
+    marginLeft:5,
   },
   image:{
     width:90,
@@ -176,6 +204,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding:30,
     marginTop:40
+  },
+  bodyContent2: {
+    flex: 1,
+    alignItems: 'center',
+    padding:10,
+    marginBottom:5
   },
   buttonContainer: {
     marginTop:10,
