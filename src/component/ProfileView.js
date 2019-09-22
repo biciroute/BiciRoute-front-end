@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   container:{
-    marginLeft: 64
+    marginLeft: 0
   }
 });
  

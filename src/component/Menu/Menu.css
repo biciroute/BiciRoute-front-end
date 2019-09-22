@@ -8,3 +8,8 @@ ul{
     vertical-align: super;
     padding-left: 10px;
 }
+
+li > a {
+    text-decoration: none;
+    color: inherit
+}

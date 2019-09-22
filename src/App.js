@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import './App.css';
 import { Home } from './component/Home.js';
 import { Login } from './component/Login.js';
+import { Menu } from './component/Menu/Menu.js';
 import { SignUp } from './component/SignUp.js';
-import { Container } from './Container';
+import ProfileView from './component/ProfileView.js'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import { Menu } from './Menu';
 
 
 class App extends Component {
@@ -19,34 +19,46 @@ class App extends Component {
 
     const HomeView = () => (
       <div>
-        {localStorage.getItem('isLoggedIn') ? <Container onMenu="true"><Home /></Container> : <Login/>}
+        {localStorage.getItem('isLoggedIn') ? <div><Menu /><Home /></div> : <Login />}
       </div>
     );
 
     const LoginView = () => (
       <div>
-        {localStorage.getItem('isLoggedIn') ? <Container onMenu="true"><Home /></Container> : <Login/>}
+        {localStorage.getItem('isLoggedIn') ?<div><Menu /><Home /></div> : <Login />}
       </div>
     );
 
     const SignUpView = () => (
       <div>
-        {localStorage.getItem('isLoggedIn') ? <Container onMenu="true"><Home /></Container> : <SignUp />}
+        {localStorage.getItem('isLoggedIn') ? <div><Menu /><Home /></div> : <SignUp />}
       </div>
     );
 
-    /*
-    return (
-      <Router>
-        <Switch>
-          <Route exact path="/" component={HomeView} />
-          <Route exact path="/login" component={LoginView} />
-          <Route exact path="/signup" component={SignUpView} />
-          <Route exact path="/home" component={HomeView} />
-        </Switch>
-      </Router>
-    );*/
-    return(<Menu/>)
+    const ProfileVieww = () => (
+      <div>
+        {localStorage.getItem('isLoggedIn') ? <div><Menu /><ProfileView /></div> : <Login />}
+      </div>
+    );
+
+    if (!localStorage.getItem('isLoggedIn')) {
+      return <HomeView/>
+    }
+    else {
+      return (
+        <Router>
+          <Switch>
+            <Route exact path="/" component={HomeView} />
+            <Route exact path="/login" component={LoginView} />
+            <Route exact path="/signup" component={SignUpView} />
+            <Route exact path="/home" component={HomeView} />
+            <Route exact path="/myProfile" component={ProfileVieww} />
+          </Switch>
+        </Router>
+      );
+    }
+
+
   }
 }
 
