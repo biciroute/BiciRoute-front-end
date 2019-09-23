@@ -10,7 +10,7 @@ import ModalModify from './ModalModify';
 export default class ProfileView extends Component {
   constructor(props) {
     super(props);
-    this.state = { name: localStorage.getItem("nombre") + " " + localStorage.getItem("apellido"), email: localStorage.getItem('correo'), ciudad: 'Bogotá, Colombia', followers: 200, following: 200, trips: 0, distanceTraveled: 250 };
+    this.state = { name: localStorage.getItem("nombre") + " " + localStorage.getItem("apellido"), email: localStorage.getItem('correo'), ciudad: 'Bogotá, Colombia', followers: 200, following: 200, trips: Math.floor(Math.random() * 150), distanceTraveled: Math.floor(Math.random() * 300) };
     this.handleCorreo = this.handleCorreo.bind();
   }
 
@@ -209,4 +209,12 @@ function DistanceBadge(km){
   } else{
     return("Pro Biker");
   }
+}
+
+function RandomTrips(){
+  return Math.floor(Math.random() * 150);
+}
+
+function RandomDistance(){
+  return Math.floor(Math.random() * 300);
 }
