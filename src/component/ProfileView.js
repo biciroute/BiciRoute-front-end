@@ -19,7 +19,7 @@ import Typography from '@material-ui/core/Typography';
 export default class ProfileView extends React.Component{
     constructor(props) {
         super(props);
-        this.state = { profile:true, name:localStorage.getItem("nombre")+" "+localStorage.getItem("apellido"), email: localStorage.getItem('correo'), ciudad:'Bogotá, Colombia',followers:200,following:200,trips:0};
+        this.state = { profile:true, name:localStorage.getItem("nombre")+" "+localStorage.getItem("apellido"), email: localStorage.getItem('correo'), ciudad:'Bogotá, Colombia',followers:200,following:200,trips:0, marca:'Fox',color:'Negro'};
         this.handleCorreo=this.handleCorreo.bind(this);
         this.handleProfile=this.handleProfile.bind(this);
       }
@@ -85,8 +85,8 @@ export default class ProfileView extends React.Component{
             </View>
             ) : (
               <View id="myBiciProfile" style={styles.bodyContent2}> 
-                <Text id="marca" style={styles.description}>Marca: Pajarito</Text>
-                <Text id="color" style={styles.description}>Color: Negro</Text>
+                <Text id="marca" style={styles.description}>Marca: {this.state.marca}</Text>
+                <Text id="color" style={styles.description}>Color: {this.state.color}</Text>
                 <ModalModifyBici style={styles.buttonContainer}></ModalModifyBici>
               </View> )}
             </View>

@@ -85,7 +85,7 @@ export default class ModalModify extends Component{
         <div className="actions">
         <Box display="flex">
           <TouchableOpacity style={styles.btnSave} activeOpacity={.7} onClick={() => {close();window.location.reload(true);}}>
-            <Text>Save</Text>  
+            <Text>Modify</Text>  
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnClose} activeOpacity={.7} onClick={() => {close();}}>
               <Text>Close</Text>  

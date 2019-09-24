@@ -4,3 +4,15 @@
 #textEdit{
     text-align: left;
 }
+#chips{
+    display: flex;
+    flex-wrap: wrap;
+}
+#chip{
+    margin-left: 2px;
+    margin-right: 2px;
+}
+#select{
+    min-width: 200px;
+    max-width: 210px;
+}

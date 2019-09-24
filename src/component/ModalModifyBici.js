@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Popup from "reactjs-popup";
-import { TextField} from '@material-ui/core';
+import { TextField, MenuItem, Chip, Select, Input} from '@material-ui/core';
 import {
   StyleSheet,
   Text,
@@ -11,26 +11,51 @@ import {
 } from 'react-native';
 import './ModalModify.css';
 import Box from '@material-ui/core/Box';
+import CancelIcon from '@material-ui/icons/Cancel';
+import { display } from '@material-ui/system';
 
-export default class ModalModifyBici extends Component{
+export default class ModalModifyBici extends React.Component{
   
   constructor(props) {
     super(props);
-    this.state = { name:localStorage.getItem("nombre")+" "+localStorage.getItem("apellido"), email:localStorage.getItem("correo"), city:'Bogotá, Colombia'};
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleCityChange = this.handleCityChange.bind(this);
-    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.state = { color:'Negro', brand:'Fox', atributes:[], setAtribute:[]};
+    this.handleBrandChange = this.handleBrandChange.bind(this);
+    this.handleColorChange = this.handleColorChange.bind(this);
+    this.handleAtributesChange = this.handleAtributesChange.bind(this);
   }
 
-  handleNameChange(e) {
-    this.setState({name:  e.target.value});}
-  handleCityChange(e) {
-    this.setState({city:  e.target.value});}
-  handleEmailChange(e) {
-    localStorage.setItem("correo", e.target.value);
-    this.setState({email:  e.target.value});}
+  handleColorChange(e) {
+    this.setState({color:  e.target.value});}
+  handleBrandChange(e) {
+    this.setState({brand:  e.target.value});}
+  handleAtributesChange(e) {
+    this.state.atributes.push(e.target.value)
+    //console.log(this.state.atributes);
+    //this.setState({atributes:  atributes});
+  }
+  handleAtributeChange(e){
+    this.setState({atributes: e.target.value});
+    this.state.atributes.push(e.target.value);
+  }
+  onDelete(value){
+    console.log(value);
+    console.log(this.state.atributes);
+    var other= this.state.atributes.filter(function(a){console.log(a!== value);return a!== value});
+    this.setState({atributes: other});
+    console.log(this.state.atributes[0]);
+    //this.setState.({atributes: })
+  }
 
   render(){
+    const brands = [
+      { value: "Eline"}, { value: "Fox" }, { value: "GW"},{value: "IceToolz"}, {value:"KMC"}, {value:"millenium"},{value:"PRO"}, {value:"Raleigh"},{value:"ritchey"}, {value:"scott"},{value:"otro"}
+    ]
+    const colors = [
+      { value: "Negro"}, { value: "Blanco" }, { value: "Amarillo"},{value: "Rojo"},{value: "Verde"},{value: "Gris"},{value:"Azul"},{value: "Morado"},{value: "Rosado"}, {value:"otro"}
+    ]
+    const atributos = [
+      { value: "Bastidor"}, { value: "3 Ruedas" }, { value: "2 Ruedas"}, {value:"Manillar"}, {value: "Sillín"},{value:"Luz"},{value:"Puños"},{value:"Velocímetro"}, {value:"Suspensión"},{value:"Cierres rápidos"}, {value:"Amortiguación"}
+    ]      
   return(
   <Popup trigger={<TouchableOpacity style={styles.buttonContainer} activeOpacity={.7}>
                       <Text style={styles.button}>Edit</Text>  
@@ -46,36 +71,52 @@ export default class ModalModifyBici extends Component{
                 <hr/>
                 <form noValidate autoComplete="off" className="form" id="formModify">
                 <TextField
-                    disabled
-                    id="name"
-                    label="Name"                  
+                    select
+                    id="color"
+                    label="Color"                  
                     margin="normal"
-                    onChange={this.handleNameChange}
-                    value={this.state.name}
-                    defaultValue={this.state.name}
-                >
+                    helperText="Please select a color"
+                    onChange={this.handleColorChange}
+                    value={this.state.color}
+                    defaultValue={this.state.color}
+                >{colors.map(option =>(<MenuItem key={option.value} value={option.value}>
+                   {option.value}
+                  </MenuItem>))}
                 </TextField>
                 <br></br>
                 <TextField
-                    id="email"
-                    label="Email"                  
+                    select
+                    id="brand"
+                    label="Brand"                  
                     margin="normal"
-                    onChange={this.handleEmailChange}
-                    value={this.state.email}
-                    defaultValue={this.state.email}
-                >
+                    helperText="Please select a brand"
+                    onChange={this.handleBrandChange}
+                    value={this.state.brand}
+                    defaultValue={this.state.brand}
+                >{brands.map(option =>(<MenuItem key={option.value} value={option.value}>
+                  {option.value}
+                 </MenuItem>))}
                 </TextField>
                 <br></br>
-                <TextField
-                    disabled
-                    id="city"
-                    label="City"                  
-                    margin="normal"
-                    onChange={this.handleCityChange}
-                    value={this.state.city}
-                    defaultValue={this.state.city}
-                >
-                </TextField>            
+              <Select id="select"
+                    helperText="Select atributtes"
+                    ismulti="true"                 
+                    //margin="normal"
+                    input={<Input id="m"></Input>}
+                    onChange={this.handleAtributesChange}
+                    value={this.state.atributes}
+                    //defaultValue={this.state.atributes}
+                    renderValue={selected => (
+                      <div id="chips">
+                        {selected.map(value => (
+                            <Chip id="chip" key={value} label={value} onDelete={() => {this.onDelete(value);}} />
+                        ))}
+                      </div>
+                    )}
+                >{atributos.map(option =>(<MenuItem key={option.value} value={option.value}>
+                  {option.value}
+                 </MenuItem>))}
+                </Select>            
                 </form>
                 </ScrollView>
         </View>
@@ -85,7 +126,7 @@ export default class ModalModifyBici extends Component{
         <div className="actions">
         <Box display="flex">
           <TouchableOpacity style={styles.btnSave} activeOpacity={.7} onClick={() => {close();window.location.reload(true);}}>
-            <Text>Save</Text>  
+            <Text>Modify</Text>  
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnClose} activeOpacity={.7} onClick={() => {close();}}>
               <Text>Close</Text>  
@@ -114,6 +155,14 @@ export default class ModalModifyBici extends Component{
       fontSize:22,
       color:"#FFFFFF",
       fontWeight:'600',
+    },
+    chip:{
+      display:'flex',
+      flexWrap:'wrap',
+    },
+    chip2:{
+      marginLeft:0.22,
+      marginRight:0.22,
     },
     button:{
       fontSize:22,
