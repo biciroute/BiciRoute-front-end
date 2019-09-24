@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Home } from './component/Home.js';
-import { Login } from './component/Login.js';
-import { SignUp } from './component/SignUp.js';
+import { Login } from './component/Login/Login.js';
+import { SignUp } from './component/SignUp/SignUp.js';
 import { Container } from './Container';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import {PublicHome} from './component/PublicHome.js';
+import {PublicHome} from './component/PublicHome/PublicHome.js';
 
 class App extends Component {
   constructor(props) {

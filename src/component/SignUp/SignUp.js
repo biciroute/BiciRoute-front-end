@@ -1,16 +1,18 @@
 import React from 'react';
 import { MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardTitle} from "mdbreact";
 import "./SignUp.css";
+import swal from 'sweetalert';
 
 export class SignUp extends React.Component{
 
     constructor(props){
       super(props);
       this.state = {"firstName":"", "lastName":"", "email":"", "password":"",
-        "checked": false, "isValid": false};
+        "checked": false};
       this.submitHandler = this.submitHandler.bind(this);
       this.changeHandler = this.changeHandler.bind(this);
       this.changeCheckTermsHandler = this.changeCheckTermsHandler.bind(this);
+      this.validForm = this.validForm.bind(this);
     }
 
     render(){
@@ -112,19 +114,17 @@ export class SignUp extends React.Component{
               </div>
             </main>
           </React.Fragment>
-
         );  
     }
 
     submitHandler(event){
       event.preventDefault();
-      this.validForm();
-      if(this.state.isValid){
+      if(this.validForm()){
         if(localStorage.getItem("email="+this.state.email)!==null){
             alert("This email does already exist!. Please sign up with other email.");
         }else{
             localStorage.setItem("email="+this.state.email,this.state.password);
-            alert("You have signed up successfully!");
+            swal("Good job!", "You clicked the button!", "success");
             window.location.href = "/login";
         }
       }
@@ -139,32 +139,37 @@ export class SignUp extends React.Component{
     };
 
     validForm(){
-      this.setState({ isValid: true });
+      if(this.validInternationalNames(this.state.firstName) && this.validInternationalNames(this.state.lastName) &&
+         this.validEmail(this.state.email) && this.validPasswordFormat(this.state.password) && this.state.checked){
+          return true;
+      }
+      
+      var isValid = true;
       if(this.validInternationalNames(this.state.firstName)) document.getElementById("firstNameInput").className = "form-control is-valid";
       else{
-        document.getElementById("firstNameInput").className = "form-control is-invalid"; this.setState({ isValid: false });
+        document.getElementById("firstNameInput").className = "form-control is-invalid"; isValid = false;
       }
 
       if(this.validInternationalNames(this.state.lastName)) document.getElementById("lastNameInput").className = "form-control is-valid";
       else {
-        document.getElementById("lastNameInput").className = "form-control is-invalid"; this.setState({ isValid: false });
+        document.getElementById("lastNameInput").className = "form-control is-invalid"; isValid = false;
       }
 
       if(this.validEmail(this.state.email)) document.getElementById("emailInput").className = "form-control is-valid";
       else{
-        document.getElementById("emailInput").className ="form-control is-invalid"; this.setState({ isValid: false });
+        document.getElementById("emailInput").className ="form-control is-invalid"; isValid = false;
       }
       
       if(this.validPasswordFormat(this.state.password)) document.getElementById("passwordInput").className = "form-control is-valid";
       else{
-        document.getElementById("passwordInput").className = "form-control is-invalid"; this.setState({ isValid: false });
+        document.getElementById("passwordInput").className = "form-control is-invalid"; isValid = false;
       }
       
       if(this.state.checked) document.getElementById("invalidCheck").className = "custom-control-input is-valid";
       else{
-        document.getElementById("invalidCheck").className = "custom-control-input is-invalid"; this.setState({ isValid: false });
+        document.getElementById("invalidCheck").className = "custom-control-input is-invalid"; isValid = false;
       }
-      
+      return isValid;
     }
 
     /*

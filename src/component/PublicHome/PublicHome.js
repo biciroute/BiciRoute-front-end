@@ -117,7 +117,7 @@ export class PublicHome extends Component{
                 </MDBCarousel>
             </MDBContainer>
 
-            <MDBFooter color="elegant-color-dark" className="font-small pt-4 mt-4">
+            <MDBFooter color="elegant-color-dark" className="font-small pt-4 mt-4" id="footer">
                 <MDBContainer className="text-center text-md-left">
                     <MDBRow className="text-center text-md-left mt-3 pb-3">
                         <MDBCol md="8" lg="8" xl="8" className="mx-auto mt-3">
