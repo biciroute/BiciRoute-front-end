@@ -17,33 +17,33 @@ class App extends Component {
   render() {
 
     const HomeView = () => (
-      <div>
-        {localStorage.getItem('isLoggedIn') ? <div><Menu /><Home /></div> : <Login />}
-      </div>
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn') ? <React.Fragment><Menu /><Home /></React.Fragment> : <Login />}
+      </React.Fragment>
     );
 
     const LoginView = () => (
-      <div>
-        {localStorage.getItem('isLoggedIn') ?<div><Menu /><Home /></div> : <Login />}
-      </div>
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn') ?<React.Fragment><Menu /><Home /></React.Fragment> : <Login />}
+      </React.Fragment>
     );
 
     const SignUpView = () => (
-      <div>
-        {localStorage.getItem('isLoggedIn') ? <div><Menu /><Home /></div> : <SignUp />}
-      </div>
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn') ? <React.Fragment><Menu /><Home /></React.Fragment> : <SignUp />}
+      </React.Fragment>
     );
 
-    const ProfileView = () => (
-      <div>
-        {localStorage.getItem('isLoggedIn') ? <div><Menu /><ProfileView/></div> : <Login />}
-      </div>
+    const ProfileVieww = () => (
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn') ? <React.Fragment><Menu /><ProfileView/></React.Fragment> : <Login />}
+      </React.Fragment>
     );
 
     const MyLastRoutesView = () => (
-      <div>
-        {localStorage.getItem('isLoggedIn')? <LastRoutes /> : <Login />}
-      </div>
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn')? <React.Fragment><Menu /><LastRoutes /></React.Fragment> : <Login />}
+      </React.Fragment>
     );
 
     return (
@@ -53,7 +53,7 @@ class App extends Component {
           <Route exact path="/login" component={LoginView} />
           <Route exact path="/signup" component={SignUpView} />
           <Route exact path="/home" component={HomeView} />
-          <Route exact path="/myProfile" component={ProfileView} />
+          <Route exact path="/myProfile" component={ProfileVieww} />
           <Route exact path = "/mylastroutes" component={MyLastRoutesView} />
         </Switch>
       </Router>
