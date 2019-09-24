@@ -43,7 +43,6 @@ export default class ProfileView extends React.Component{
             <View style={styles.headerContent}>
             <Box display="flex">
                 <Image style={styles.avatar} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar2.png'}}/>
-                <Image style={styles.bici} source={{uri: 'https://i.pinimg.com/originals/6e/58/54/6e58549a9aeaa45c97bfc525b8b3aa0f.jpg'}}/>
               </Box>
                 <Text id="name" style={styles.name}>
                   {this.state.name}
@@ -85,7 +84,7 @@ export default class ProfileView extends React.Component{
             </View>
             ) : (
               <View id="myBiciProfile" style={styles.bodyContent2}> 
-                <Text id="marca" style={styles.description}>Marca: {this.state.marca}</Text>
+                <Text id="marca" style={styles.description}>Brand: {this.state.marca}</Text>
                 <Text id="color" style={styles.description}>Color: {this.state.color}</Text>
                 <ModalModifyBici style={styles.buttonContainer}></ModalModifyBici>
               </View> )}
