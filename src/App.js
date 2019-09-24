@@ -41,10 +41,6 @@ class App extends Component {
       </div>
     );
 
-    if (!localStorage.getItem('isLoggedIn')) {
-      return <HomeView/>
-    }
-    else {
       return (
         <Router>
           <Switch>
@@ -56,7 +52,6 @@ class App extends Component {
           </Switch>
         </Router>
       );
-    }
 
 
   }
