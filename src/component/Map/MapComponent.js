@@ -189,11 +189,11 @@ export class MapComponent extends React.Component {
         var newJSON = JSON.stringify( {
             origin : origin,
             destination :  destination,
-            pathRouteDestinationPlace : theBestDestinationToPlace[2],
-            pathRouteOriginPlace : theBestOriginToPlace[2]
+            pathRouteDestinationPlace : theBestDestinationToPlace[1],
+            pathRouteOriginPlace : theBestOriginToPlace[1]
         });
 
-        if (localStorage.getItem('lastroutes') === undefined) {
+        if (localStorage.getItem('lastroutes') === undefined || localStorage.getItem('lastroutes') === null ) {
             localStorage.setItem('lastroutes', JSON.stringify([newJSON]))
         }else{
             var tdListJSON = []
