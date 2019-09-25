@@ -185,6 +185,27 @@ export class MapComponent extends React.Component {
             pathRouteOriginPlace: theBestOriginToPlace[2],
             open: false
         });
+
+        var newJSON = JSON.stringify( {
+            origin : origin,
+            destination :  destination,
+            pathRouteDestinationPlace : theBestDestinationToPlace[2],
+            pathRouteOriginPlace : theBestOriginToPlace[2]
+        });
+
+        if (localStorage.getItem('lastroutes') === undefined) {
+            localStorage.setItem('lastroutes', JSON.stringify([newJSON]))
+        }else{
+            var tdListJSON = []
+            var tdLists = JSON.parse(localStorage.getItem("lastroutes"));
+            for(var i = 0 ; i < tdLists.length  ; ++i ){
+                tdListJSON.push(tdLists[i]);
+            } 
+            tdListJSON.push(newJSON);
+            localStorage.setItem("lastroutes",JSON.stringify(tdListJSON));
+        }
+
+
         const places = [origin, destination, theBestDestinationToPlace[1], theBestOriginToPlace[1]]
         this.setState({
             markers: []
