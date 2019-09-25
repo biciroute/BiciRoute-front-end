@@ -134,7 +134,14 @@ export class SignUp extends React.Component{
               button: false,
             });
         }else{
-            localStorage.setItem("email="+this.state.email,this.state.password);
+            var info = {
+              firstName: this.state.firstName,
+              lastName: this.state.lastName,
+              password: this.state.password
+            }
+            localStorage.setItem('isLoggedIn',true);
+            localStorage.setItem('loggedEmail', this.state.email);
+            localStorage.setItem("email="+this.state.email,JSON.stringify(info));
             swal({
               title:"Good job!",
               text: "You have signed up sucessfully!",
@@ -142,7 +149,7 @@ export class SignUp extends React.Component{
               timer: 2000,
               button: false,
             }).then(() => {
-              window.location.href = "/login";
+              window.location.href = "/home";
             });
         }
       }

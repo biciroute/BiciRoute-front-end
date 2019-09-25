@@ -1,18 +1,18 @@
 #formModify{
-    text-align: center;
+    text-align: center !important;
 }
 #textEdit{
-    text-align: left;
+    text-align: left !important;
 }
 #chips{
-    display: flex;
-    flex-wrap: wrap;
+    display: flex !important;
+    flex-wrap: wrap !important;
 }
 #chip{
-    margin-left: 2px;
-    margin-right: 2px;
+    margin-left: 2px !important;
+    margin-right: 2px !important;
 }
 #select{
-    min-width: 200px;
-    max-width: 210px;
+    min-width: 200px !important;
+    max-width: 210px !important;
 }

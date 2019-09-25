@@ -11,9 +11,12 @@ import {PublicHome} from './component/PublicHome/PublicHome.js';
 class App extends Component {
   constructor(props) {
     super(props);
-    localStorage.setItem('email=camilo@biciroute.com', 'camilo');
-    localStorage.setItem("name", "Nicola");
-    localStorage.setItem("lastName", "Tesla");
+    var info = {
+      firstName: "Camilo",
+      lastName: "Velandia",
+      password: "camilo"
+    };
+    localStorage.setItem('email=camilo@biciroute.com', JSON.stringify(info));
   }
 
 

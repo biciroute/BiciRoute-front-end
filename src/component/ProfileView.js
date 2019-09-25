@@ -239,6 +239,8 @@ const styles = StyleSheet.create({
   },
   bodyContent2: {
     flex: 1,
+    maxwith:'100%',
+    maxHeight:'100%',
     alignItems: 'center',
     padding: 10,
     marginBottom: 5

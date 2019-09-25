@@ -96,9 +96,10 @@ export class Login extends React.Component {
     submitHandler(e) {
         e.preventDefault();
         if(this.validForm()){
-          if(localStorage.getItem("email="+this.state.email)===this.state.password){
+          var info = JSON.parse(localStorage.getItem("email="+this.state.email));
+          if(info!==null){
               localStorage.setItem('isLoggedIn',true);
-              localStorage.setItem('email', this.state.email);
+              localStorage.setItem('loggedEmail', this.state.email);
               window.location.href = "/home";
           } else {
             swal({
