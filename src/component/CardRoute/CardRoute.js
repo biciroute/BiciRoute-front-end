@@ -30,7 +30,7 @@ export class CardRoute extends Component{
                 <MDBCardImage className="img-fluid" src={process.env.PUBLIC_URL+ "/images/map.PNG"} waves />
                 <MDBCardBody>
                     <div className="card-title d-flex">
-                        <div>From {this.props.origin} to {this.props.destination}</div>
+                        <div>From {this.props.origin} To {this.props.destination}</div>
                         <div className="ml-auto">{this.props.date}</div>
                     </div>
                 </MDBCardBody>
