@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 import './ModalModify.css';
 import Box from '@material-ui/core/Box';
+import swal from 'sweetalert';
 
 export default class ModalModify extends Component{
   
@@ -84,7 +85,7 @@ export default class ModalModify extends Component{
         <View style={styles.popupButtons}>
         <div className="actions">
         <Box display="flex">
-          <TouchableOpacity style={styles.btnSave} activeOpacity={.7} onClick={() => {close();window.location.reload(true);}}>
+          <TouchableOpacity style={styles.btnSave} activeOpacity={.7} onClick={() => {close();swal("Modify", "You clicked the button!", "success");window.location.reload(true);}}>
             <Text>Modify</Text>  
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnClose} activeOpacity={.7} onClick={() => {close();}}>

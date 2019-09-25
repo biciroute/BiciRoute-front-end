@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Popup from "reactjs-popup";
-import { TextField, MenuItem, Chip, Select, Input} from '@material-ui/core';
+import { TextField, MenuItem, Chip, Select, Input, InputLabel} from '@material-ui/core';
 import {
   StyleSheet,
   Text,
@@ -11,23 +11,26 @@ import {
 } from 'react-native';
 import './ModalModify.css';
 import Box from '@material-ui/core/Box';
-import CancelIcon from '@material-ui/icons/Cancel';
-import { display } from '@material-ui/system';
+import swal from 'sweetalert';
 
 export default class ModalModifyBici extends React.Component{
   
   constructor(props) {
     super(props);
-    this.state = { color:'Negro', brand:'Fox', atributes:[], setAtribute:[]};
+    this.state = { color:localStorage.getItem("color"), brand:localStorage.getItem("marca"), atributes:[], setAtribute:[]};
     this.handleBrandChange = this.handleBrandChange.bind(this);
     this.handleColorChange = this.handleColorChange.bind(this);
     this.handleAtributesChange = this.handleAtributesChange.bind(this);
   }
 
   handleColorChange(e) {
-    this.setState({color:  e.target.value});}
+    this.setState({color:  e.target.value});
+    localStorage.setItem("color", e.target.value);
+  }
   handleBrandChange(e) {
-    this.setState({brand:  e.target.value});}
+    this.setState({brand:  e.target.value});
+    localStorage.setItem("marca", e.target.value)
+  }
   handleAtributesChange(e) {
     this.state.atributes.push(e.target.value)
     //console.log(this.state.atributes);
@@ -98,6 +101,8 @@ export default class ModalModifyBici extends React.Component{
                  </MenuItem>))}
                 </TextField>
                 <br></br>
+                <br></br>
+              <InputLabel htmlFor="select-multiple">Attributes</InputLabel>
               <Select id="select"
                     helperText="Select atributtes"
                     ismulti="true"                 
@@ -125,7 +130,7 @@ export default class ModalModifyBici extends React.Component{
         <View style={styles.popupButtons}>
         <div className="actions">
         <Box display="flex">
-          <TouchableOpacity style={styles.btnSave} activeOpacity={.7} onClick={() => {close();window.location.reload(true);}}>
+          <TouchableOpacity style={styles.btnSave} activeOpacity={.7} onClick={() => {close();swal("Modify", "You clicked the button!", "success");window.location.reload(true);}}>
             <Text>Modify</Text>  
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnClose} activeOpacity={.7} onClick={() => {close();}}>
