@@ -1,0 +1,34 @@
+.navbarRight {
+    margin-right: 100px;
+}
+
+.logo {
+    max-width: 40px;
+    max-height: 40px;
+    margin-right: 15px;
+    border-radius: 50%;
+}
+
+.publicHomeLayout{
+    height: 100vh;
+}
+
+.publicHomeLayout > .container{
+    height: 70%;
+}
+
+footer > .container{
+    height: 100%;
+}
+
+.carousel{
+    height: 100%;
+}
+
+.view {
+    height:100%;
+}
+ .view img{
+    height: 100%;
+    border-radius: 0%;
+}

@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import './App.css';
 import { Home } from './component/Home.js';
-import { Login } from './component/Login.js';
+import { Login } from './component/Login/Login.js';
 import { Menu } from './component/Menu/Menu.js';
-import { SignUp } from './component/SignUp.js';
+import { SignUp } from './component/SignUp/SignUp.js';
 import ProfileView from './component/ProfileView.js'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
+import {PublicHome} from './component/PublicHome/PublicHome.js';
 
 class App extends Component {
   constructor(props) {
     super(props);
     localStorage.setItem('email=camilo@biciroute.com', 'camilo');
+    localStorage.setItem("name", "Nicola");
+    localStorage.setItem("lastName", "Tesla");
   }
 
 
@@ -19,7 +21,7 @@ class App extends Component {
 
     const HomeView = () => (
       <div>
-        {localStorage.getItem('isLoggedIn') ? <div><Menu /><Home /></div> : <Login />}
+        {localStorage.getItem('isLoggedIn') ? <div><Menu /><Home /></div> : <PublicHome />}
       </div>
     );
 
@@ -41,10 +43,6 @@ class App extends Component {
       </div>
     );
 
-    if (!localStorage.getItem('isLoggedIn')) {
-      return <HomeView/>
-    }
-    else {
       return (
         <Router>
           <Switch>
@@ -56,9 +54,6 @@ class App extends Component {
           </Switch>
         </Router>
       );
-    }
-
-
   }
 }
 

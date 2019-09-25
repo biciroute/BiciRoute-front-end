@@ -6,12 +6,26 @@ import {
   Image,
 } from 'react-native';
 import ModalModify from './ModalModify';
+import ModalModifyBici from './ModalModifyBici';
+import Box from '@material-ui/core/Box';
+import './ModalModify.css';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
+import HomeIcon from '@material-ui/icons/Home';
+import { MDBCol, MDBRow } from "mdbreact";
+import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
 
-export default class ProfileView extends Component {
+export default class ProfileView extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { name: localStorage.getItem("nombre") + " " + localStorage.getItem("apellido"), email: localStorage.getItem('correo'), ciudad: 'Bogotá, Colombia', followers: 200, following: 200, trips: Math.floor(Math.random() * 150), distanceTraveled: Math.floor(Math.random() * 300) };
-    this.handleCorreo = this.handleCorreo.bind();
+    this.state = {
+      profile: true,
+      name: localStorage.getItem("name") + " " + localStorage.getItem("lastName"),
+      email: localStorage.getItem('email'), ciudad: 'Bogotá, Colombia', followers: 200, following: 200, trips: Math.floor(Math.random() * 150), distanceTraveled: Math.floor(Math.random() * 300),
+      marca: localStorage.getItem("marca"), color: localStorage.getItem("color")
+    };
+    this.handleCorreo = this.handleCorreo.bind(this);
+    this.handleProfile = this.handleProfile.bind(this);
   }
 
   setCiudad(newCiudad) {
@@ -24,12 +38,18 @@ export default class ProfileView extends Component {
     this.setState({ email: this.state.email });
   }
 
+  handleProfile(profile) {
+    this.setState({ profile: profile });
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <View style={styles.headerContent}>
-            <Image style={styles.avatar} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar2.png' }} />
+            <Box display="flex">
+              <Image style={styles.avatar} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar2.png' }} />
+            </Box>
             <Text id="name" style={styles.name}>
               {this.state.name}
             </Text>
@@ -54,14 +74,45 @@ export default class ProfileView extends Component {
             <Text id="traveled" style={styles.count}>{this.state.distanceTraveled} Km</Text>
           </View>
         </View>
-
         <View style={styles.body}>
           <View style={styles.bodyContent}>
-            <ModalModify style={styles.buttonContainer}></ModalModify>
-            <Text id="email" style={styles.description}>{this.state.email}</Text>
-            <Text id="ciudad" style={styles.description}>{this.state.ciudad}</Text>
-            <Text id="TripBadge" style={styles.description}>{TripBadge(this.state.trips)}</Text>
-            <Text id="DistanceBadge" style={styles.description}>{DistanceBadge(this.state.distanceTraveled)}</Text>
+            <Breadcrumbs aria-label="breadcrumb">
+              <Link color="inherit" onClick={() => this.handleProfile(true)} >
+                <HomeIcon style={{ marginRight: '3px' }} />
+                My Profile
+                </Link>
+              <Link color="inherit" onClick={() => this.handleProfile(false)}  >
+                <DirectionsBikeIcon style={{ marginRight: '5px' }} />
+                My Bici Profile
+                </Link>
+            </Breadcrumbs>
+            {this.state.profile ? (
+
+              <View id="myProfile" style={styles.bodyContent2}>
+                <MDBRow>
+                  <MDBCol md="6" className="mb-1">
+                    <View style={styles.detailContent}>
+                      <Text style={styles.title}>Trips Badge</Text>
+                      <Text id="TripBadge" style={styles.count}>{TripBadge(this.state.trips)}</Text>
+                    </View>
+                  </MDBCol>
+                  <MDBCol md="6" className="mb-1">
+                    <View style={styles.detailContent}>
+                      <Text style={styles.title}>Dist. Badge</Text>
+                      <Text id="DistanceBadge" style={styles.count}>{DistanceBadge(this.state.distanceTraveled)}</Text>
+                    </View>
+                  </MDBCol>
+                </MDBRow>
+                <Text id="email" style={styles.description}>{this.state.email}</Text>
+                <Text id="ciudad" style={styles.description}>{this.state.ciudad}</Text>
+                <ModalModify style={styles.buttonContainer}></ModalModify>
+              </View>
+            ) : (
+                <View id="myBiciProfile" style={styles.bodyContent2}>
+                  <Text id="marca" style={styles.description}>Brand: {this.state.marca}</Text>
+                  <Text id="color" style={styles.description}>Color: {this.state.color}</Text>
+                  <ModalModifyBici style={styles.buttonContainer}></ModalModifyBici>
+                </View>)}
           </View>
           <View style={styles.photosCard}>
             <Text style={styles.cardTittle}>Friends</Text>
@@ -94,6 +145,9 @@ const styles = StyleSheet.create({
     padding: 30,
     alignItems: 'center',
   },
+  icons: {
+    marginLeft: 5,
+  },
   image: {
     width: 90,
     height: 90,
@@ -116,6 +170,16 @@ const styles = StyleSheet.create({
     borderColor: "white",
     marginBottom: 10,
   },
+  bici: {
+    width: 90,
+    height: 90,
+    borderRadius: 53,
+    borderWidth: 2,
+    borderColor: "white",
+    marginTop: 40,
+    marginLeft: 10,
+    marginBottom: 10,
+  },
   name: {
     fontSize: 22,
     color: "#FFFFFF",
@@ -126,6 +190,14 @@ const styles = StyleSheet.create({
     marginTop: 200,
     alignItems: 'center',
     flexDirection: 'row',
+    position: 'absolute',
+    backgroundColor: "#ffffff"
+  },
+  badgesDetail: {
+    alignSelf: 'center',
+    marginTop: 200,
+    alignItems: 'center',
+    flexDirection: 'col',
     position: 'absolute',
     backgroundColor: "#ffffff"
   },
@@ -165,6 +237,12 @@ const styles = StyleSheet.create({
     padding: 30,
     marginTop: 40
   },
+  bodyContent2: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 10,
+    marginBottom: 5
+  },
   buttonContainer: {
     marginTop: 10,
     height: 45,
@@ -172,7 +250,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
-    width: 250,
+    width: 100,
     borderRadius: 30,
     backgroundColor: "#00CED1",
   },
@@ -190,31 +268,23 @@ const styles = StyleSheet.create({
 function TripBadge(trips) {
   if (trips < 10) {
     return ("Router Baby");
-  } else if (trips < 50){
+  } else if (trips < 50) {
     return ("Router Junior");
-  } else if (trips < 100){
+  } else if (trips < 100) {
     return ("Router Senior");
-  } else{
-    return("Router Pro");
+  } else {
+    return ("Router Pro");
   }
 }
 
-function DistanceBadge(km){
-  if(km < 20){
-    return("Baby Biker");
-  } else if(km < 100){
-    return("Junior Biker");
-  } else if (km < 250){
-    return("Senior Biker");
-  } else{
-    return("Pro Biker");
+function DistanceBadge(km) {
+  if (km < 20) {
+    return ("Baby Biker");
+  } else if (km < 100) {
+    return ("Junior Biker");
+  } else if (km < 250) {
+    return ("Senior Biker");
+  } else {
+    return ("Pro Biker");
   }
-}
-
-function RandomTrips(){
-  return Math.floor(Math.random() * 150);
-}
-
-function RandomDistance(){
-  return Math.floor(Math.random() * 300);
 }
