@@ -65,7 +65,7 @@ export default class ModalModifyBici extends React.Component{
                   </TouchableOpacity>
     } modal>
     {close => (
-      <div className="modal">
+      <div className="modal" id="popup">
         <View style={styles.header}><Text style={styles.title}>My Bici Profile</Text></View>
         <div className="content">
         <View style={styles.popupContent}>

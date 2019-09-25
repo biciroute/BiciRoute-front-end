@@ -33,12 +33,12 @@ export default class ModalModify extends Component{
 
   render(){
   return(
-  <Popup trigger={<TouchableOpacity style={styles.buttonContainer} activeOpacity={.7}>
+  <Popup  trigger={<TouchableOpacity style={styles.buttonContainer} activeOpacity={.7}>
                       <Text style={styles.button}>Edit</Text>  
                   </TouchableOpacity>
     } modal>
     {close => (
-      <div className="modal">
+      <div className="modal" id="popup">
         <View style={styles.header}><Text style={styles.title}>My Profile</Text></View>
         <div className="content">
         <View style={styles.popupContent}>

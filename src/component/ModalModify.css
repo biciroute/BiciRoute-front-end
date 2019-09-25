@@ -13,6 +13,14 @@
     margin-right: 2px !important;
 }
 #select{
-    min-width: 200px !important;
-    max-width: 210px !important;
+    min-width: 200px;
+    max-width: 210px;
+}
+#popup{
+    height: 100%;
+    z-index: 3;
+    display: block;
+    width: 100%;
+    position: relative;
+    padding: initial;
 }

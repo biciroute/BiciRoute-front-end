@@ -134,14 +134,11 @@ export class SignUp extends React.Component{
               button: false,
             });
         }else{
-            var info = {
-              firstName: this.state.firstName,
-              lastName: this.state.lastName,
-              password: this.state.password
-            }
-            localStorage.setItem('isLoggedIn',true);
-            localStorage.setItem('loggedEmail', this.state.email);
-            localStorage.setItem("email="+this.state.email,JSON.stringify(info));
+            localStorage.setItem("email="+this.state.email,this.state.password);
+            localStorage.setItem("name", this.state.firstName);
+            localStorage.setItem("lastName", this.state.lastName);
+            localStorage.setItem("marca","Fox");
+            localStorage.setItem("color","Blanco");
             swal({
               title:"Good job!",
               text: "You have signed up sucessfully!",
