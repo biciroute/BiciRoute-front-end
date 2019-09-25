@@ -5,8 +5,9 @@ ul{
 }
 
 .text-list{
-    vertical-align: super;
+    vertical-align: bottom;
     padding-left: 10px;
+    font-size: initial;
 }
 
 li > a {
