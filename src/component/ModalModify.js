@@ -9,6 +9,9 @@ import {
   TouchableOpacity,
   ScrollView
 } from 'react-native';
+import './ModalModify.css';
+import Box from '@material-ui/core/Box';
+import swal from 'sweetalert';
 
 export default class ModalModify extends Component{
   
@@ -31,7 +34,7 @@ export default class ModalModify extends Component{
   render(){
   return(
   <Popup trigger={<TouchableOpacity style={styles.buttonContainer} activeOpacity={.7}>
-                      <Text style={styles.button}>Edit Profile</Text>  
+                      <Text style={styles.button}>Edit</Text>  
                   </TouchableOpacity>
     } modal>
     {close => (
@@ -42,7 +45,7 @@ export default class ModalModify extends Component{
             <ScrollView contentContainerStyle={styles.modalInfo}>
                 <Image style={styles.image} source={{uri: 'https://bootdey.com/img/Content/avatar/avatar2.png'}}/>
                 <hr/>
-                <form noValidate autoComplete="off" className="form">
+                <form noValidate autoComplete="off" className="form" id="formModify">
                 <TextField
                     disabled
                     id="name"
@@ -78,17 +81,20 @@ export default class ModalModify extends Component{
                 </ScrollView>
         </View>
         </div>
+       
         <View style={styles.popupButtons}>
         <div className="actions">
-          <TouchableOpacity style={styles.btnSave} activeOpacity={.7} onClick={() => {close();window.location.reload(true);}}>
-            <Text>Save</Text>  
+        <Box display="flex">
+          <TouchableOpacity style={styles.btnSave} activeOpacity={.7} onClick={() => {close();swal("Modify", "You clicked the button!", "success");window.location.reload(true);}}>
+            <Text>Modify</Text>  
           </TouchableOpacity>
-          
           <TouchableOpacity style={styles.btnClose} activeOpacity={.7} onClick={() => {close();}}>
               <Text>Close</Text>  
           </TouchableOpacity>
+          </Box>
         </div>
         </View>
+        
       </div>
     )}
   </Popup>
@@ -116,13 +122,14 @@ export default class ModalModify extends Component{
       fontWeight:'600',
     },
     buttonContainer: {
-      marginTop:10,
+      marginTop:30,
       height:45,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom:20,
-      width:250,
+      width:120,
+      marginLeft:5,
       borderRadius:30,
       backgroundColor: "#0b396b",
     },
@@ -159,19 +166,22 @@ export default class ModalModify extends Component{
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom:20,
-      width:250,
+      width:100,
       borderRadius:30,
       backgroundColor: "#cb3234",
+      marginLeft:5,
+
     },
     btnSave:{
       marginTop:10,
       height:40,
+      width:100,
       flexDirection: 'row',
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom:20,
-      width:250,
       borderRadius:30,
+      marginLeft:5,
       backgroundColor: "#07d257",
     },
     modalInfo:{
