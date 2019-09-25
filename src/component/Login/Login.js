@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'; //this is important for routing
 import { MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardTitle} from "mdbreact";
 import './Login.css';
-
+import swal from 'sweetalert';
 
 export class Login extends React.Component {
 
@@ -10,7 +10,7 @@ export class Login extends React.Component {
         super(props);
         this.state = { "email": "", "password": "" };
         this.changeHandler = this.changeHandler.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.submitHandler = this.submitHandler.bind(this);
     }
 
     render() {
@@ -41,7 +41,7 @@ export class Login extends React.Component {
                                 name="email" placeholder="Your Email address" required
                               />
                               <div className="valid-feedback">Looks good!</div>
-                              <div className="invalid-feedback">You must enter a valid email.</div>
+                              <div className="invalid-feedback">You must enter your email.</div>
                             </MDBCol>
                           </MDBRow>
 
@@ -56,9 +56,7 @@ export class Login extends React.Component {
                               />
                               <div className="valid-feedback">Looks good!</div>
                               <div className="invalid-feedback">
-                                You must enter a valid password.
-                                {/*The password must contain at least one number, one lowercase letter, one uppercase letter,
-                                and a minimum length of 6 characters.*/}
+                                You must enter your password.
                               </div>
                             </MDBCol>
                           </MDBRow>
@@ -66,7 +64,7 @@ export class Login extends React.Component {
                           <MDBBtn color="elegant" type="submit" id="submit">
                             Login in
                           </MDBBtn>
-                          <a href="/login">Don't you have an account? Sign Up!</a>
+                          <a href="/signup">Don't you have an account? Sign Up!</a>
                         </form>
                       </MDBCard>
                   </MDBCol>
@@ -81,14 +79,36 @@ export class Login extends React.Component {
         this.setState({ [event.target.name]: event.target.value });
     };
 
-    handleSubmit(e) {
+    validForm(){
+      if(this.state.email!=="" && this.state.password!=="") return true;
+
+      if(this.state.email!=="") document.getElementById("emailInput").className = "form-control is-valid";
+      else{
+        document.getElementById("emailInput").className ="form-control is-invalid";
+      }
+      if(this.state.password!=="") document.getElementById("emailInput").className = "form-control is-valid";
+      else{
+        document.getElementById("passwordInput").className ="form-control is-invalid";
+      }
+      return false;
+    }
+
+    submitHandler(e) {
         e.preventDefault();
-        if(localStorage.getItem("email="+this.state.email)===this.state.password){
-            localStorage.setItem('isLoggedIn',true);
-            localStorage.setItem('correo', this.state.email);
-            window.location.href = "/home";
-        } else {
-            alert("The email or password is incorrect");
+        if(this.validForm()){
+          if(localStorage.getItem("email="+this.state.email)===this.state.password){
+              localStorage.setItem('isLoggedIn',true);
+              localStorage.setItem('correo', this.state.email);
+              window.location.href = "/home";
+          } else {
+            swal({
+              title:"Ooops!",
+              text: "Email or Password is incorrect!",
+              icon: "error",
+              button: false,
+              timer: 2000
+            });
+          }
         }
     }
 

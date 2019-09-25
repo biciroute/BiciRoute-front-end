@@ -25,11 +25,11 @@
     }
 
     .form-control.is-invalid~.invalid-feedback, .form-control.is-invalid~.invalid-tooltip, .was-validated .form-control:invalid~.invalid-feedback, .was-validated .form-control:invalid~.invalid-tooltip{
-        font-size: 0.5rem; /* -50% of 1rem*/
+        font-size: 0.35rem; /* -40% of 1rem*/
     }
 
     .custom-control-input.is-invalid~.invalid-feedback, .custom-control-input.is-invalid~.invalid-tooltip, .was-validated .custom-control-input:invalid~.invalid-feedback, .was-validated .custom-control-input:invalid~.invalid-tooltip{
-        font-size: 0.5rem; /* -50% */
+        font-size: 0.35rem; /* -40% */
     }
 
     .sign-post-biciroute{
@@ -67,11 +67,11 @@
     }
 
     .form-control.is-invalid~.invalid-feedback, .form-control.is-invalid~.invalid-tooltip, .was-validated .form-control:invalid~.invalid-feedback, .was-validated .form-control:invalid~.invalid-tooltip{
-        font-size: 0.625rem;
+        font-size: 0.475rem;
     }
 
     .custom-control-input.is-invalid~.invalid-feedback, .custom-control-input.is-invalid~.invalid-tooltip, .was-validated .custom-control-input:invalid~.invalid-feedback, .was-validated .custom-control-input:invalid~.invalid-tooltip{
-        font-size: 0.625rem;
+        font-size: 0.475rem;
     }
 
     .sign-post-biciroute{
@@ -108,11 +108,11 @@
     }
 
     .form-control.is-invalid~.invalid-feedback, .form-control.is-invalid~.invalid-tooltip, .was-validated .form-control:invalid~.invalid-feedback, .was-validated .form-control:invalid~.invalid-tooltip{
-        font-size: 0.75rem;
+        font-size: 0.60rem;
     }
 
     .custom-control-input.is-invalid~.invalid-feedback, .custom-control-input.is-invalid~.invalid-tooltip, .was-validated .custom-control-input:invalid~.invalid-feedback, .was-validated .custom-control-input:invalid~.invalid-tooltip{
-        font-size: 0.75rem;
+        font-size: 0.60rem;
     }
 
     .sign-post-biciroute{
@@ -148,11 +148,11 @@
     }
 
     .form-control.is-invalid~.invalid-feedback, .form-control.is-invalid~.invalid-tooltip, .was-validated .form-control:invalid~.invalid-feedback, .was-validated .form-control:invalid~.invalid-tooltip{
-        font-size: 0.875rem;
+        font-size: 0.725rem;
     }
 
     .custom-control-input.is-invalid~.invalid-feedback, .custom-control-input.is-invalid~.invalid-tooltip, .was-validated .custom-control-input:invalid~.invalid-feedback, .was-validated .custom-control-input:invalid~.invalid-tooltip{
-        font-size: 0.875rem;
+        font-size: 0.725rem;
     }
 
     .sign-post-biciroute{
@@ -187,11 +187,11 @@
     }
 
     .form-control.is-invalid~.invalid-feedback, .form-control.is-invalid~.invalid-tooltip, .was-validated .form-control:invalid~.invalid-feedback, .was-validated .form-control:invalid~.invalid-tooltip{
-        font-size: 1rem;
+        font-size: 0.85rem;
     }
 
     .custom-control-input.is-invalid~.invalid-feedback, .custom-control-input.is-invalid~.invalid-tooltip, .was-validated .custom-control-input:invalid~.invalid-feedback, .was-validated .custom-control-input:invalid~.invalid-tooltip{
-        font-size: 1rem;
+        font-size: 0.85rem;
     }
 
     .sign-post-biciroute{

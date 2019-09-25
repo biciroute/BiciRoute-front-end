@@ -83,9 +83,8 @@ export class SignUp extends React.Component{
                               />
                               <div className="valid-feedback">Looks good!</div>
                               <div className="invalid-feedback">
-                                You must enter a valid password.
-                                {/*The password must contain at least one number, one lowercase letter, one uppercase letter,
-                                and a minimum length of 6 characters.*/}
+                                Password must contain at least one number, one lowercase letter, one uppercase letter,
+                                and a minimum length of 6 characters.
                               </div>
                             </MDBCol>
                           </MDBRow>
@@ -119,13 +118,27 @@ export class SignUp extends React.Component{
 
     submitHandler(event){
       event.preventDefault();
+
       if(this.validForm()){
         if(localStorage.getItem("email="+this.state.email)!==null){
-            alert("This email does already exist!. Please sign up with other email.");
+            swal({
+              title:"Ooops!",
+              text: "This email does already exist!. Please sign up with other email.!",
+              icon: "error",
+              timer: 2000,
+              button: false,
+            });
         }else{
             localStorage.setItem("email="+this.state.email,this.state.password);
-            swal("Good job!", "You clicked the button!", "success");
-            window.location.href = "/login";
+            swal({
+              title:"Good job!",
+              text: "You have signed up sucessfully!",
+              icon: "success",
+              timer: 2000,
+              button: false,
+            }).then(() => {
+              window.location.href = "/login";
+            });
         }
       }
     };
@@ -144,32 +157,31 @@ export class SignUp extends React.Component{
           return true;
       }
       
-      var isValid = true;
       if(this.validInternationalNames(this.state.firstName)) document.getElementById("firstNameInput").className = "form-control is-valid";
       else{
-        document.getElementById("firstNameInput").className = "form-control is-invalid"; isValid = false;
+        document.getElementById("firstNameInput").className = "form-control is-invalid";
       }
 
       if(this.validInternationalNames(this.state.lastName)) document.getElementById("lastNameInput").className = "form-control is-valid";
       else {
-        document.getElementById("lastNameInput").className = "form-control is-invalid"; isValid = false;
+        document.getElementById("lastNameInput").className = "form-control is-invalid";
       }
 
       if(this.validEmail(this.state.email)) document.getElementById("emailInput").className = "form-control is-valid";
       else{
-        document.getElementById("emailInput").className ="form-control is-invalid"; isValid = false;
+        document.getElementById("emailInput").className ="form-control is-invalid";
       }
       
       if(this.validPasswordFormat(this.state.password)) document.getElementById("passwordInput").className = "form-control is-valid";
       else{
-        document.getElementById("passwordInput").className = "form-control is-invalid"; isValid = false;
+        document.getElementById("passwordInput").className = "form-control is-invalid";
       }
       
       if(this.state.checked) document.getElementById("invalidCheck").className = "custom-control-input is-valid";
       else{
-        document.getElementById("invalidCheck").className = "custom-control-input is-invalid"; isValid = false;
+        document.getElementById("invalidCheck").className = "custom-control-input is-invalid";
       }
-      return isValid;
+      return false;
     }
 
     /*
