@@ -135,6 +135,10 @@ export class SignUp extends React.Component{
             });
         }else{
             localStorage.setItem("email="+this.state.email,this.state.password);
+            localStorage.setItem("name", this.state.firstName);
+            localStorage.setItem("lastName", this.state.lastName);
+            localStorage.setItem("marca","Fox");
+            localStorage.setItem("color","Blanco");
             swal({
               title:"Good job!",
               text: "You have signed up sucessfully!",
