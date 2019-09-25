@@ -3,12 +3,12 @@ import { GoogleApiWrapper, Map, Marker, Polyline } from 'google-maps-react';
 import "./Map.css"
 import Button from '@material-ui/core/Button';
 import NavigationIcon from '@material-ui/icons/Navigation';
-import Modal from '@material-ui/core/Modal';
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
-import { flexbox } from '@material-ui/system';
-
+import Drawer from '@material-ui/core/Drawer';
+import { fade } from '@material-ui/core/styles';
+import { Divider } from '@material-ui/core';
 
 
 
@@ -27,18 +27,36 @@ const useStyles = theme => ({
         padding: theme.spacing(2, 4, 3),
     },
     textField: {
-        marginLeft: theme.spacing(1),
-        marginRight: theme.spacing(1),
-        width: 200,
+        position: "relative",
+        borderRadius: theme.shape.borderRadius,
+        backgroundColor: fade(theme.palette.common.white, 0.15),
+        "&:hover": {
+            backgroundColor: fade(theme.palette.common.white, 0.25)
+        },
+        marginLeft: 0,
+        width: "100%",
+        [theme.breakpoints.up("sm")]: {
+            marginLeft: theme.spacing(2),
+            width: "auto"
+        },
+
     },
     Modal: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
 
-    }
+    },
+  
+    list: {
+        width: 250,
+    },
+    fullList: {
+        width: 'auto',
+    },
 
 });
+
 
 export class MapComponent extends React.Component {
 
@@ -48,56 +66,48 @@ export class MapComponent extends React.Component {
             university: { lat: 4.782715, lng: -74.042611 },
             open: false,
             pathRoute: [],
-            position: null
+            pathRouteOriginPlace: [],
+            pathRouteDestinationPlace: [],
+            position: null,
+            markers: [
+                {
+                    university: { lat: 4.782715, lng: -74.042611 },
+                    title: "Escuela colombiana de ingenieria Julio Garavito",
+                    name: "Escuela colombiana de ingenieria Julio Garavito",
+                },
+            ],
+            carres: [
+                "Calle 100, Troncal Autopista Norte, Cundinamarca, Colombia",
+                "Parque Nacional, Calle 36, Bogotá, Colombia",
+                "Virrey Solis Castellana, Autopista Norte, Bogotá, Colombia",
+            ]
         };
 
-        // Modal
-        this.handleClose = this.handleClose.bind(this);
-        this.handleOpen = this.handleOpen.bind(this);
         // Route
         this.autocomplete = this.autocomplete.bind(this);
         this.setDirectionRoute = this.setDirectionRoute.bind(this);
         //this.renderDirections =  this.renderDirections.bind(this);
-
-    }
-
-    setRefInput(ref) {
-        this.autocomplete = ref;
-    }
-
-    handleClose(e) {
-        this.setState({
-            open: false
-        });
-    }
-
-    rand() {
-        return Math.round(Math.random() * 20) - 10;
-    }
-
-    getModalStyle() {
-        const top = 50 + this.rand();
-        const left = 50 + this.rand();
-        return {
-            top: `${top}%`,
-            left: `${left}%`,
-            transform: `translate(-${top}%, -${left}%)`,
-        };
+        this.handleClose = this.handleClose.bind(this);
+        this.handleOpen = this.handleOpen.bind(this);
     }
 
     handleOpen(e) {
-        this.setState({
-            open: true
-        })
+        this.setState({ open: true });
     }
 
+    handleClose(e) {
+        this.setState({ open: false });
+    }
+
+
+
+
     async getLanLnt(address) {
-        const { google, map } = this.props;
+        const { google } = this.props;
         const geocoder = new google.maps.Geocoder();
         return new Promise((resolve, reject) => {
             geocoder.geocode({ 'address': address }, function (results, status) {
-                if (status == 'OK') {
-
+                if (status === 'OK') {
                     resolve(results[0].geometry.location)
                 } else {
                     window.alert('Directions ' + address + ' request failed due to ' + status);
@@ -107,56 +117,117 @@ export class MapComponent extends React.Component {
         })
     }
 
-    async getCenterMap() {
-
+    async getCenterMap(sourceRoute, targetRoute) {
         const { google, map } = this.props;
-        const temporalRoutes = []
-        const sourceRoute = document.getElementById("source").value
-        const targetRoute = document.getElementById("target").value
         const coordinatesDestinations = []
         var x = await this.getLanLnt(sourceRoute)
         var y = await this.getLanLnt(targetRoute)
         coordinatesDestinations.push(x);
         coordinatesDestinations.push(y);
-        var bounds = new google.maps.LatLngBounds();     
-        console.log("aqui " + coordinatesDestinations + " " + coordinatesDestinations.length)
+        var bounds = new google.maps.LatLngBounds();
         for (var i = 0; i < coordinatesDestinations.length; i++) {
-            console.log(coordinatesDestinations[i].lat()+ " " + coordinatesDestinations[i].lng());
-            
             var marker = new google.maps.Marker({
                 position: new google.maps.LatLng(coordinatesDestinations[i].lat(), coordinatesDestinations[i].lng()),
                 map: map
             });
-            //extend the bounds to include each marker's position
             bounds.extend(marker.position);
-
         }
         this.setState({
-            position : bounds.getCenter()
+            position: bounds.getCenter()
         });
-        console.log("Aca   "  + bounds.getCenter());
         map.fitBounds(bounds);
-        
-
-        console.log(coordinatesDestinations);
         return coordinatesDestinations
     }
 
 
     async setDirectionRoute() {
-        var newPathRoute = await this.calculateRoute();
-        const { google, map } = this.props;
+        const origin = document.getElementById("source").value;
+        const destination = document.getElementById("target").value;
+        //Define route the  shortest of the origin to some place 
+        var theBestOriginToPlace = [1e9, "undefine", null];
+        var theBestDestinationToPlace = [1e9, "undefine", null];
+
+        for (var i = 0; i < this.state.carres.length; i++) {
+            var place = this.state.carres[i];
+            var newPathRoute = await this.calculateRoute(origin, place);
+            var distance = newPathRoute.routes[0].legs[0].distance.text;
+            distance = parseFloat(distance.split(" ")[0].replace(",", "."));
+            if (distance < theBestOriginToPlace[0]) {
+                theBestOriginToPlace[1] = place;
+                theBestOriginToPlace[0] = Math.min(distance, theBestOriginToPlace[0])
+                theBestOriginToPlace[2] = newPathRoute.routes[0].overview_path;
+            }
+        }
+        console.log(destination)
+        for (i = 0; i < this.state.carres.length; i++) {
+            place = this.state.carres[i];
+            //if(place === theBestOriginToPlace[1])continue;
+            try {
+                newPathRoute = await this.calculateRoute(destination, place);
+                distance = newPathRoute.routes[0].legs[0].distance.text;
+                distance = parseFloat(distance.split(" ")[0].replace(",", "."));
+                if (distance < theBestDestinationToPlace[0]) {
+                    theBestDestinationToPlace[1] = place;
+                    theBestDestinationToPlace[0] = Math.min(distance, theBestDestinationToPlace[0])
+                    theBestDestinationToPlace[2] = newPathRoute.routes[0].overview_path;
+                }
+
+
+            } catch (error) {
+
+            }
+        }
+        console.log(theBestOriginToPlace[1], theBestDestinationToPlace[1])
+        newPathRoute = await this.calculateRoute(theBestDestinationToPlace[1], theBestOriginToPlace[1]);
         this.setState({
             pathRoute: newPathRoute.routes[0].overview_path,
+            pathRouteDestinationPlace: theBestDestinationToPlace[2],
+            pathRouteOriginPlace: theBestOriginToPlace[2],
             open: false
         });
-        this.getCenterMap();
-        
+
+        var newJSON = JSON.stringify( {
+            origin : origin,
+            destination :  destination,
+            pathRouteDestinationPlace : theBestDestinationToPlace[1],
+            pathRouteOriginPlace : theBestOriginToPlace[1]
+        });
+
+        if (localStorage.getItem('lastroutes') === undefined || localStorage.getItem('lastroutes') === null ) {
+            localStorage.setItem('lastroutes', JSON.stringify([newJSON]))
+        }else{
+            var tdListJSON = []
+            var tdLists = JSON.parse(localStorage.getItem("lastroutes"));
+            for(var i = 0 ; i < tdLists.length  ; ++i ){
+                tdListJSON.push(tdLists[i]);
+            } 
+            tdListJSON.push(newJSON);
+            localStorage.setItem("lastroutes",JSON.stringify(tdListJSON));
+        }
+
+
+        const places = [origin, destination, theBestDestinationToPlace[1], theBestOriginToPlace[1]]
+        this.setState({
+            markers: []
+        })
+        for (i = 0; i < 4; ++i) {
+            const latAndLng = await this.getLanLnt(places[i]);
+            const newMarker = {
+                university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
+                title: places[i],
+                name: places[i],
+            }
+            this.state.markers.push(newMarker);
+        }
+        console.log(this.state.markers)
+
+        this.getCenterMap(origin, destination);
+
     }
 
 
     autocomplete() {
-        const { google, map, ...rest } = this.props;
+        const { google, map } = this.props;
         if (!google || !map) return;
         var src = document.getElementById("source");
         var tgt = document.getElementById('target');
@@ -176,24 +247,23 @@ export class MapComponent extends React.Component {
     }
 
 
-    calculateRoute(travelMode, origin, destination, dateUniversity) {
-        const { google, map, ...rest } = this.props;
+    calculateRoute(origin, destination) {
+        const { google, map } = this.props;
         if (!google || !map) return;
         const directionsService = new google.maps.DirectionsService();
-        let pathRoute;
         const request = {
-            origin: document.getElementById("source").value,
-            destination: document.getElementById("target").value,
+            origin: origin,
+            destination: destination,
             travelMode: "DRIVING",
+            provideRouteAlternatives: true,
         };
         return new Promise((resolve, reject) => {
             directionsService.route(request, (response, status) => {
                 if (status === 'OK') {
-                    window.alert("OK PASS");
-                    pathRoute = response.routes[0];
+                    console.log(response)
                     resolve(response)
                 } else {
-
+                    window.alert(destination + " ----- " + origin)
                     window.alert('Directions request failed due to ' + status);
                     reject(status)
                 }
@@ -201,9 +271,6 @@ export class MapComponent extends React.Component {
         }
         )
     }
-
-
-
 
 
     //https://stackoverflow.com/questions/26059762/callback-when-dom-is-loaded-in-react-js
@@ -219,16 +286,20 @@ export class MapComponent extends React.Component {
             this.autocomplete();
 
         }
-
-
     }
-
-
-    // getModalStyle is not a pure function, we roll the style only on the first render
 
     render() {
         const { classes } = this.props;
-        const modalStyle = this.getModalStyle;
+        const mark = this.state.markers.map((td) =>
+            <Marker
+                title={td.title}
+                position={td.university}
+                animation={this.props.google.maps.Animation.DROP}
+                name={td.name}
+                description={td.description}
+            />
+        );
+
         return (
             <div >
                 <Map
@@ -241,66 +312,80 @@ export class MapComponent extends React.Component {
                     mapTypeControl={false}
                     center={this.state.position}
 
-                >
+                    >
 
-                    <Marker
-                        title={'Escuela colombiana de ingenieria Julio Garavito'}
-                        position={this.state.university}
-                        animation={this.props.google.maps.Animation.DROP}
-                        name={'Escuela colombiana de ingenieria Julio Garavito'}
-                        description={'AK 45 #205-59 Bogota\nInstitucion universitaria'}
-                    />
-
+                    {mark}
 
                     <Polyline
                         path={this.state.pathRoute}
-                        geodesic={false}
+                        geodesic={true}
+                        options={{
+                            strokeColor: '#354BD9',
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+
+                        }}
+                    />
+
+                    <Polyline
+                        path={this.state.pathRouteDestinationPlace}
+                        geodesic={true}
                         options={{
                             strokeColor: '#38B44F',
                             strokeOpacity: 1,
-                            strokeWeight: 7,
+                            strokeWeight: 2,
                         }}
                     />
+
+                    <Polyline
+                        path={this.state.pathRouteOriginPlace}
+                        geodesic={true}
+                        options={{
+                            strokeColor: '#38B44F',
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                        }}
+                    />
+
                     <Button title="Begin your route with biciRoute" variant="contained" color="primary" onClick={this.handleOpen} id="buttonSearch" aria-label="delete" >
                         <NavigationIcon /> Search trip
                     </Button>
 
-
                 </Map>
 
+                <Drawer  anchor="top" open={this.state.open} onClose={this.handleClose}
+                keepMounted = {true}  id = "modal"
+                 >
+                <div
+                    className={classes.fullList}
+                    role="presentation"
+                    >
+                         <TextField
+                        id="source"
+                        type="search"
+                        label="trip's start"
+                        fullWidth
+                        className={classes.textField}
+                    />
 
 
-                <Modal open={this.state.open}
-                    onClose={this.handleClose}
-                    keepMounted={true}
-                    id="modal"
-                    //style={modalStyle}
-                    className = {classes.Modal}
-                >
-                    <div className={classes.paper}>
-                        <TextField
-                            id="source"
-                            type="search"
-                            label="trip's start"
-                            className={classes.textField}
-                            margin="normal"
-                        />
+                    <TextField
+                        id="target"
+                        type="search"
+                        label="trip's end"
+                        className={classes.textField}
+                        fullWidth
 
-                        <br></br>
-                        <TextField
-                            id="target"
-                            type="search"
-                            label="trip's end"
-                            className={classes.textField}
-                            margin="normal"
-                        />
-                        <br></br>
-                        <Button variant="contained" color="primary" onClick={this.setDirectionRoute}>
-                            Search possible trips
-                        </Button>
-
+                    />
+           
+                    <Divider></Divider>                        
+                    <Button title="Begin your route with biciRoute" variant="contained" color="primary" onClick={this.setDirectionRoute} id="buttonSearch" aria-label="delete" >
+                        <NavigationIcon /> Create trip
+                    </Button>
                     </div>
-                </Modal>
+
+                </Drawer>
+
 
             </div>
         );

@@ -15,13 +15,12 @@ img{
 
 .name-content > p {
     margin-bottom: 0px;
-    font-size: 25px;
+    margin-top: 1rem;
+    font-size: initial;
 }
 
 h1{
     margin: 0px;
-    font-size: 20px !important;
-    overflow-wrap: normal;
 }
 
 .name-content{

@@ -12,7 +12,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     localStorage.setItem('email=camilo@biciroute.com', 'camilo');
-    localStorage.setItem("name", "AAAAAAAAAAAAAAAAAAAA");
+    localStorage.setItem("name", "Nicola");
     localStorage.setItem("lastName", "Tesla");
   }
 
