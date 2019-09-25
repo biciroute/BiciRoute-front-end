@@ -8,12 +8,12 @@ import ProfileView from './component/ProfileView.js'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import {PublicHome} from './component/PublicHome/PublicHome.js';
 
-
-
 class App extends Component {
   constructor(props) {
     super(props);
     localStorage.setItem('email=camilo@biciroute.com', 'camilo');
+    localStorage.setItem("name", "AAAAAAAAAAAAAAAAAAAA");
+    localStorage.setItem("lastName", "Tesla");
   }
 
 

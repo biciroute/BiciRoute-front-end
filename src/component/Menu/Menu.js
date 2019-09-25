@@ -10,8 +10,6 @@ import './Menu.css';
 import { UserTab } from './UserTab';
 
 
-
-
 export class Menu extends React.Component {
     constructor(props) {
         super(props);

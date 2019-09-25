@@ -2,6 +2,11 @@ import React from 'react';
 import { MDBBtn, MDBCol, MDBRow, MDBCard, MDBCardTitle} from "mdbreact";
 import "./SignUp.css";
 import swal from 'sweetalert';
+import {Link} from 'react-router-dom';
+
+import '@fortawesome/fontawesome-free/css/all.min.css';
+import 'bootstrap-css-only/css/bootstrap.min.css';
+import 'mdbreact/dist/css/mdb.css';
 
 export class SignUp extends React.Component{
 
@@ -104,7 +109,7 @@ export class SignUp extends React.Component{
                           <MDBBtn color="elegant" type="submit" id="submit">
                             Sign Up
                           </MDBBtn>
-                          <a href="/login">Do you already have an account? Login</a>
+                          <Link to="/login">Do you already have an account? Login</Link>
                         </form>
 
                       </MDBCard>

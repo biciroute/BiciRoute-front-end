@@ -64,7 +64,7 @@ export class Login extends React.Component {
                           <MDBBtn color="elegant" type="submit" id="submit">
                             Login in
                           </MDBBtn>
-                          <a href="/signup">Don't you have an account? Sign Up!</a>
+                          <Link to="/signup">Don't you have an account? Sign Up!</Link>
                         </form>
                       </MDBCard>
                   </MDBCol>
@@ -98,7 +98,7 @@ export class Login extends React.Component {
         if(this.validForm()){
           if(localStorage.getItem("email="+this.state.email)===this.state.password){
               localStorage.setItem('isLoggedIn',true);
-              localStorage.setItem('correo', this.state.email);
+              localStorage.setItem('email', this.state.email);
               window.location.href = "/home";
           } else {
             swal({

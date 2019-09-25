@@ -13,13 +13,13 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import HomeIcon from '@material-ui/icons/Home';
 import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
-import Fab from '@material-ui/core/Fab';
-import Typography from '@material-ui/core/Typography';
 
 export default class ProfileView extends React.Component{
     constructor(props) {
         super(props);
-        this.state = { profile:true, name:localStorage.getItem("nombre")+" "+localStorage.getItem("apellido"), email: localStorage.getItem('correo'), ciudad:'Bogotá, Colombia',followers:200,following:200,trips:0, marca:localStorage.getItem("marca"),color:localStorage.getItem("color")};
+        this.state = { profile:true,
+          name: localStorage.getItem("name")+" "+localStorage.getItem("lastName"),
+          email: localStorage.getItem('email'), ciudad:'Bogotá, Colombia',followers:200,following:200,trips:0, marca:localStorage.getItem("marca"),color:localStorage.getItem("color")};
         this.handleCorreo=this.handleCorreo.bind(this);
         this.handleProfile=this.handleProfile.bind(this);
       }
