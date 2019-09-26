@@ -3,8 +3,7 @@ import {RouteList} from '../RouteList/RouteList.js';
 
 export class LastRoutes extends Component{
     render(){
-        const lastroutes = (localStorage.getItem("lastroutes")===null) ? [] : JSON.parse(localStorage.getItem("lastroutes"));
-        /*{[{
+        const lastroutes = (localStorage.getItem("lastroutes")===null) ? [{
             origin: "suba",
             destination: "escuela",
             description: "Fue una ruta muy amigable",
@@ -14,7 +13,7 @@ export class LastRoutes extends Component{
             destination: "escuela",
             description: "No hay rutas para ciclistas",
             date: "23/09/2019"
-        }]}*/
+        }] : JSON.parse(localStorage.getItem("lastroutes"));
         return (
             <div>
                 <RouteList routeList={lastroutes}/>
