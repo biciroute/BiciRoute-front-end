@@ -7,6 +7,7 @@ import { SignUp } from './component/SignUp/SignUp.js';
 import ProfileView from './component/ProfileView.js'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import {PublicHome} from './component/PublicHome/PublicHome.js';
+import {LastRoutes} from './component/LastRoutes/LastRoutes.js';
 
 class App extends Component {
   constructor(props) {
@@ -19,44 +20,50 @@ class App extends Component {
     localStorage.setItem('email=camilo@biciroute.com', JSON.stringify(info));
   }
 
-
   render() {
 
     const HomeView = () => (
-      <div>
-        {localStorage.getItem('isLoggedIn') ? <div><Menu /><Home /></div> : <PublicHome />}
-      </div>
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn') ? <React.Fragment><Menu /><Home /></React.Fragment> : <PublicHome />}
+      </React.Fragment>
     );
 
     const LoginView = () => (
-      <div>
-        {localStorage.getItem('isLoggedIn') ?<div><Menu /><Home /></div> : <Login />}
-      </div>
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn') ?<React.Fragment><Menu /><Home /></React.Fragment> : <Login />}
+      </React.Fragment>
     );
 
     const SignUpView = () => (
-      <div>
-        {localStorage.getItem('isLoggedIn') ? <div><Menu /><Home /></div> : <SignUp />}
-      </div>
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn') ? <React.Fragment><Menu /><Home /></React.Fragment> : <SignUp />}
+      </React.Fragment>
     );
 
     const ProfileVieww = () => (
-      <div>
-        {localStorage.getItem('isLoggedIn') ? <div><Menu /><ProfileView /></div> : <Login />}
-      </div>
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn') ? <React.Fragment><Menu /><ProfileView/></React.Fragment> : <Login />}
+      </React.Fragment>
     );
 
-      return (
-        <Router>
-          <Switch>
-            <Route exact path="/" component={HomeView} />
-            <Route exact path="/login" component={LoginView} />
-            <Route exact path="/signup" component={SignUpView} />
-            <Route exact path="/home" component={HomeView} />
-            <Route exact path="/myProfile" component={ProfileVieww} />
-          </Switch>
-        </Router>
-      );
+    const MyLastRoutesView = () => (
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn')? <React.Fragment><Menu /><LastRoutes /></React.Fragment> : <Login />}
+      </React.Fragment>
+    );
+
+    return (
+      <Router>
+        <Switch>
+          <Route exact path="/" component={HomeView} />
+          <Route exact path="/login" component={LoginView} />
+          <Route exact path="/signup" component={SignUpView} />
+          <Route exact path="/home" component={HomeView} />
+          <Route exact path="/myProfile" component={ProfileVieww} />
+          <Route exact path = "/mylastroutes" component={MyLastRoutesView} />
+        </Switch>
+      </Router>
+    );
   }
 }
 

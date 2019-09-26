@@ -33,7 +33,7 @@ export class Menu extends React.Component {
                     navStyle={{ maxWidth: "250px", width: "auto" }}
                     items={[
 
-                        <ItemMenu onClick={() => this.onClick(1)} clicked={1 === this.state.selectItem} href="/Home" >
+                        <ItemMenu onClick={() => this.onClick(1)} clicked={1 === this.state.selectItem} href="/home" >
                             <LocationOnIcon />
                             <span className="text-list">Find Route</span>
                         </ItemMenu>,
@@ -41,9 +41,9 @@ export class Menu extends React.Component {
                             <AssignmentIndIcon />
                             <span className="text-list">My Account</span>
                         </ItemMenu>,
-                        <ItemMenu onClick={() => this.onClick(3)} clicked={3 === this.state.selectItem}>
+                        <ItemMenu onClick={() => this.onClick(3)} clicked={3 === this.state.selectItem} href="/mylastroutes">
                             <DirectionsBikeIcon />
-                            <span className="text-list">Last Trips</span>
+                            <span className="text-list">Last Routes</span>
                         </ItemMenu>,
                         <ItemMenu onClick={() => this.onClick(4)} clicked={4 === this.state.selectItem}>
                             <NotificationsIcon />

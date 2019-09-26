@@ -1,0 +1,12 @@
+.container{
+    align-items: center;
+    justify-content: center;
+}
+
+.tableRoutes{
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}

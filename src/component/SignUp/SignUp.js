@@ -4,10 +4,6 @@ import "./SignUp.css";
 import swal from 'sweetalert';
 import {Link} from 'react-router-dom';
 
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import 'bootstrap-css-only/css/bootstrap.min.css';
-import 'mdbreact/dist/css/mdb.css';
-
 export class SignUp extends React.Component{
 
     constructor(props){
@@ -134,11 +130,21 @@ export class SignUp extends React.Component{
               button: false,
             });
         }else{
-            localStorage.setItem("email="+this.state.email,this.state.password);
             localStorage.setItem("name", this.state.firstName);
             localStorage.setItem("lastName", this.state.lastName);
             localStorage.setItem("marca","Fox");
-            localStorage.setItem("color","Blanco");
+            localStorage.setItem("color","White");
+            var info = {
+              password: this.state.password,
+              firstName: this.state.firstName,
+              lastName: this.state.lastName,
+              bici: {
+                brand: "Fox",
+                color: "White"
+              }
+            }
+            localStorage.setItem("email="+this.state.email,JSON.stringify(info));
+
             swal({
               title:"Good job!",
               text: "You have signed up sucessfully!",
