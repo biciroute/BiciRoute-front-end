@@ -11,14 +11,11 @@
     #submit {
         margin-top: 2px;
         font-size: 0.65rem; /* -65% of 1rem*/
-        width: 98%;
+        width: 100%;
         max-height: 40px;
         align-items: center;
-        align-content: center;
-        align-self: center;
-        text-align: center;
-        vertical-align: middle;
-        margin-bottom: 0px;
+        margin: 0px;
+        margin-bottom: 5px;
     }
     #firstNameInput, #lastNameInput, #emailInput, #passwordInput, #invalidCheck, .custom-control-label, .grey-text{
         font-size: 0.6rem; /* -40% of 1rem */
@@ -58,9 +55,11 @@
     #submit {
         margin-top: 17px;
         font-size: 0.7375rem;
-        width: 98%;
+        width: 100%;
         max-height: 45px;
         align-items: center;
+        margin: 0px;
+        margin-bottom: 5px;
     }
     #firstNameInput, #lastNameInput, #emailInput, #passwordInput, #invalidCheck, .custom-control-label, .grey-text{
         font-size: 0.7rem;
@@ -99,9 +98,11 @@
     #submit {
         margin-top: 18px;
         font-size: 0.825rem;
-        width: 98%;
+        width: 100%;
         max-height: 45px;
         align-items: center;
+        margin: 0px;
+        margin-bottom: 5px;
     }
     #firstNameInput, #lastNameInput, #emailInput, #passwordInput, #invalidCheck, .custom-control-label, .grey-text{
         font-size: 0.8rem;
@@ -139,9 +140,11 @@
     #submit {
         margin-top: 19px;
         font-size: 0.9125rem;
-        width: 98%;
+        width: 100%;
         max-height: 47.5px;
         align-items: center;
+        margin: 0px;
+        margin-bottom: 5px;
     }
     #firstNameInput, #lastNameInput, #emailInput, #passwordInput, #invalidCheck, .custom-control-label, .grey-text{
         font-size: 0.9rem; /* -5% of 1rem */
@@ -178,9 +181,11 @@
     #submit {
         margin-top: 20px;
         font-size: 1rem;
-        width: 98%;
+        width: 100%;
         max-height: 50px;
         align-items: center;
+        margin: 0px;
+        margin-bottom: 5px;
     }
     #firstNameInput, #lastNameInput, #emailInput, #passwordInput, #invalidCheck, .custom-control-label, .grey-text{
         font-size: 1rem; /* -0% of 1rem */

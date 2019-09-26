@@ -17,7 +17,8 @@ export default class ModalModifyBici extends React.Component{
   
   constructor(props) {
     super(props);
-    this.state = { color:localStorage.getItem("color"), brand:localStorage.getItem("marca"), atributes:[], setAtribute:[]};
+    var bici = JSON.parse(localStorage.getItem("loggedUser")).bici;
+    this.state = { color: bici.color, brand: bici.brand, atributes:[], setAtribute:[]};
     this.handleBrandChange = this.handleBrandChange.bind(this);
     this.handleColorChange = this.handleColorChange.bind(this);
     this.handleAtributesChange = this.handleAtributesChange.bind(this);

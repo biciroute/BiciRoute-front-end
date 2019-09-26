@@ -18,11 +18,12 @@ import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
 export default class ProfileView extends React.Component {
   constructor(props) {
     super(props);
+    var user = JSON.parse(localStorage.getItem("loggedUser"));
     this.state = {
       profile: true,
-      name: localStorage.getItem("name") + " " + localStorage.getItem("lastName"),
-      email: localStorage.getItem('email'), ciudad: 'Bogotá, Colombia', followers: 200, following: 200, trips: Math.floor(Math.random() * 150), distanceTraveled: Math.floor(Math.random() * 300),
-      marca: localStorage.getItem("marca"), color: localStorage.getItem("color")
+      name: user.firstName+" "+user.lastName,
+      email: user.email, ciudad: 'Bogotá, Colombia', followers: 200, following: 200, trips: Math.floor(Math.random() * 150), distanceTraveled: Math.floor(Math.random() * 300),
+      marca: user.bici.brand, color: user.bici.color
     };
     this.handleCorreo = this.handleCorreo.bind(this);
     this.handleProfile = this.handleProfile.bind(this);

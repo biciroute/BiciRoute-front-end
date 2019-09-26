@@ -135,6 +135,7 @@ export class SignUp extends React.Component{
             localStorage.setItem("marca","Fox");
             localStorage.setItem("color","White");
             var info = {
+              email: this.state.email,
               password: this.state.password,
               firstName: this.state.firstName,
               lastName: this.state.lastName,
@@ -143,7 +144,9 @@ export class SignUp extends React.Component{
                 color: "White"
               }
             }
-            localStorage.setItem("email="+this.state.email,JSON.stringify(info));
+            localStorage.setItem("email="+this.state.email,JSON.stringify(info)); //push to the database
+            localStorage.setItem("isLoggedIn",true);
+            localStorage.setItem("loggedUser",JSON.stringify(info));
 
             swal({
               title:"Good job!",

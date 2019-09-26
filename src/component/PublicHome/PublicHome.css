@@ -28,7 +28,8 @@ footer > .container{
 .view {
     height:100%;
 }
- .view img{
+
+.view img{
     height: 100%;
     border-radius: 0%;
 }

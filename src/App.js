@@ -13,9 +13,14 @@ class App extends Component {
   constructor(props) {
     super(props);
     var info = {
+      email: "camilo@biciroute.com",
       firstName: "Camilo",
       lastName: "Velandia",
-      password: "camilo"
+      password: "camilo",
+      bici: {
+        brand: "Fox",
+        color: "Red" 
+      }
     };
     localStorage.setItem('email=camilo@biciroute.com', JSON.stringify(info));
   }

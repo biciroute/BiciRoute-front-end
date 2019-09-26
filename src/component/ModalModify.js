@@ -17,7 +17,10 @@ export default class ModalModify extends Component{
   
   constructor(props) {
     super(props);
-    this.state = { name:localStorage.getItem("nombre")+" "+localStorage.getItem("apellido"), email:localStorage.getItem("correo"), city:'Bogotá, Colombia'};
+    var user = JSON.parse(localStorage.getItem("loggedUser"));
+    this.state = {
+      name: user.firstName+" "+user.lastName,
+      email: user.email, city:'Bogotá, Colombia'};
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleCityChange = this.handleCityChange.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
