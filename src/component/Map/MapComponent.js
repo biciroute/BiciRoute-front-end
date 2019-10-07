@@ -1,16 +1,12 @@
 import React from 'react';
 import { GoogleApiWrapper, Map, Marker, Polyline } from 'google-maps-react';
-import "./Map.css"
-import Button from '@material-ui/core/Button';
+import "./Map.css";
 import NavigationIcon from '@material-ui/icons/Navigation';
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from 'prop-types';
-import TextField from '@material-ui/core/TextField';
-import Drawer from '@material-ui/core/Drawer';
 import { fade } from '@material-ui/core/styles';
-import { Divider } from '@material-ui/core';
-
-
+import Fab from '@material-ui/core/Fab';
+import SearchBar from './SearchBar.js';
 
 const mapStyles = {
     width: '100%',
@@ -20,7 +16,7 @@ const mapStyles = {
 
 const useStyles = theme => ({
     paper: {
-        width: 400,
+        width: "100%",
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
@@ -301,7 +297,9 @@ export class MapComponent extends React.Component {
         );
 
         return (
-            <div >
+            <div>
+                <SearchBar></SearchBar>
+
                 <Map
                     className="map"
                     google={this.props.google}
@@ -313,7 +311,7 @@ export class MapComponent extends React.Component {
                     center={this.state.position}
 
                     >
-
+                    
                     {mark}
 
                     <Polyline
@@ -347,46 +345,11 @@ export class MapComponent extends React.Component {
                         }}
                     />
 
-                    <Button title="Begin your route with biciRoute" variant="contained" color="primary" onClick={this.handleOpen} id="buttonSearch" aria-label="delete" >
-                        <NavigationIcon /> Search trip
-                    </Button>
-
+                     <Fab id="fab" color="primary" aria-label="add" className={classes.fab} >
+                        <NavigationIcon onClick={this.setDirectionRoute}/>
+                    </Fab>
+                    
                 </Map>
-
-                <Drawer  anchor="top" open={this.state.open} onClose={this.handleClose}
-                keepMounted = {true}  id = "modal"
-                 >
-                <div
-                    className={classes.fullList}
-                    role="presentation"
-                    >
-                         <TextField
-                        id="source"
-                        type="search"
-                        label="trip's start"
-                        fullWidth
-                        className={classes.textField}
-                    />
-
-
-                    <TextField
-                        id="target"
-                        type="search"
-                        label="trip's end"
-                        className={classes.textField}
-                        fullWidth
-
-                    />
-           
-                    <Divider></Divider>                        
-                    <Button title="Begin your route with biciRoute" variant="contained" color="primary" onClick={this.setDirectionRoute} id="buttonSearch" aria-label="delete" >
-                        <NavigationIcon /> Create trip
-                    </Button>
-                    </div>
-
-                </Drawer>
-
-
             </div>
         );
     }

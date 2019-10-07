@@ -11,7 +11,7 @@ export class UserTab extends React.Component {
                 </div>
                 <div className="name-content">
                     <p>Welcome,</p>
-                    <h1>{JSON.parse(localStorage.getItem("loggedUser")).firstName}</h1>
+                    <h1></h1>
                 </div>
             </div>
         );

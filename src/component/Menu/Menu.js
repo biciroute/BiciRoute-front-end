@@ -24,7 +24,7 @@ export class Menu extends React.Component {
     render() {
         return (
             <div>
-                <MenuIcon onClick={() => this.setState({ showNav: true })} style={{ fill: "green", position: "absolute", top: 0, left: 0, zIndex: 1 }} />
+                <MenuIcon onClick={() => this.setState({ showNav: true })} style={{ fill: "white", position: "absolute", top: 0, left: 0, zIndex: 1 }} />
 
                 <SideNav
                     showNav={this.state.showNav}
