@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import { fade } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import SearchBar from './SearchBar.js';
+import AddIcon from '@material-ui/icons/Add';
 
 const mapStyles = {
     width: '100%',
@@ -65,6 +66,7 @@ export class MapComponent extends React.Component {
             pathRouteOriginPlace: [],
             pathRouteDestinationPlace: [],
             position: null,
+            checked: false,
             markers: [
                 {
                     university: { lat: 4.782715, lng: -74.042611 },
@@ -85,6 +87,13 @@ export class MapComponent extends React.Component {
         //this.renderDirections =  this.renderDirections.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
+        this.handleStatusChange= this.handleStatusChange.bind(this);
+        this.changeStatus=this.changeStatus.bind(this);
+    }
+    handleStatusChange(e) {
+        this.setState({
+            status: e.target.value
+        });
     }
 
     handleOpen(e) {
@@ -93,6 +102,10 @@ export class MapComponent extends React.Component {
 
     handleClose(e) {
         this.setState({ open: false });
+    }
+
+    changeStatus(checked) {
+        this.setState({ checked: checked });    
     }
 
 
@@ -137,7 +150,7 @@ export class MapComponent extends React.Component {
 
 
     async setDirectionRoute() {
-        const origin = document.getElementById("source").value;
+        const origin =  document.getElementById("source").value;
         const destination = document.getElementById("target").value;
         //Define route the  shortest of the origin to some place 
         var theBestOriginToPlace = [1e9, "undefine", null];
@@ -297,60 +310,121 @@ export class MapComponent extends React.Component {
         );
 
         return (
-            <div>
+        <div>   
+            {this.state.checked ? (
+            <div id="bar">
                 <SearchBar></SearchBar>
-
                 <Map
-                    className="map"
-                    google={this.props.google}
-                    zoom={15}
-                    style={mapStyles}
-                    initialCenter={this.state.university}
-                    centerAroundCurrentLocation={false}
-                    mapTypeControl={false}
-                    center={this.state.position}
+                className="map"
+                google={this.props.google}
+                zoom={15}
+                style={mapStyles}
+                initialCenter={this.state.university}
+                centerAroundCurrentLocation={false}
+                mapTypeControl={false}
+                center={this.state.position}
 
-                    >
-                    
-                    {mark}
+                >
+                
+                {mark}
 
-                    <Polyline
-                        path={this.state.pathRoute}
-                        geodesic={true}
-                        options={{
-                            strokeColor: '#354BD9',
-                            strokeOpacity: 1,
-                            strokeWeight: 2,
+                <Polyline
+                    path={this.state.pathRoute}
+                    geodesic={true}
+                    options={{
+                        strokeColor: '#354BD9',
+                        strokeOpacity: 1,
+                        strokeWeight: 2,
 
-                        }}
-                    />
+                    }}
+                />
 
-                    <Polyline
-                        path={this.state.pathRouteDestinationPlace}
-                        geodesic={true}
-                        options={{
-                            strokeColor: '#38B44F',
-                            strokeOpacity: 1,
-                            strokeWeight: 2,
-                        }}
-                    />
+                <Polyline
+                    path={this.state.pathRouteDestinationPlace}
+                    geodesic={true}
+                    options={{
+                        strokeColor: '#38B44F',
+                        strokeOpacity: 1,
+                        strokeWeight: 2,
+                    }}
+                />
 
-                    <Polyline
-                        path={this.state.pathRouteOriginPlace}
-                        geodesic={true}
-                        options={{
-                            strokeColor: '#38B44F',
-                            strokeOpacity: 1,
-                            strokeWeight: 2,
-                        }}
-                    />
+                <Polyline
+                    path={this.state.pathRouteOriginPlace}
+                    geodesic={true}
+                    options={{
+                        strokeColor: '#38B44F',
+                        strokeOpacity: 1,
+                        strokeWeight: 2,
+                    }}
+                />
 
-                     <Fab id="fab" color="primary" aria-label="add" className={classes.fab} >
-                        <NavigationIcon onClick={this.setDirectionRoute}/>
-                    </Fab>
-                    
-                </Map>
+                <Fab id="fab" color="primary" aria-label="add" className={classes.fab} >
+                    <NavigationIcon onClick={() => this.setDirectionRoute()}/>
+                </Fab>
+                
+                
+            </Map>   
             </div>
+            
+        ) : (
+            <div id="map">    
+                <Map
+                className="map"
+                google={this.props.google}
+                zoom={15}
+                style={mapStyles}
+                initialCenter={this.state.university}
+                centerAroundCurrentLocation={false}
+                mapTypeControl={false}
+                center={this.state.position}
+
+                >
+                
+                {mark}
+
+                <Polyline
+                    path={this.state.pathRoute}
+                    geodesic={true}
+                    options={{
+                        strokeColor: '#354BD9',
+                        strokeOpacity: 1,
+                        strokeWeight: 2,
+
+                    }}
+                />
+
+                <Polyline
+                    path={this.state.pathRouteDestinationPlace}
+                    geodesic={true}
+                    options={{
+                        strokeColor: '#38B44F',
+                        strokeOpacity: 1,
+                        strokeWeight: 2,
+                    }}
+                />
+
+                <Polyline
+                    path={this.state.pathRouteOriginPlace}
+                    geodesic={true}
+                    options={{
+                        strokeColor: '#38B44F',
+                        strokeOpacity: 1,
+                        strokeWeight: 2,
+                    }}
+                />
+
+                <Fab id="fab" color="primary" aria-label="add" className={classes.fab} >
+                    <AddIcon onClick={() => this.changeStatus(true)}/>
+                </Fab>
+             
+            </Map>
+            </div>
+            )}
+
+        );
+        </div>
+            
         );
     }
 

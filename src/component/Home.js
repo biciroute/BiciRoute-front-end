@@ -4,10 +4,12 @@ export class Home extends React.Component{
 
     render(){
         return(
+          
                 <div>
                     <MapComponent></MapComponent>
                 </div>
-        );
+    );
     }
+   
 
 }
