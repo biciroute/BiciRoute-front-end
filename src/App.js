@@ -8,6 +8,7 @@ import ProfileView from './component/ProfileView.js'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import {PublicHome} from './component/PublicHome/PublicHome.js';
 import {LastRoutes} from './component/LastRoutes/LastRoutes.js';
+import Notifications from './component/Notifications/Notifications.js';
 
 class App extends Component {
   constructor(props) {
@@ -51,6 +52,12 @@ class App extends Component {
       </React.Fragment>
     );
 
+    const NotificationsView = () => (
+      <React.Fragment>
+        {localStorage.getItem('isLoggedIn') ? <React.Fragment><Menu /><Notifications/></React.Fragment> : <Login />}
+      </React.Fragment>
+    );
+
     const MyLastRoutesView = () => (
       <React.Fragment>
         {localStorage.getItem('isLoggedIn')? <React.Fragment><Menu /><LastRoutes /></React.Fragment> : <Login />}
@@ -66,6 +73,7 @@ class App extends Component {
           <Route exact path="/home" component={HomeView} />
           <Route exact path="/myProfile" component={ProfileVieww} />
           <Route exact path = "/mylastroutes" component={MyLastRoutesView} />
+          <Route exact path = "/notifications" component={NotificationsView} />
         </Switch>
       </Router>
     );
