@@ -17,6 +17,11 @@ import { Menu } from '../Menu/Menu';
 import { IconButton } from '@material-ui/core';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
+import InputLabel from '@material-ui/core/InputLabel';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import TextField from '@material-ui/core/TextField';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -28,9 +33,9 @@ const useStyles = makeStyles(theme => ({
     search: {
       position: "relative",
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
+      backgroundColor: fade(theme.palette.common.white, 0.20),
       "&:hover": {
-        backgroundColor: fade(theme.palette.common.white, 0.25)
+        backgroundColor: fade(theme.palette.common.white, 0.35)
       },
       marginLeft: 0,
       width: "95%",
@@ -42,7 +47,10 @@ const useStyles = makeStyles(theme => ({
     hour: {
       position: "relative",
       borderRadius: theme.shape.borderRadius,
-      backgroundColor: fade(theme.palette.common.white, 0.15),
+      backgroundColor: fade(theme.palette.common.white, 0.20),
+      "&:hover": {
+        backgroundColor: fade(theme.palette.common.white, 0.35)
+      },
       width: "100%",
       [theme.breakpoints.up("md")]: {
         marginLeft: theme.spacing(1),
@@ -61,7 +69,8 @@ const useStyles = makeStyles(theme => ({
       pointerEvents: "none",
       display: "flex",
       alignItems: "center",
-      justifyContent: "center"
+      justifyContent: "center",
+      color: "white"
     },
     inputRoot: {
       color: "inherit"
@@ -90,7 +99,7 @@ const useStyles = makeStyles(theme => ({
   }
 export default function SearchAppBar(props) {
   
-  const [selectedHour, setSelectedHour] = React.useState(new Date('2014-08-18T21:11:54'));
+  const [selectedHour, setSelectedHour] = React.useState();
 
   const handleHourChange = hour => {
     setSelectedHour(hour);
@@ -113,26 +122,23 @@ export default function SearchAppBar(props) {
                       <div className={classes.searchIcon}>
                         <SearchIcon />
                       </div>
-                      <InputBase id="source"
-                        placeholder="¿De dónde sales?"
-                        classes={{
-                          root: classes.inputRoot,
-                          input: classes.inputInput,
-                        }}
-                      />
+                      <TextField fullWidth
+                          className={classes.inputInput}
+                          id="source"
+                          placeholder="¿ Desde dónde?"
+                        />
+                    
                     </div>
                     <div id="to" className={classes.search}>
                       <div className={classes.searchIcon}>
                         <SearchIcon />
                       </div>
-                      <InputBase id="target"
-                        placeholder="¿ A dónde vas?"
-                        classes={{
-                          root: classes.inputRoot,
-                          input: classes.inputInput,
-                        }}
-                      />
-                    </div>
+                      <TextField fullWidth
+                          className={classes.inputInput}
+                          id="target"
+                          placeholder="¿A dónde vas?"
+                        />
+                      </div>
                     <Grid
                        container
                        direction="row"
@@ -145,11 +151,12 @@ export default function SearchAppBar(props) {
                     <KeyboardTimePicker
                         margin="normal"
                         id="time-picker"
-                        label="Hour"
+                        placeholder="Hora de salida"
                         value={selectedHour}
                         onChange={handleHourChange}
                         KeyboardButtonProps={{
                           'aria-label': 'change time',
+                          'fill': 'white',
                         }}
                       />
                       </MuiPickersUtilsProvider>

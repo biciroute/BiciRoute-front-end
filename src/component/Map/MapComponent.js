@@ -8,91 +8,12 @@ import { fade } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import SearchBar from './SearchBar.js';
 import AddIcon from '@material-ui/icons/Add';
+import bici from './img/bici.png';
+import bicis from './img/bicis.png';
 
 const mapStyles = {
     width: '100%',
     height: '100%',
-    styles: [
-        {elementType: 'geometry', stylers: [{color: '#242f3e'}]},
-        {elementType: 'labels.text.stroke', stylers: [{color: '#242f3e'}]},
-        {elementType: 'labels.text.fill', stylers: [{color: '#746855'}]},
-        {
-          featureType: 'administrative.locality',
-          elementType: 'labels.text.fill',
-          stylers: [{color: '#d59563'}]
-        },
-        {
-          featureType: 'poi',
-          elementType: 'labels.text.fill',
-          stylers: [{color: '#d59563'}]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'geometry',
-          stylers: [{color: '#263c3f'}]
-        },
-        {
-          featureType: 'poi.park',
-          elementType: 'labels.text.fill',
-          stylers: [{color: '#6b9a76'}]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry',
-          stylers: [{color: '#38414e'}]
-        },
-        {
-          featureType: 'road',
-          elementType: 'geometry.stroke',
-          stylers: [{color: '#212a37'}]
-        },
-        {
-          featureType: 'road',
-          elementType: 'labels.text.fill',
-          stylers: [{color: '#9ca5b3'}]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'geometry',
-          stylers: [{color: '#746855'}]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'geometry.stroke',
-          stylers: [{color: '#1f2835'}]
-        },
-        {
-          featureType: 'road.highway',
-          elementType: 'labels.text.fill',
-          stylers: [{color: '#f3d19c'}]
-        },
-        {
-          featureType: 'transit',
-          elementType: 'geometry',
-          stylers: [{color: '#2f3948'}]
-        },
-        {
-          featureType: 'transit.station',
-          elementType: 'labels.text.fill',
-          stylers: [{color: '#d59563'}]
-        },
-        {
-          featureType: 'water',
-          elementType: 'geometry',
-          stylers: [{color: '#17263c'}]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.fill',
-          stylers: [{color: '#515c6d'}]
-        },
-        {
-          featureType: 'water',
-          elementType: 'labels.text.stroke',
-          stylers: [{color: '#17263c'}]
-        }
-      ]
-    
 };
 
 
@@ -153,6 +74,7 @@ export class MapComponent extends React.Component {
                     university: { lat: 4.782715, lng: -74.042611 },
                     title: "Escuela colombiana de ingenieria Julio Garavito",
                     name: "Escuela colombiana de ingenieria Julio Garavito",
+                    icon: bici,
                 },
             ],
             carres: [
@@ -218,7 +140,8 @@ export class MapComponent extends React.Component {
         for (var i = 0; i < coordinatesDestinations.length; i++) {
             var marker = new google.maps.Marker({
                 position: new google.maps.LatLng(coordinatesDestinations[i].lat(), coordinatesDestinations[i].lng()),
-                map: map
+                map: map,
+                icon: bici,
             });
             bounds.extend(marker.position);
         }
@@ -302,11 +225,24 @@ export class MapComponent extends React.Component {
         })
         for (i = 0; i < 4; ++i) {
             const latAndLng = await this.getLanLnt(places[i]);
-            const newMarker = {
-                university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
-                title: places[i],
-                name: places[i],
+            var newMarker={};
+            if(i===0 || i===3){
+                newMarker = {
+                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
+                    title: places[i],
+                    name: places[i],
+                    icon:bici,
+                }
             }
+            else{
+                newMarker = {
+                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
+                    title: places[i],
+                    name: places[i],
+                    icon: bicis,
+                }
+            }
+            
             this.state.markers.push(newMarker);
         }
         console.log(this.state.markers)
@@ -320,7 +256,7 @@ export class MapComponent extends React.Component {
         const { google, map } = this.props;
         if (!google || !map) return;
         var src = document.getElementById("source");
-        var tgt = document.getElementById('target');
+        var tgt = document.getElementById("target");
         var autoSrc = new google.maps.places.Autocomplete(src);
         var autoTgt = new google.maps.places.Autocomplete(tgt);
         autoSrc.bindTo('bounds', map);
@@ -380,13 +316,15 @@ export class MapComponent extends React.Component {
 
     render() {
         const { classes } = this.props;
-        const mark = this.state.markers.map((td) =>
+        console.log("MARKERS "+JSON.stringify(this.state.markers));
+        var mark = this.state.markers.map((td) =>
             <Marker
                 title={td.title}
                 position={td.university}
                 animation={this.props.google.maps.Animation.DROP}
                 name={td.name}
                 description={td.description}
+                icon= {td.icon}
             />
         );
 

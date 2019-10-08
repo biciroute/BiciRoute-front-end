@@ -24,6 +24,19 @@
     margin-left: 20px;
     
 }
+#target{
+    color: white;
+}
+#source{
+    color: white;
+}
+#time-picker{
+    color: white;
+    fill:white;
+}
+.ui-datepicker-prev:hover {
+    color: #fff;
+}
 #to{
     margin-bottom: 5px;
     margin-left: 20px;
@@ -39,13 +52,14 @@
     margin-left: 30px;
 }
 #appBar{
-    background-color: dimgray;
+    background-color: #02352B
+    ;
 }
 #fab{
     margin-left: 80%;
     margin-top:5%;
     width: 80px;
     height: 80px;
-    background-color: limegreen;
+    background-color: #00bfa5;
 }
 
