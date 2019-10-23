@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import {RouteList} from '../RouteList/RouteList.js';
+import './MyRoutes.css';
+import MyAppBar from '../MyAppBar/MyAppBar.js';
 
-export class LastRoutes extends Component{
+export class MyRoutes extends Component{
     render(){
         const lastroutes = (localStorage.getItem("lastroutes")===null) ? [{
             origin: "suba",
@@ -15,7 +17,8 @@ export class LastRoutes extends Component{
             date: "23/09/2019"
         }] : JSON.parse(localStorage.getItem("lastroutes"));
         return (
-            <div>
+            <div className="root-myroutes">
+                <MyAppBar />
                 <RouteList routeList={lastroutes}/>
             </div>
         );

@@ -7,7 +7,7 @@ import { SignUp } from './component/SignUp/SignUp.js';
 import ProfileView from './component/ProfileView.js'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import {PublicHome} from './component/PublicHome/PublicHome.js';
-import {LastRoutes} from './component/LastRoutes/LastRoutes.js';
+import {MyRoutes} from './component/MyRoutes/MyRoutes.js';
 
 class App extends Component {
   constructor(props) {
@@ -51,9 +51,9 @@ class App extends Component {
       </React.Fragment>
     );
 
-    const MyLastRoutesView = () => (
+    const MyRoutesView = () => (
       <React.Fragment>
-        {localStorage.getItem('isLoggedIn')? <React.Fragment><Menu /><LastRoutes /></React.Fragment> : <Login />}
+        {localStorage.getItem('isLoggedIn')? <React.Fragment><MyRoutes /></React.Fragment> : <Login />}
       </React.Fragment>
     );
 
@@ -65,7 +65,7 @@ class App extends Component {
           <Route exact path="/signup" component={SignUpView} />
           <Route exact path="/home" component={HomeView} />
           <Route exact path="/myProfile" component={ProfileVieww} />
-          <Route exact path = "/mylastroutes" component={MyLastRoutesView} />
+          <Route exact path = "/myroutes" component={MyRoutesView} />
         </Switch>
       </Router>
     );
