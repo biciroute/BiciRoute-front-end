@@ -14,17 +14,20 @@ import Link from '@material-ui/core/Link';
 import HomeIcon from '@material-ui/icons/Home';
 import { MDBCol, MDBRow } from "mdbreact";
 import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
+import axios from 'axios'
+import swal from 'sweetalert';
 
 export default class ProfileView extends React.Component {
   constructor(props) {
     super(props);
-    var user = JSON.parse(localStorage.getItem("loggedUser"));
+
     this.state = {
       profile: true,
-      name: user.firstName+" "+user.lastName,
-      email: user.email, ciudad: 'Bogotá, Colombia', followers: 200, following: 200, trips: Math.floor(Math.random() * 150), distanceTraveled: Math.floor(Math.random() * 300),
-      marca: user.bici.brand, color: user.bici.color
+      name: "", email: "", ciudad: "Bogotá, Colombia", followers: 200, following: 200, 
+      trips: Math.floor(Math.random() * 150), distanceTraveled: Math.floor(Math.random() * 300),
+      marca:"", color: "", user : {}, bici : {}
     };
+
     this.handleCorreo = this.handleCorreo.bind(this);
     this.handleProfile = this.handleProfile.bind(this);
   }
@@ -106,13 +109,13 @@ export default class ProfileView extends React.Component {
                 </MDBRow>
                 <Text id="email" style={styles.description}>{this.state.email}</Text>
                 <Text id="ciudad" style={styles.description}>{this.state.ciudad}</Text>
-                <ModalModify style={styles.buttonContainer}></ModalModify>
+                <ModalModify style={styles.buttonContainer} user={this.state.user} ></ModalModify>
               </View>
             ) : (
                 <View id="myBiciProfile" style={styles.bodyContent2}>
                   <Text id="marca" style={styles.description}>Brand: {this.state.marca}</Text>
                   <Text id="color" style={styles.description}>Color: {this.state.color}</Text>
-                  <ModalModifyBici style={styles.buttonContainer}></ModalModifyBici>
+                  <ModalModifyBici style={styles.buttonContainer} bici={this.state.bici} ></ModalModifyBici>
                 </View>)}
           </View>
           <View style={styles.photosCard}>
@@ -136,6 +139,39 @@ export default class ProfileView extends React.Component {
       </View>
     );
   }
+
+  UNSAFE_componentWillMount() {
+    this.axios = axios.create({
+      baseURL: 'http://localhost:8080/',
+      timeout: 1000,
+      headers: { 'Authorization': 'Bearer ' + localStorage.getItem("accessToken") }
+    });
+
+    this.fetchTaks();
+  }
+
+  
+
+  fetchTaks() {
+    let Profile = this
+    this.axios.get('v1/user/5db07b44f8a28e293c6ddfc0')
+      .then(function (response) {
+        let user = response.data
+        Profile.setState({name:user.firstName+" "+user.lastName, email: user.email, marca: user.bicicle.brand , color: user.bicicle.color, 
+        user : user, bici : user.bicicle  });             
+      })
+      .catch(function (error) {
+        swal({
+          title: "Ooops!",
+          text: "Error al cargar la pagina",
+          icon: "error",
+          timer: 2000,
+          button: false,
+        });
+      });
+
+  }
+
 }
 
 const styles = StyleSheet.create({
@@ -240,8 +276,8 @@ const styles = StyleSheet.create({
   },
   bodyContent2: {
     flex: 1,
-    maxwith:'100%',
-    maxHeight:'100%',
+    maxwith: '100%',
+    maxHeight: '100%',
     alignItems: 'center',
     padding: 10,
     marginBottom: 5
@@ -290,4 +326,6 @@ function DistanceBadge(km) {
   } else {
     return ("Pro Biker");
   }
+
+
 }
