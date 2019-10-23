@@ -462,6 +462,6 @@ const MapWrapper = props => (
 );
 
 export default withStyles(useStyles)(GoogleApiWrapper({
-    apiKey: 'AIzaSyCJuZIQnX6XR1vs6dBHuZHj8J5TrWmVi-8',
+    apiKey: 'AIzaSyCVmCTy45uFYzpIslnjYBcVgt02M8KSQ84',
     language: "es",
 })(MapWrapper));
