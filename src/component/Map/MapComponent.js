@@ -10,6 +10,8 @@ import SearchBar from './SearchBar.js';
 import AddIcon from '@material-ui/icons/Add';
 import bici from './img/bici.png';
 import bicis from './img/bicis.png';
+import final from './img/final.png';
+
 
 const mapStyles = {
     width: '100%',
@@ -226,12 +228,20 @@ export class MapComponent extends React.Component {
         for (i = 0; i < 4; ++i) {
             const latAndLng = await this.getLanLnt(places[i]);
             var newMarker={};
-            if(i===0 || i===3){
+            if(i===0){
                 newMarker = {
                     university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
                     title: places[i],
                     name: places[i],
                     icon:bici,
+                }
+            }
+            else if(i===3){
+                newMarker = {
+                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
+                    title: places[i],
+                    name: places[i],
+                    icon:final,
                 }
             }
             else{
@@ -298,7 +308,6 @@ export class MapComponent extends React.Component {
         )
     }
 
-
     //https://stackoverflow.com/questions/26059762/callback-when-dom-is-loaded-in-react-js
     componentDidMount() {
         this.autocomplete();
@@ -329,8 +338,7 @@ export class MapComponent extends React.Component {
         );
 
         return (
-        <React.Fragment>   
-            {this.state.checked ? (
+        <React.Fragment>               
             <div id="bar">
                 <SearchBar></SearchBar>
                 <Map
@@ -375,67 +383,14 @@ export class MapComponent extends React.Component {
                         strokeWeight: 2,
                     }}
                 />
-
-                <Fab id="fab" color="primary" aria-label="add" className={classes.fab} >
-                    <NavigationIcon onClick={() => this.setDirectionRoute()}/>
+                <div id="buttom">
+                <Fab id="fab" color="primary" aria-label="add" className={classes.fab} onClick={() => this.setDirectionRoute()}>
+                    <NavigationIcon />
                 </Fab>
-                
+                </div>
             </Map>   
         </div>    
-        ) : (
-            <div id="map">    
-                <Map
-                    className="map"
-                    google={this.props.google}
-                    zoom={15}
-                    style={mapStyles}
-                    initialCenter={this.state.university}
-                    centerAroundCurrentLocation={false}
-                    mapTypeControl={false}
-                    center={this.state.position}
-                >
-                    {mark}
-
-                    <Polyline
-                        path={this.state.pathRoute}
-                        geodesic={true}
-                        options={{
-                            strokeColor: '#354BD9',
-                            strokeOpacity: 1,
-                            strokeWeight: 2,
-                        }}
-                    />
-
-                    <Polyline
-                        path={this.state.pathRouteDestinationPlace}
-                        geodesic={true}
-                        options={{
-                            strokeColor: '#38B44F',
-                            strokeOpacity: 1,
-                            strokeWeight: 2,
-                        }}
-                    />
-
-                    <Polyline
-                        path={this.state.pathRouteOriginPlace}
-                        geodesic={true}
-                        options={{
-                            strokeColor: '#38B44F',
-                            strokeOpacity: 1,
-                            strokeWeight: 2,
-                        }}
-                    />
-
-                    <Fab id="fab" color="primary" aria-label="add" className={classes.fab} >
-                        <AddIcon onClick={() => this.changeStatus(true)}/>
-                    </Fab>
-                </Map>
-            </div>
-            )}
-
-        );
-        </React.Fragment>
-            
+        </React.Fragment>     
         );
     }
 

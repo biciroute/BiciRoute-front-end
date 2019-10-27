@@ -16,7 +16,7 @@ class App extends Component {
 
     const HomeView = () => (
       <React.Fragment>
-        {localStorage.getItem('isLoggedIn') ? <PrivateHome/>: <PublicHome />}
+        <PrivateHome/>
       </React.Fragment>
     );
 
