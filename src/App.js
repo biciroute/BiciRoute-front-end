@@ -6,8 +6,9 @@ import { SignUp } from './component/SignUp/SignUp.js';
 import ProfileView from './component/MyProfile/ProfileView.js'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import {PublicHome} from './component/PublicHome/PublicHome.js';
-import {LastRoutes} from './component/LastRoutes/LastRoutes.js';
-import Notifications from './component/Notifications/Notifications.js';
+import {MyRoutes} from './component/MyRoutes/MyRoutes.js';
+import MyNavBar from './component/MyNavBar/MyNavBar.js';
+import MyAppBar from './component/MyAppBar/MyAppBar';
 
 class App extends Component {
 
@@ -37,13 +38,7 @@ class App extends Component {
       </React.Fragment>
     );
 
-    const NotificationsView = () => (
-      <React.Fragment>
-        {localStorage.getItem('isLoggedIn') ? <React.Fragment><Menu /><Notifications/></React.Fragment> : <Login />}
-      </React.Fragment>
-    );
-
-    const MyLastRoutesView = () => (
+    const MyRoutesView = () => (
       <React.Fragment>
         {localStorage.getItem('isLoggedIn')? <MyRoutes /> : <Login />}
       </React.Fragment>
@@ -57,8 +52,7 @@ class App extends Component {
           <Route exact path="/signup" component={SignUpView} />
           <Route exact path="/home" component={HomeView} />
           <Route exact path="/myProfile" component={ProfileVieww} />
-          <Route exact path = "/mylastroutes" component={MyLastRoutesView} />
-          <Route exact path = "/notifications" component={NotificationsView} />
+          <Route exact path = "/myroutes" component={MyRoutesView} />
         </Switch>
       </Router>
     );
