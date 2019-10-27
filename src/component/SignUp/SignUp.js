@@ -138,7 +138,8 @@ export class SignUp extends React.Component {
       axios.post('http://localhost:8080/v1/user/register', info)
         .then(function (response) {
           console.log(response.data);
-          //localStorage.setItem("isLoggedIn", true);
+
+          localStorage.setItem("isLoggedIn", true);
           swal({
             title: "Good job!",
             text: "You have signed up sucessfully!",
@@ -146,7 +147,13 @@ export class SignUp extends React.Component {
             timer: 2000,
             button: false,
           }).then(() => {
-            window.location.href = "/login";
+            localStorage.setItem("accessToken", response.data.accessToken);
+            var loggedUser = {
+              firstName: response.data.firstName
+            }
+            localStorage.setItem("loggedUser", JSON.stringify(loggedUser))
+            localStorage.setItem("isLoggedIn", true);
+            window.location.href = "/home";
           });
         })
         .catch(function (error) {
