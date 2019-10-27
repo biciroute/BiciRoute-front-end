@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
       width: "95%",
       [theme.breakpoints.up("sm")]: {
         marginLeft: theme.spacing(1),
-        width: "auto"
+        
       }
     },
     hour: {
@@ -51,16 +51,21 @@ const useStyles = makeStyles(theme => ({
       "&:hover": {
         backgroundColor: fade(theme.palette.common.white, 0.35)
       },
-      width: "100%",
-      [theme.breakpoints.up("md")]: {
+      marginLeft:0,
+      width: "95%",
+      [theme.breakpoints.up("sm")]: {
         marginLeft: theme.spacing(1),
-        width: "auto"
+        
       }
     },
     hour1:{
-      marginLeft:10,
+      padding: theme.spacing(1, 1, 1, 7),
+      transition: theme.transitions.create("width"),
+      width: "80%",
+      color: "white",
       alignItems: "center",
-      justifyContent: "center"
+      justifyContent: "center",
+      
     },
     searchIcon: {
       width: theme.spacing(7),
@@ -79,9 +84,7 @@ const useStyles = makeStyles(theme => ({
       padding: theme.spacing(1, 1, 1, 7),
       transition: theme.transitions.create("width"),
       width: "80%",
-      [theme.breakpoints.up("sm")]: {
-        width:  "95%",
-      },
+      
     }
   }));
   function HideOnScroll(props) {
@@ -141,9 +144,9 @@ export default function SearchAppBar(props) {
                       </div>
                     <Grid
                        container
-                       direction="row"
+                       direction="column"
                        justify="center"
-                       alignItems="center"                     
+                       alignItems="strech"                     
                     >
                     <div id="hour" className={classes.hour}>
                     <div id="hour1" className={classes.hour1}>

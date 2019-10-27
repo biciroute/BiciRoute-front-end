@@ -8,8 +8,8 @@ export class PrivateHome extends React.Component{
     render(){
         return(
             <React.Fragment>
-                <MyNavBar />
-                <MapComponent></MapComponent>
+                <div><MyNavBar/></div>
+                <div><MapComponent/></div>
             </React.Fragment>
         );
     }
