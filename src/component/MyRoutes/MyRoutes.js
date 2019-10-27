@@ -1,9 +1,16 @@
 import React, {Component} from 'react';
 import {RouteList} from '../RouteList/RouteList.js';
-import './MyRoutes.css';
 import axios from 'axios';
 import swal from 'sweetalert';
 import MyAppBar from '../MyAppBar/MyAppBar.js';
+import MyRoutesStyles from './MyRoutesStyles.js';
+import BottomNavigation from '@material-ui/core/BottomNavigation';
+import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
+import RestoreIcon from '@material-ui/icons/Restore';
+import FavoriteIcon from '@material-ui/icons/Favorite';
+import LocationOnIcon from '@material-ui/icons/LocationOn';
+
+const classes = MyRoutesStyles;
 
 export class MyRoutes extends Component{
 
@@ -44,8 +51,11 @@ export class MyRoutes extends Component{
                 origin: "calle 100",
                 destination: "aeropuerto el dorado",
                 date: "16 dec 2019, 19:12"
-            }]
+            }],
+            value: 0
         }
+        this.changeRouteListHandler = this.changeRouteListHandler.bind(this);
+        this.changeValueHandler = this.changeValueHandler.bind(this);
     }
 
     changeRouteListHandler(typeRoute){
@@ -54,11 +64,17 @@ export class MyRoutes extends Component{
         });
     }
 
+    changeValueHandler(event){
+        this.setState({
+            value: event.target.value
+        });
+    }
+
     render(){
         return (
             <React.Fragment>
                 <MyAppBar title="My routes"/>
-                
+                <RouteList routeList={this.state.routeList}/>
             </React.Fragment>
         );
     }

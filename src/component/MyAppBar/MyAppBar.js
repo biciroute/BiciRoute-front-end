@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MyAppBarStyles from './MyAppBarStyles.js';
+import ElevationScroll from '../ElevationScroll/ElevationScroll.js';
 
 export default function MyAppBar(props) {
   const classes = MyAppBarStyles();
@@ -48,35 +49,37 @@ export default function MyAppBar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" style={{backgroundColor: "#212121"}}>
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu"
-            component={linkBack}>
-            <ArrowBackIosIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            {props.title}
-          </Typography>
-          {(props.title==="My routes") ?
-          <React.Fragment>
-            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{color: "#FFFFFF"}}>
-                  <ExpandMoreIcon/>
-                  {typeRoutes}
-            </Button>
-              <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  keepMounted
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-              >
-                  <MenuItem onClick={handleOnClickPast}>past</MenuItem>
-                  <MenuItem onClick={handleOnClickUpcoming}>upcoming</MenuItem>
-              </Menu>
-          </React.Fragment>: <React.Fragment></React.Fragment>}
-          
-        </Toolbar>
-      </AppBar>
+      <ElevationScroll {...props}>
+        <AppBar style={{backgroundColor: "#212121"}}>
+          <Toolbar>
+            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu"
+              component={linkBack}>
+              <ArrowBackIosIcon />
+            </IconButton>
+            <Typography variant="h6" className={classes.title}>
+              {props.title}
+            </Typography>
+            {/*{(props.title==="My routes") ?
+            <React.Fragment>
+              <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{color: "#FFFFFF"}}>
+                    <ExpandMoreIcon/>
+                    {typeRoutes}
+              </Button>
+                <Menu
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                >
+                    <MenuItem onClick={handleOnClickPast}>past</MenuItem>
+                    <MenuItem onClick={handleOnClickUpcoming}>upcoming</MenuItem>
+                </Menu>
+              </React.Fragment>: <React.Fragment></React.Fragment>}*/}
+            
+          </Toolbar>
+        </AppBar>
+      </ElevationScroll>
     </div>
   );
 }
