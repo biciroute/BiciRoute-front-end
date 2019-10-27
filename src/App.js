@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import { Home } from './component/Home.js';
+import { PrivateHome } from './component/PrivateHome/PrivateHome.js';
 import { Login } from './component/Login/Login.js';
 import { SignUp } from './component/SignUp/SignUp.js';
 import ProfileView from './component/MyProfile/ProfileView.js'
@@ -16,7 +16,7 @@ class App extends Component {
 
     const HomeView = () => (
       <React.Fragment>
-        {localStorage.getItem('isLoggedIn') ? <React.Fragment><MyNavBar /><Home /></React.Fragment> : <PublicHome />}
+        {localStorage.getItem('isLoggedIn') ? <PrivateHome/>: <PublicHome />}
       </React.Fragment>
     );
 

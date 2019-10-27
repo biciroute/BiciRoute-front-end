@@ -1,5 +1,4 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
@@ -7,31 +6,13 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-
+import { Link } from 'react-router-dom';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-
-const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
+import MyAppBarStyles from './MyAppBarStyles.js';
 
 export default function MyAppBar(props) {
-  const classes = useStyles();
+  const classes = MyAppBarStyles();
   const [typeRoutes, setTypeRoutes] = React.useState("past");
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -53,15 +34,24 @@ export default function MyAppBar(props) {
       handleClose();
   }
 
-  const onClickBack = () =>{
-    window.location.href = "/home";
-  }
+  const urlBack = "/home";
+
+  const linkBack = React.useMemo(
+    () =>
+    React.forwardRef((linkProps, ref) => (
+        // With react-router-dom@^6.0.0 use `ref` instead of `innerRef`
+        // See https://github.com/ReactTraining/react-router/issues/6056
+        <Link to={urlBack} {...linkProps} innerRef={ref} />
+    )),
+    [urlBack],
+  );
 
   return (
     <div className={classes.root}>
       <AppBar position="static" style={{backgroundColor: "#212121"}}>
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={onClickBack}>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu"
+            component={linkBack}>
             <ArrowBackIosIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>

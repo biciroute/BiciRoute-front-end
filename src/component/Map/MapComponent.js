@@ -329,20 +329,19 @@ export class MapComponent extends React.Component {
         );
 
         return (
-        <div>   
+        <React.Fragment>   
             {this.state.checked ? (
             <div id="bar">
                 <SearchBar></SearchBar>
                 <Map
-                className="map"
-                google={this.props.google}
-                zoom={15}
-                style={mapStyles}
-                initialCenter={this.state.university}
-                centerAroundCurrentLocation={false}
-                mapTypeControl={false}
-                center={this.state.position}
-
+                    className="map"
+                    google={this.props.google}
+                    zoom={15}
+                    style={mapStyles}
+                    initialCenter={this.state.university}
+                    centerAroundCurrentLocation={false}
+                    mapTypeControl={false}
+                    center={this.state.position}
                 >
                 
                 {mark}
@@ -354,7 +353,6 @@ export class MapComponent extends React.Component {
                         strokeColor: '#354BD9',
                         strokeOpacity: 1,
                         strokeWeight: 2,
-
                     }}
                 />
 
@@ -382,67 +380,61 @@ export class MapComponent extends React.Component {
                     <NavigationIcon onClick={() => this.setDirectionRoute()}/>
                 </Fab>
                 
-                
             </Map>   
-            </div>
-            
+        </div>    
         ) : (
             <div id="map">    
                 <Map
-                className="map"
-                google={this.props.google}
-                zoom={15}
-                style={mapStyles}
-                initialCenter={this.state.university}
-                centerAroundCurrentLocation={false}
-                mapTypeControl={false}
-                center={this.state.position}
-
+                    className="map"
+                    google={this.props.google}
+                    zoom={15}
+                    style={mapStyles}
+                    initialCenter={this.state.university}
+                    centerAroundCurrentLocation={false}
+                    mapTypeControl={false}
+                    center={this.state.position}
                 >
-                
-                {mark}
+                    {mark}
 
-                <Polyline
-                    path={this.state.pathRoute}
-                    geodesic={true}
-                    options={{
-                        strokeColor: '#354BD9',
-                        strokeOpacity: 1,
-                        strokeWeight: 2,
+                    <Polyline
+                        path={this.state.pathRoute}
+                        geodesic={true}
+                        options={{
+                            strokeColor: '#354BD9',
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                        }}
+                    />
 
-                    }}
-                />
+                    <Polyline
+                        path={this.state.pathRouteDestinationPlace}
+                        geodesic={true}
+                        options={{
+                            strokeColor: '#38B44F',
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                        }}
+                    />
 
-                <Polyline
-                    path={this.state.pathRouteDestinationPlace}
-                    geodesic={true}
-                    options={{
-                        strokeColor: '#38B44F',
-                        strokeOpacity: 1,
-                        strokeWeight: 2,
-                    }}
-                />
+                    <Polyline
+                        path={this.state.pathRouteOriginPlace}
+                        geodesic={true}
+                        options={{
+                            strokeColor: '#38B44F',
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                        }}
+                    />
 
-                <Polyline
-                    path={this.state.pathRouteOriginPlace}
-                    geodesic={true}
-                    options={{
-                        strokeColor: '#38B44F',
-                        strokeOpacity: 1,
-                        strokeWeight: 2,
-                    }}
-                />
-
-                <Fab id="fab" color="primary" aria-label="add" className={classes.fab} >
-                    <AddIcon onClick={() => this.changeStatus(true)}/>
-                </Fab>
-             
-            </Map>
+                    <Fab id="fab" color="primary" aria-label="add" className={classes.fab} >
+                        <AddIcon onClick={() => this.changeStatus(true)}/>
+                    </Fab>
+                </Map>
             </div>
             )}
 
         );
-        </div>
+        </React.Fragment>
             
         );
     }
