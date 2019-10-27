@@ -3,6 +3,7 @@ import {RouteList} from '../RouteList/RouteList.js';
 import './MyRoutes.css';
 import axios from 'axios';
 import swal from 'sweetalert';
+import MyAppBar from '../MyAppBar/MyAppBar.js';
 
 export class MyRoutes extends Component{
 
@@ -55,9 +56,10 @@ export class MyRoutes extends Component{
 
     render(){
         return (
-            <div className="root-myroutes">
-                <RouteList routeList={this.state.routeList}/>
-            </div>
+            <React.Fragment>
+                <MyAppBar title="My routes"/>
+                
+            </React.Fragment>
         );
     }
 }

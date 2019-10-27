@@ -149,7 +149,7 @@ export class SignUp extends React.Component {
           }).then(() => {
             localStorage.setItem("accessToken", response.data.accessToken);
             var loggedUser = {
-              firstName: response.data.firstName
+              firstName: response.data.firstName,
             }
             localStorage.setItem("loggedUser", JSON.stringify(loggedUser))
             localStorage.setItem("isLoggedIn", true);

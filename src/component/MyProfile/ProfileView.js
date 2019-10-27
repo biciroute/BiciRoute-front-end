@@ -160,7 +160,7 @@ export default class ProfileView extends Component {
 
   fetchTaks() {
     let Profile = this
-    this.axios.get('v1/user/5db07b44f8a28e293c6ddfc0')
+    this.axios.get('http://localhost:8080/v1/user/5db53231895d2a050cb2f821')
       .then(function (response) {
         let user = response.data
         Profile.setState({name:user.firstName+" "+user.lastName, email: user.email, marca: user.bicicle.brand , color: user.bicicle.color, 
