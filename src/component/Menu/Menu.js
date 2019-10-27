@@ -24,7 +24,7 @@ export class Menu extends React.Component {
     render() {
         return (
             <div>
-                <MenuIcon onClick={() => this.setState({ showNav: true })} style={{ fill: "white", position: "absolute", top: 0, left: 0, zIndex: 1 }} />
+                <MenuIcon onClick={() => this.setState({ showNav: true })} style={{ margin: "3px", fill: "white", position: "absolute", top: 0, left: 0, zIndex: 1 }} />
 
                 <SideNav
                     showNav={this.state.showNav}
@@ -41,7 +41,7 @@ export class Menu extends React.Component {
                             <AssignmentIndIcon />
                             <span className="text-list">My Account</span>
                         </ItemMenu>,
-                        <ItemMenu onClick={() => this.onClick(3)} clicked={3 === this.state.selectItem} href="/mylastroutes">
+                        <ItemMenu onClick={() => this.onClick(3)} clicked={3 === this.state.selectItem} href="/myroutes">
                             <DirectionsBikeIcon />
                             <span className="text-list">Last Routes</span>
                         </ItemMenu>,

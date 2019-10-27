@@ -26,7 +26,7 @@ export class CardRoute extends Component{
     render(){
         return(
             <div className="cardRoute">
-                <MDBCard>
+                {/*<MDBCard>
                     <a onClick={this.handleCardClick}>
                     <MDBCardImage className="img-fluid" src={process.env.PUBLIC_URL+ "/images/map.PNG"} waves />
                     <MDBCardBody>
@@ -36,7 +36,7 @@ export class CardRoute extends Component{
                         </div>
                     </MDBCardBody>
                     </a>
-                </MDBCard>
+                </MDBCard>*/}
             </div>
             
         );        

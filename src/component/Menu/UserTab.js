@@ -10,7 +10,7 @@ export class UserTab extends React.Component {
                     <img src="https://bootdey.com/img/Content/avatar/avatar2.png"></img>
                 </div>
                 <div className="name-content">
-                    <p>Welcome,</p>
+                    <p>Welcome, User</p>
                     <h1></h1>
                 </div>
             </div>
