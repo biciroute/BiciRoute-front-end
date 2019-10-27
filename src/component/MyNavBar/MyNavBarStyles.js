@@ -5,7 +5,6 @@ const drawerWidth = 240;
 const useStyles = makeStyles(theme => ({
   root: {
     display: "flex",
-    marginBottom: "20px"
   },
   icon: {
     color: "#FFFFFA"
