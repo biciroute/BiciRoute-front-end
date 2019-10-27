@@ -27,7 +27,7 @@ export default function RouteCard(props) {
             </IconButton>
           }
           title={route}
-          subheader="September 14, 2016"
+          subheader={props.date}
         />
         <CardMedia
           className={classes.media}
