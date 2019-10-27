@@ -58,7 +58,11 @@ const profileStyles = StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         position: 'absolute',
-        backgroundColor: "#ffffff"
+        backgroundColor: "#ffffff",
+        borderColor: "#212121",
+        borderTopWidth: "thick",
+        borderLeftWidth: "thick",
+        borderRightWidth: "thick"
       },
       badgesDetail: {
         alignSelf: 'center',

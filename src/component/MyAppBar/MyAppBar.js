@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function MyAppBar() {
+export default function MyAppBar(props) {
   const classes = useStyles();
   const [typeRoutes, setTypeRoutes] = React.useState("past");
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -65,24 +65,26 @@ export default function MyAppBar() {
             <ArrowBackIosIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            My Routes
+            {props.title}
           </Typography>
-
+          {(props.title==="My routes") ?
+          <React.Fragment>
+            <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{color: "#FFFFFF"}}>
+                  <ExpandMoreIcon/>
+                  {typeRoutes}
+            </Button>
+              <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleClose}
+              >
+                  <MenuItem onClick={handleOnClickPast}>past</MenuItem>
+                  <MenuItem onClick={handleOnClickUpcoming}>upcoming</MenuItem>
+              </Menu>
+          </React.Fragment>: <React.Fragment></React.Fragment>}
           
-          <Button aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick} style={{color: "#FFFFFF"}}>
-                <ExpandMoreIcon/>
-                {typeRoutes}
-          </Button>
-            <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-            >
-                <MenuItem onClick={handleOnClickPast}>past</MenuItem>
-                <MenuItem onClick={handleOnClickUpcoming}>upcoming</MenuItem>
-            </Menu>
         </Toolbar>
       </AppBar>
     </div>

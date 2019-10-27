@@ -34,13 +34,13 @@ class App extends Component {
 
     const ProfileVieww = () => (
       <React.Fragment>
-        {localStorage.getItem('isLoggedIn') ? <React.Fragment><MyAppBar /><ProfileView/></React.Fragment> : <Login />}
+        {localStorage.getItem('isLoggedIn') ? <React.Fragment><MyAppBar title="My profile"/><ProfileView/></React.Fragment> : <Login />}
       </React.Fragment>
     );
 
     const MyRoutesView = () => (
       <React.Fragment>
-        {localStorage.getItem('isLoggedIn')? <React.Fragment><MyAppBar/><MyRoutes /></React.Fragment> : <Login />}
+        {localStorage.getItem('isLoggedIn')? <React.Fragment><MyAppBar title="My routes"/><MyRoutes /></React.Fragment> : <Login />}
       </React.Fragment>
     );
 
