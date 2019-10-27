@@ -16,8 +16,10 @@ import { MDBCol, MDBRow } from "mdbreact";
 import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
 import axios from 'axios'
 import swal from 'sweetalert';
+import MyProfileStyles from './MyProfileStyles.js';
 
-export default class ProfileView extends React.Component {
+
+export default class ProfileView extends Component {
   constructor(props) {
     super(props);
 
@@ -31,6 +33,8 @@ export default class ProfileView extends React.Component {
     this.handleCorreo = this.handleCorreo.bind(this);
     this.handleProfile = this.handleProfile.bind(this);
   }
+
+ 
 
   setCiudad(newCiudad) {
     this.setState({ ciudad: newCiudad });
@@ -176,7 +180,9 @@ export default class ProfileView extends React.Component {
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: "#051424",
+    backgroundColor: "#ADADAD",
+    borderColor: "#212121",
+    borderBottomWidth: "thick"
   },
   headerContent: {
     padding: 30,
@@ -300,7 +306,7 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   container: {
-    marginLeft: 0
+    marginLeft: 0,
   }
 });
 

@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import {CardRoute} from '../CardRoute/CardRoute.js';
 import './RouteList.css';
 
 import RouteCard from '../RouteCard/RouteCard.js';

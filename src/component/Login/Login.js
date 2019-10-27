@@ -103,8 +103,11 @@ export class Login extends React.Component {
         password: this.state.password
       })
         .then(function (response) {
-          console.log(response.data);
           localStorage.setItem("accessToken", response.data.accessToken);
+          var loggedUser = {
+            firstName: response.data.firstName
+          }
+          localStorage.setItem("loggedUser", JSON.stringify(loggedUser))
           localStorage.setItem("isLoggedIn", true);
           window.location.href = "/home";
         })

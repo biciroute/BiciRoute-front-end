@@ -33,7 +33,7 @@ export class PublicHome extends Component{
                 <MDBCollapse id="navbarCollapse" isOpen={this.state.isOpen} navbar>
                     <MDBNavbarNav left>
                         <MDBNavItem active>
-                            <MDBNavLink to="#!">Home</MDBNavLink>
+                            <MDBNavLink to="/home">Home</MDBNavLink>
                         </MDBNavItem>
                         <MDBNavItem>
                             <MDBNavLink to="#!">Help</MDBNavLink>

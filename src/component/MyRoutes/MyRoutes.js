@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import {RouteList} from '../RouteList/RouteList.js';
 import './MyRoutes.css';
-import MyAppBar from '../MyAppBar/MyAppBar.js';
 
 export class MyRoutes extends Component{
     render(){
@@ -18,7 +17,6 @@ export class MyRoutes extends Component{
         }] : JSON.parse(localStorage.getItem("lastroutes"));
         return (
             <div className="root-myroutes">
-                <MyAppBar />
                 <RouteList routeList={lastroutes}/>
             </div>
         );
