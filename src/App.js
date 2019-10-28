@@ -40,7 +40,7 @@ class App extends Component {
 
     const MyRoutesView = () => (
       <React.Fragment>
-        {localStorage.getItem('isLoggedIn')? <MyRoutes /> : <Login />}
+        {localStorage.getItem('isLoggedIn')? <MyRoutes/> : <Login />}
       </React.Fragment>
     );
 
