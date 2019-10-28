@@ -349,6 +349,7 @@ export class MapComponent extends React.Component {
         <React.Fragment>               
             <div id="bar">
                 <SearchBar></SearchBar>
+                
                 <Map
                     className="map"
                     google={this.props.google}
