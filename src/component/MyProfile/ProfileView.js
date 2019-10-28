@@ -169,7 +169,7 @@ export default class ProfileView extends Component {
       .catch(function (error) {
         swal({
           title: "Ooops!",
-          text: "Error al cargar la pagina",
+          text: "This page could not be loaded. Please refresh the page.",
           icon: "error",
           timer: 2000,
           button: false,
