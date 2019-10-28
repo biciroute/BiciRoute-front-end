@@ -48,7 +48,12 @@ const useStyles = theme => ({
         justifyContent: 'center',
 
     },
-  
+    fab: {
+        margin: theme.spacing.unit, // You might not need this now
+        position: "fixed",
+        bottom: theme.spacing.unit * 2,
+        right: theme.spacing.unit * 3
+    },
     list: {
         width: 250,
     },
@@ -236,7 +241,7 @@ export class MapComponent extends React.Component {
                     icon:bici,
                 }
             }
-            else if(i===3){
+            else if(i===1){
                 newMarker = {
                     university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
                     title: places[i],
