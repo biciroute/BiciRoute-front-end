@@ -7,7 +7,6 @@ import ProfileView from './component/MyProfile/ProfileView.js'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import {PublicHome} from './component/PublicHome/PublicHome.js';
 import {MyRoutes} from './component/MyRoutes/MyRoutes.js';
-import MyNavBar from './component/MyNavBar/MyNavBar.js';
 import MyAppBar from './component/MyAppBar/MyAppBar';
 
 class App extends Component {

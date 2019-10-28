@@ -10,26 +10,6 @@ import ElevationScroll from '../ElevationScroll/ElevationScroll.js';
 
 export default function MyAppBar(props) {
   const classes = MyAppBarStyles();
-  const [typeRoutes, setTypeRoutes] = React.useState("past");
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const handleClick = event => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleOnClickPast = () =>{
-        setTypeRoutes("past");
-        handleClose();
-  }
-
-  const handleOnClickUpcoming = () =>{
-      setTypeRoutes("upcoming");
-      handleClose();
-  }
 
   const urlBack = "/home";
 

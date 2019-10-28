@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
 import {RouteList} from '../RouteList/RouteList.js';
-import axios from 'axios';
-import swal from 'sweetalert';
 import MyAppBar from '../MyAppBar/MyAppBar.js';
-import MyRoutesStyles from './MyRoutesStyles.js';
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import RestoreSharpIcon from '@material-ui/icons/RestoreSharp';
 import UpdateSharpIcon from '@material-ui/icons/UpdateSharp';
-import BottomNavbar from '../BottomNavbar/BottomNavbar.js';
 
 export class MyRoutes extends Component{
 

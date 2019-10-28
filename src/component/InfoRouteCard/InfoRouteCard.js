@@ -7,12 +7,11 @@ import Typography from '@material-ui/core/Typography';
 import Slide from '@material-ui/core/Slide';
 import InfoRouteCardStyles from './InfoRouteCardStyles.js';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import { Container } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction="left" ref={ref} {...props} />;
 });
 
 export default function InfoRouteCard(props) {
@@ -46,6 +45,7 @@ export default function InfoRouteCard(props) {
                     <img
                         src={process.env.PUBLIC_URL+ "/images/map.PNG"}
                         className={classes.mapImage}
+                        alt="mapImage"
                     />
                 </Box>
             </Paper>

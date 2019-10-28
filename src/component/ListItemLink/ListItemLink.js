@@ -10,7 +10,6 @@ import ListItemLinkStyles from './ListItemLinkStyles.js';
 
 function ListItemLink(props) {
     const classes = ListItemLinkStyles();
-    const theme = useTheme();
 
     const { icon, primary, to } = props;
 
