@@ -7,11 +7,15 @@ import PropTypes from 'prop-types';
 import { fade } from '@material-ui/core/styles';
 import Fab from '@material-ui/core/Fab';
 import SearchBar from './SearchBar.js';
-import AddIcon from '@material-ui/icons/Add';
 import bici from './img/bici.png';
 import bicis from './img/bicis.png';
 import final from './img/final.png';
-
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 const mapStyles = {
     width: '100%',
@@ -119,8 +123,6 @@ export class MapComponent extends React.Component {
     }
 
 
-
-
     async getLanLnt(address) {
         const { google } = this.props;
         const geocoder = new google.maps.Geocoder();
@@ -161,6 +163,8 @@ export class MapComponent extends React.Component {
 
 
     async setDirectionRoute() {
+        this.handleOpen();
+        localStorage.setItem("viaje", true);
         const origin =  document.getElementById("source").value;
         const destination = document.getElementById("target").value;
         //Define route the  shortest of the origin to some place 
@@ -265,7 +269,6 @@ export class MapComponent extends React.Component {
         this.getCenterMap(origin, destination);
 
     }
-
 
     autocomplete() {
         const { google, map } = this.props;
@@ -392,6 +395,30 @@ export class MapComponent extends React.Component {
                 <Fab id="fab" color="primary" aria-label="add" className={classes.fab} onClick={() => this.setDirectionRoute()}>
                     <NavigationIcon />
                 </Fab>
+                </div>
+                
+                <div>
+                    <Button variant="outlined" color="primary" onClick={this.handleOpen}>
+                    INFO
+                    </Button>
+                    <Dialog
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    >
+                    <DialogTitle id="alert-dialog-title">{"IMPORTANTE"}</DialogTitle>
+                    <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                        Si eres un usuario nuevo, debes aprender el significado de cada uno de nuestros puntos.
+                        </DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={this.handleClose} color="primary">
+                        Close
+                        </Button>
+                    </DialogActions>
+                    </Dialog>
                 </div>
             </Map>   
         </div>    
