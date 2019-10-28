@@ -11,14 +11,30 @@ import StarRoundedIcon from '@material-ui/icons/StarRounded';
 import Grid from '@material-ui/core/Grid';
 import RouteCardStyles from './RouteCardStyles.js';
 import StarHalfRoundedIcon from '@material-ui/icons/StarHalfRounded';
+import InfoRouteCard from '../InfoRouteCard/InfoRouteCard.js';
 
 export default function RouteCard(props) {
   const classes = RouteCardStyles();
 
   const [route]=React.useState(props.origin+" - "+props.destination);
+  const [showInfo, setShowInfo] = React.useState(false);
+
+  const handleOpen = () =>{
+    setShowInfo(true);
+  }
+
+  const handleClose = () => {
+    setShowInfo(false);
+  };
 
   return (
-    <div className="cardRoute">
+    <React.Fragment>
+      <InfoRouteCard key={showInfo} open={showInfo} onClose={handleClose}
+        data={{
+          route: route,
+          date: props.date,
+          accompaniers: "20"
+        }}/>
       <Card className={classes.card}>
         <CardHeader
           action={
@@ -29,11 +45,12 @@ export default function RouteCard(props) {
           title={route}
           subheader={props.date}
         />
-        <CardMedia
-          className={classes.media}
-          image={process.env.PUBLIC_URL+ "/images/map.PNG"}
-          title="Paella dish"
-        />
+        <a onClick={handleOpen}>
+          <CardMedia
+            className={classes.media}
+            image={process.env.PUBLIC_URL+ "/images/map.PNG"}
+          />
+        </a>
         <CardContent>
           <Grid container>
             <Grid item xs={1}>
@@ -54,6 +71,7 @@ export default function RouteCard(props) {
           </Grid>
         </CardContent>
       </Card>
-    </div>
+      </React.Fragment>
+
   );
 }

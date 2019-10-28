@@ -68,8 +68,6 @@ export class MyRoutes extends Component{
             value: 0
         }
     }
-
-
     
     render(){
         return (
