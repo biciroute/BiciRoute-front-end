@@ -100,7 +100,7 @@ export default function MyMenu() {
                             src="https://bootdey.com/img/Content/avatar/avatar2.png"
                             style={{width: 150, height: 150}} />
                         <Typography variant="h6" noWrap align="center" style={{maxWidth: "160px", marginLeft: "auto", marginRight: "auto"}}>
-                            
+                            {JSON.parse(localStorage.getItem("loggedUser")).firstName}
                         </Typography>
                     </Box>
                 </Grid>

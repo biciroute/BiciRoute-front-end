@@ -22,6 +22,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import moment from 'moment';
+import {Redirect} from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
     grow: {
@@ -100,10 +101,18 @@ const useStyles = makeStyles(theme => ({
       </Slide>
     );
   }
+
+  function handleViaje(){
+    localStorage.setItem('viaje', false);
+    window.location.href="/myroutes";
+    //return <Redirect to={{pathname: "/myroutes"}}/>;
+    
+  };
+
+
 export default function SearchAppBar(props) {
   
   const [selectedHour, setSelectedHour] = React.useState();
-
   const handleHourChange = hour => {
     setSelectedHour(hour);
   };
@@ -166,6 +175,19 @@ export default function SearchAppBar(props) {
                       </div>
                     </div>
                     
+                    </Grid>
+                    <Grid
+                       container
+                       direction="row"
+                       justify="center"
+                       alignItems="center">
+                      
+                      {localStorage.getItem('viaje') ? (
+                      <div>
+                        <Button variant="outlined" style={{borderColor:"#00bfa5", color:"#00bfa5",marginBottom:"20px"}} onClick={handleViaje}>
+                          ACEPTAR VIAJE
+                        </Button>
+                      </div>):(<div></div>)}
                     </Grid>
                     </Grid>
                   </Toolbar>
