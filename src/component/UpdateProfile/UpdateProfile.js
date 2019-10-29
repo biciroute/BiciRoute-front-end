@@ -13,6 +13,7 @@ import { TextField } from '@material-ui/core';
 import UpdateProfileStyles from './UpdateProfileStyles.js'
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
+import { MenuItem } from '@material-ui/core';
 
 const styles = theme => ({
     root: {
@@ -53,6 +54,16 @@ const DialogActions = withStyles(theme => ({
         padding: theme.spacing(1),
     },
 }))(MuiDialogActions);
+
+const brands = [
+    { value: "Eline" }, { value: "Fox" }, { value: "GW" }, { value: "IceToolz" }, { value: "KMC" }, { value: "millenium" }, { value: "PRO" }, { value: "Raleigh" }, { value: "ritchey" }, { value: "scott" }, { value: "otro" }
+]
+const colors = [
+    { value: "Negro" }, { value: "Blanco" }, { value: "Amarillo" }, { value: "Rojo" }, { value: "Verde" }, { value: "Gris" }, { value: "Azul" }, { value: "Morado" }, { value: "Rosado" }, { value: "otro" }
+]
+const atributos = [
+    { value: "Bastidor" }, { value: "3 Ruedas" }, { value: "2 Ruedas" }, { value: "Manillar" }, { value: "Sillín" }, { value: "Luz" }, { value: "Puños" }, { value: "Velocímetro" }, { value: "Suspensión" }, { value: "Cierres rápidos" }, { value: "Amortiguación" }
+]
 
 export default function UpdateProfile(props) {
 
@@ -96,20 +107,28 @@ export default function UpdateProfile(props) {
                                 <Typography variant="h6" gutterBottom>Bici Settings</Typography>
                                 <Divider />
                                 <TextField
+                                    select
                                     id="standard-marca"
                                     label="Brand"
                                     value={props.state.marca}
+
                                     className={clsx(classes.textField, classes.dense)}
-                                    margin="dense"
-                                />
+                                    margin="auto"
+                                >{brands.map(option => (<MenuItem key={option.value} value={option.value}>
+                                    {option.value}</MenuItem>))}
+                                </TextField>
                                 <br />
                                 <TextField
+                                    select
                                     id="standard-color"
                                     label="Color"
                                     value={props.state.color}
                                     className={clsx(classes.textField, classes.dense)}
                                     margin="dense"
-                                />
+                                >
+                                    {colors.map(option => (<MenuItem key={option.value} value={option.value}>
+                                        {option.value}</MenuItem>))}
+                                </TextField>
                                 <br />
                             </Grid>
                         </Grid>
