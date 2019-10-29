@@ -17,7 +17,6 @@ import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
 import SearchBar from '../Map/SearchBar.js';
 import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
-import './RouteForm.css';
 
 import {
     MuiPickersUtilsProvider,
@@ -47,7 +46,7 @@ export default function PaperSheet(props) {
   };
 
   return (
-    <Container className={classes.container}>
+    <div className={classes.container}>
       <Paper className={classes.paper}>
         <Typography variant="h6" component="h3" align="center">
           Welcome {JSON.parse(localStorage.getItem('loggedUser')).firstName}!!
@@ -60,8 +59,9 @@ export default function PaperSheet(props) {
                 </Grid>
                 <Grid item style={{width: "90%"}}>
                     <TextField label="Origin"
-                        fullWidth 
-                        
+                        fullWidth
+                        id="source"
+                        style={{color: "#212121"}} 
                     />
                 </Grid>
             </Grid>
@@ -73,7 +73,9 @@ export default function PaperSheet(props) {
                 </Grid>
                 <Grid item style={{width: "90%"}}>
                     <TextField label="destination"
-                        fullWidth 
+                        fullWidth
+                        id="target"
+                        style={{color: "#212121"}}
                     />
                 </Grid>
             </Grid>
@@ -83,7 +85,7 @@ export default function PaperSheet(props) {
                 <Grid item style={{width: "10%"}}>
                     <DirectionsBikeIcon />
                 </Grid>
-                <Grid item style={{width: "90%"}}>
+                <Grid item>
                     <MuiPickersUtilsProvider utils={DateFnsUtils} >
                     <KeyboardTimePicker
                         margin="normal"
@@ -100,6 +102,6 @@ export default function PaperSheet(props) {
             </Grid>
         </div>
       </Paper>
-    </Container>
+    </div>
   );
 }

@@ -289,8 +289,6 @@ export class MapComponent extends React.Component {
             { 'country': ['co'] });
         autoTgt.setComponentRestrictions(
             { 'country': ['co'] });
-
-
     }
 
 
@@ -351,7 +349,7 @@ export class MapComponent extends React.Component {
         return (
         <React.Fragment>               
             <div id="bar">
-                <SearchBar></SearchBar>
+                {/*<SearchBar></SearchBar>*/}
                 
                 <Map
                     className="map"
