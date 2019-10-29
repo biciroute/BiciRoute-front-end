@@ -13,9 +13,12 @@ import Link from '@material-ui/core/Link';
 import HomeIcon from '@material-ui/icons/Home';
 import { MDBCol, MDBRow } from "mdbreact";
 import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
+import Button from '@material-ui/core/Button';
 import axios from 'axios'
 import swal from 'sweetalert';
 import MyProfileStyles from './MyProfileStyles.js';
+import UpdateProfile from '../UpdateProfile/UpdateProfile.js';
+
 
 
 const styles = MyProfileStyles;
@@ -26,16 +29,24 @@ export default class ProfileView extends Component {
 
     this.state = {
       profile: true,
-      name: "", email: "", ciudad: "Bogotá, Colombia", followers: 200, following: 200, 
+      name: "", email: "", ciudad: "Bogotá, Colombia", followers: 200, following: 200,
       trips: Math.floor(Math.random() * 150), distanceTraveled: Math.floor(Math.random() * 300),
-      marca:"", color: "", user : {}, bici : {}
+      marca: "", color: "", user: {}, bici: {},
+      open: false
     };
 
     this.handleCorreo = this.handleCorreo.bind(this);
     this.handleProfile = this.handleProfile.bind(this);
+    this.onOpen = this.onOpen.bind(this);
+    this.onClose = this.onClose.bind(this);
   }
 
- 
+  onOpen() {
+    this.setState({ open: true });
+  }
+  onClose() {
+    this.setState({ open: false });
+  }
 
   setCiudad(newCiudad) {
     this.setState({ ciudad: newCiudad });
@@ -114,15 +125,18 @@ export default class ProfileView extends Component {
                 </MDBRow>
                 <Text id="email" style={styles.description}>{this.state.email}</Text>
                 <Text id="ciudad" style={styles.description}>{this.state.ciudad}</Text>
-                <ModalModify style={styles.buttonContainer} user={this.state.user} ></ModalModify>
+                {/*<ModalModify style={styles.buttonContainer} user={this.state.user} ></ModalModify>*/}
               </View>
             ) : (
                 <View id="myBiciProfile" style={styles.bodyContent2}>
                   <Text id="marca" style={styles.description}>Brand: {this.state.marca}</Text>
                   <Text id="color" style={styles.description}>Color: {this.state.color}</Text>
-                  <ModalModifyBici style={styles.buttonContainer} bici={this.state.bici} ></ModalModifyBici>
+                  {/*<ModalModifyBici style={styles.buttonContainer} bici={this.state.bici} ></ModalModifyBici>*/}
                 </View>)}
+            <Button variant="outlined" color="primary" style={{ backgroundColor: "#212121", width: "300px", color: "#FFFFFA" }} onClick={this.onOpen} > Edit </Button>
+            <UpdateProfile open={this.state.open} onClose={this.onClose} key={this.state.open} state={this.state} />
           </View>
+
           <View style={styles.photosCard}>
             <Text style={styles.cardTittle}>Friends</Text>
             <View style={styles.photosContainer}>
@@ -155,15 +169,17 @@ export default class ProfileView extends Component {
     this.fetchTaks();
   }
 
-  
+
 
   fetchTaks() {
     let Profile = this
     this.axios.get('http://localhost:8080/v1/user/5db53231895d2a050cb2f821')
       .then(function (response) {
         let user = response.data
-        Profile.setState({name:user.firstName+" "+user.lastName, email: user.email, marca: user.bicicle.brand , color: user.bicicle.color, 
-        user : user, bici : user.bicicle  });             
+        Profile.setState({
+          name: user.firstName + " " + user.lastName, email: user.email, marca: user.bicicle.brand, color: user.bicicle.color,
+          user: user, bici: user.bicicle
+        });
       })
       .catch(function (error) {
         swal({
