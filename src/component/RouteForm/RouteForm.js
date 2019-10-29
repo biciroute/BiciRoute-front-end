@@ -17,7 +17,7 @@ import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
 import SearchBar from '../Map/SearchBar.js';
 import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
-
+import swal from 'sweetalert';
 import {
     MuiPickersUtilsProvider,
     KeyboardDatePicker,
@@ -44,6 +44,17 @@ export default function PaperSheet(props) {
     window.location.href="/myroutes";
     //return <Redirect to={{pathname: "/myroutes"}}/>;
   };
+  const handleOnSearch = () =>{
+    swal({
+      title: "loading",
+      text: "The best route was found for you!!",
+      icon: "success",
+      timer: 2000,
+      button: false,
+    }).then(() => {
+      //window.location.href = "/home";
+    });
+  }
 
   return (
     <div className={classes.container}>
@@ -85,19 +96,33 @@ export default function PaperSheet(props) {
                 <Grid item style={{width: "10%"}}>
                     <DirectionsBikeIcon />
                 </Grid>
-                <Grid item>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils} >
-                    <KeyboardTimePicker
-                        margin="normal"
-                        label="Departure time"
-                        value={selectedHour}
-                        onChange={handleHourChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change time',
-                          'fill': 'white',
-                        }}
-                      />
-                      </MuiPickersUtilsProvider>
+                <Grid item style={{width: "30%"}}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils} style={{width: "100%"}}>
+                      <KeyboardTimePicker
+                          margin="normal"
+                          label="Departure time"
+                          value={selectedHour}
+                          onChange={handleHourChange}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change time',
+                            'fill': 'white',
+                          }}
+                          style={{width: "100%"}}
+                        />
+                    </MuiPickersUtilsProvider>
+                </Grid>
+                <Grid item style={{width: "60%"}}>
+                  <Container style={{textAlign: "center"}}>
+                    <div>
+                      <Button variant="contained" color="secondary"
+                        style={{width:"70%", backgroundColor: "#212121", color: "#FFFFFA"}}
+                        onClick={handleOnSearch}>
+                        Search
+                      </Button>
+                    </div>
+                      
+                  </Container>
+                  
                 </Grid>
             </Grid>
         </div>
