@@ -146,7 +146,7 @@ export default class ProfileView extends Component {
                 </View>)}
             <Button variant="outlined" color="primary" style={{ backgroundColor: "#212121", width: "300px", color: "#FFFFFA" }} onClick={this.onOpen} > Edit </Button>
             <UpdateProfile open={this.state.open} onClose={this.onClose} key={this.state.open} state={this.state}
-             handleBrandChange={this.handleBrandChange} handleColorChange={this.handleColorChange}/>
+             />
           </View>
 
           <View style={styles.photosCard}>
@@ -171,13 +171,12 @@ export default class ProfileView extends Component {
     );
   }
 
-  UNSAFE_componentWillMount() {
+  componentDidMount() {
     this.axios = axios.create({
       baseURL: 'http://localhost:8080/',
       timeout: 1000,
       headers: { 'Authorization': 'Bearer ' + localStorage.getItem("accessToken") }
     });
-
     this.fetchTaks();
   }
 
@@ -190,7 +189,7 @@ export default class ProfileView extends Component {
         let user = response.data
         Profile.setState({
           name: user.firstName + " " + user.lastName, email: user.email, marca: user.bicicle.brand, color: user.bicicle.color,
-          user: user, bici: user.bicicle
+          user: user, bici: user.bicicle,
         });
       })
       .catch(function (error) {
