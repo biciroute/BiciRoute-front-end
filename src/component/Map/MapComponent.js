@@ -90,8 +90,11 @@ export class MapComponent extends React.Component {
             ],
             carres: [
                 "Calle 100, Troncal Autopista Norte, Cundinamarca, Colombia",
-                "Parque Nacional, Calle 36, Bogotá, Colombia",
-                "Virrey Solis Castellana, Autopista Norte, Bogotá, Colombia",
+                "Andino, Avenida Calle 82, Bogotá, Colombia",
+                "Parque El Virrey, Calle 88, Bogotá, Colombia",
+                
+                "Parque 93, Cl. 93a #13-25, Bogotá",
+                "Parque Del Japon, Carrera 11, Bogotá"
             ]
         };
 

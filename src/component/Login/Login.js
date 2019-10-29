@@ -109,6 +109,7 @@ export class Login extends React.Component {
           }
           localStorage.setItem("loggedUser", JSON.stringify(loggedUser))
           localStorage.setItem("isLoggedIn", true);
+          localStorage.setItem("userId",response.data.userId);
           window.location.href = "/home";
         })
         .catch(function (error) {
