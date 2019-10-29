@@ -39,6 +39,17 @@ export default class ProfileView extends Component {
     this.handleProfile = this.handleProfile.bind(this);
     this.onOpen = this.onOpen.bind(this);
     this.onClose = this.onClose.bind(this);
+    this.handleBrandChange = this.handleBrandChange.bind(this);
+    this.handleColorChange = this.handleColorChange.bind(this);
+  }
+
+  handleColorChange(e) {
+    this.setState({ color: e.target.value });
+    localStorage.setItem("color", e.target.value);
+  }
+  handleBrandChange(e) {
+    this.setState({ marca: e.target.value });
+    localStorage.setItem("marca", e.target.value)
   }
 
   onOpen() {
@@ -131,10 +142,11 @@ export default class ProfileView extends Component {
                 <View id="myBiciProfile" style={styles.bodyContent2}>
                   <Text id="marca" style={styles.description}>Brand: {this.state.marca}</Text>
                   <Text id="color" style={styles.description}>Color: {this.state.color}</Text>
-                  <ModalModifyBici style={styles.buttonContainer} bici={this.state.bici} ></ModalModifyBici>
+                  {/*<ModalModifyBici style={styles.buttonContainer} bici={this.state.bici} ></ModalModifyBici>*/}
                 </View>)}
             <Button variant="outlined" color="primary" style={{ backgroundColor: "#212121", width: "300px", color: "#FFFFFA" }} onClick={this.onOpen} > Edit </Button>
-            <UpdateProfile open={this.state.open} onClose={this.onClose} key={this.state.open} state={this.state} />
+            <UpdateProfile open={this.state.open} onClose={this.onClose} key={this.state.open} state={this.state}
+             handleBrandChange={this.handleBrandChange} handleColorChange={this.handleColorChange}/>
           </View>
 
           <View style={styles.photosCard}>

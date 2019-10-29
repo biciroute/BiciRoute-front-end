@@ -14,6 +14,7 @@ import UpdateProfileStyles from './UpdateProfileStyles.js'
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
 import { MenuItem } from '@material-ui/core';
+import { tsConstructorType } from '@babel/types';
 
 const styles = theme => ({
     root: {
@@ -111,7 +112,7 @@ export default function UpdateProfile(props) {
                                     id="standard-marca"
                                     label="Brand"
                                     value={props.state.marca}
-
+                                    onChange={props.handleBrandChange}
                                     className={clsx(classes.textField, classes.dense)}
                                     margin="auto"
                                 >{brands.map(option => (<MenuItem key={option.value} value={option.value}>
@@ -123,6 +124,7 @@ export default function UpdateProfile(props) {
                                     id="standard-color"
                                     label="Color"
                                     value={props.state.color}
+                                    onChange={props.handleColorChange}
                                     className={clsx(classes.textField, classes.dense)}
                                     margin="dense"
                                 >
