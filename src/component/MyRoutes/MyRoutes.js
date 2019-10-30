@@ -5,6 +5,8 @@ import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import RestoreSharpIcon from '@material-ui/icons/RestoreSharp';
 import UpdateSharpIcon from '@material-ui/icons/UpdateSharp';
+import swal from 'sweetalert';
+import axios from 'axios';
 
 export class MyRoutes extends Component{
 
@@ -61,10 +63,36 @@ export class MyRoutes extends Component{
                     date: "16 dec 2019, 19:12"
                 }
             ],
-            value: 1
+            value: 1,
         }
+        this.axios= axios.create({
+            baseURL: 'https://biciroute-api.herokuapp.com/',
+            timeout: 1000,
+            headers: { 'Authorization': 'Bearer ' + localStorage.getItem("accessToken")}
+          });
     }
     
+    makeGetRequest(url){
+          
+    }
+
+    componentDidMount(){
+        this.axios.get('https://biciroute-api.herokuapp.com/v1/routes/user/'+ localStorage.getItem("userId"))
+        .then((response)=>{
+            console.log(response.data);
+        }).catch((error)=>{
+            swal({
+                title: "Ooops!",
+                text: "Something happened!!. Please, try again!",
+                icon: "error",
+                timer: 2000,
+                button: false
+            }).then(()=>{
+                //window.location.reload();
+            });
+        });
+    }
+
     render(){
         return (
             <React.Fragment>
