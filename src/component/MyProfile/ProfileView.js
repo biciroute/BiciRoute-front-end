@@ -187,12 +187,22 @@ export default class ProfileView extends Component {
     this.axios.get('http://localhost:8080/v1/user/5db53231895d2a050cb2f821')
       .then(function (response) {
         let user = response.data
-        Profile.setState({
-          name: user.firstName + " " + user.lastName, email: user.email, marca: user.bicicle.brand, color: user.bicicle.color,
-          user: user, bici: user.bicicle,
-        });
+        localStorage.setItem("loggedUser", JSON.stringify(user))
+        if(user.bicicle != null){
+          Profile.setState({
+            name: user.firstName + " " + user.lastName, email: user.email, marca: user.bicicle.brand, color: user.bicicle.color,
+            user: user, bici: user.bicicle,
+          });
+        }else{
+          Profile.setState({
+            name: user.firstName + " " + user.lastName, email: user.email, marca: "", color: "",
+            user: user, bici: {},
+          });
+        }
+        console.log(Profile.state.bici)
       })
       .catch(function (error) {
+        console.log(error)
         swal({
           title: "Ooops!",
           text: "This page could not be loaded. Please refresh the page.",

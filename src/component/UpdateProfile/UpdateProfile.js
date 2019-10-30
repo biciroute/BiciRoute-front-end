@@ -108,6 +108,11 @@ export default function UpdateProfile(props) {
 
     const handleSaveChanges = () =>{
         var arrName = name.split(" ");
+        if(props.state.bicicle){
+            console.log("asdjfnsdk")
+        }else{
+            console.log("fkjssssss")
+        }
         var info = {
             firstName: arrName[0],
             lastName: (arrName.length>1)? arrName[1]: "",
@@ -134,7 +139,7 @@ export default function UpdateProfile(props) {
         }).catch(function(error){
             swal({
             title: "Ooops!",
-                text: error.response,
+                text: "Fail update profile",
                 icon: "error",
                 timer: 2000,
                 button: false,
