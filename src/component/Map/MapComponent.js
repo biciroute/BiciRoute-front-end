@@ -16,6 +16,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import axios from 'axios';
+
 
 const mapStyles = {
     width: '100%',
@@ -88,15 +90,22 @@ export class MapComponent extends React.Component {
                     icon: bici,
                 },
             ],
-            carres: [
+            carres: []
+            
+            /*[
                 "Calle 100, Troncal Autopista Norte, Cundinamarca, Colombia",
                 "Andino, Avenida Calle 82, Bogotá, Colombia",
                 "Parque El Virrey, Calle 88, Bogotá, Colombia",
                 
                 "Parque 93, Cl. 93a #13-25, Bogotá",
                 "Parque Del Japon, Carrera 11, Bogotá"
-            ]
+            ]*/
         };
+        this.axios = axios.create({
+            baseURL: 'http://localhost:8080/v1/',
+            timeout: 1000,
+            //headers: { 'Authorization': 'Bearer ' + localStorage.getItem("Bearer") }
+        });
 
         // Route
         this.autocomplete = this.autocomplete.bind(this);
@@ -106,7 +115,12 @@ export class MapComponent extends React.Component {
         this.handleOpen = this.handleOpen.bind(this);
         this.handleStatusChange= this.handleStatusChange.bind(this);
         this.changeStatus=this.changeStatus.bind(this);
+
+        props.onChangePaintRoute(this.setDirectionRoute);
     }
+
+
+
     handleStatusChange(e) {
         this.setState({
             status: e.target.value
@@ -141,6 +155,23 @@ export class MapComponent extends React.Component {
         })
     }
 
+    
+    async reverseGeocode(latLng) {
+        const {google} = this.props;
+        const geocoder = new google.maps.Geocoder;
+        return new Promise((resolve, reject) => {
+            geocoder.geocode({ 'location': latLng }, function (results, status) {
+                if (status === 'OK') {
+                    resolve(results[0].formatted_address)
+                } else {
+                    window.alert('Directions ' + latLng + ' request failed due to ' + status);
+                    reject(status)
+                }
+            });
+        })
+    }
+
+
     async getCenterMap(sourceRoute, targetRoute) {
         const { google, map } = this.props;
         const coordinatesDestinations = []
@@ -170,12 +201,14 @@ export class MapComponent extends React.Component {
         localStorage.setItem("viaje", true);
         const origin =  document.getElementById("source").value;
         const destination = document.getElementById("target").value;
-        //Define route the  shortest of the origin to some place 
-        var theBestOriginToPlace = [1e9, "undefine", null];
-        var theBestDestinationToPlace = [1e9, "undefine", null];
 
+        //Define route the  shortest of the origin to some place 
+        var theBestOriginToPlace = [1e9, "undefine", null,JSON.stringify({})];
+        var theBestDestinationToPlace = [1e9, "undefine", null,JSON.stringify({})];
         for (var i = 0; i < this.state.carres.length; i++) {
-            var place = this.state.carres[i];
+            var commonRoute = this.state.carres[i];
+            const latLng = {lat: parseFloat(commonRoute.latitude), lng: parseFloat(commonRoute.longitude)};
+            var place = await this.reverseGeocode(latLng);
             var newPathRoute = await this.calculateRoute(origin, place);
             var distance = newPathRoute.routes[0].legs[0].distance.text;
             distance = parseFloat(distance.split(" ")[0].replace(",", "."));
@@ -183,13 +216,14 @@ export class MapComponent extends React.Component {
                 theBestOriginToPlace[1] = place;
                 theBestOriginToPlace[0] = Math.min(distance, theBestOriginToPlace[0])
                 theBestOriginToPlace[2] = newPathRoute.routes[0].overview_path;
+                theBestOriginToPlace[3] = commonRoute._id
             }
         }
-        console.log(destination)
         for (i = 0; i < this.state.carres.length; i++) {
-            place = this.state.carres[i];
-            //if(place === theBestOriginToPlace[1])continue;
+            var commonRoute = this.state.carres[i];
+            const latLng = {lat: parseFloat(commonRoute.latitude), lng: parseFloat(commonRoute.longitude)};         
             try {
+                place = await this.reverseGeocode(latLng);
                 newPathRoute = await this.calculateRoute(destination, place);
                 distance = newPathRoute.routes[0].legs[0].distance.text;
                 distance = parseFloat(distance.split(" ")[0].replace(",", "."));
@@ -197,9 +231,10 @@ export class MapComponent extends React.Component {
                     theBestDestinationToPlace[1] = place;
                     theBestDestinationToPlace[0] = Math.min(distance, theBestDestinationToPlace[0])
                     theBestDestinationToPlace[2] = newPathRoute.routes[0].overview_path;
+                    theBestDestinationToPlace[3] = commonRoute._id
+                    console.log( commonRoute._id)
+           
                 }
-
-
             } catch (error) {
 
             }
@@ -212,14 +247,17 @@ export class MapComponent extends React.Component {
             pathRouteOriginPlace: theBestOriginToPlace[2],
             open: false
         });
-
-        var newJSON = JSON.stringify( {
+        var newJSON = {
             origin : origin,
             destination :  destination,
             pathRouteDestinationPlace : theBestDestinationToPlace[1],
-            pathRouteOriginPlace : theBestOriginToPlace[1]
-        });
+            idpathRouteDestinationPlace : theBestDestinationToPlace[3],
+            pathRouteOriginPlace : theBestOriginToPlace[1],
+            idpathRouteOriginPlace : theBestOriginToPlace[3],
 
+        };
+        
+        this.suggestRoute(newJSON);
         if (localStorage.getItem('lastroutes') === undefined || localStorage.getItem('lastroutes') === null ) {
             localStorage.setItem('lastroutes', JSON.stringify([newJSON]))
         }else{
@@ -231,8 +269,6 @@ export class MapComponent extends React.Component {
             tdListJSON.push(newJSON);
             localStorage.setItem("lastroutes",JSON.stringify(tdListJSON));
         }
-
-
         const places = [origin, destination, theBestDestinationToPlace[1], theBestOriginToPlace[1]]
         this.setState({
             markers: []
@@ -267,11 +303,45 @@ export class MapComponent extends React.Component {
             
             this.state.markers.push(newMarker);
         }
-        console.log(this.state.markers)
-
         this.getCenterMap(origin, destination);
-
     }
+
+
+    hex(length, n) {
+        n = n.toString(16);
+        return (n.length===length)? n : "00000000".substring(n.length, length) + n;
+    }
+
+    jsonToStringId(json){
+        var idToParse = json
+        var idString = this.hex(8,idToParse.timestamp)+this.hex(6,idToParse.machineIdentifier)+this.hex(4,idToParse.processIdentifier)+this.hex(6,idToParse.counter);
+        return idString
+ 
+    }
+  
+
+    suggestRoute(newJSON){
+        var self = this;
+        var suggestJSON = {
+            
+            "origin": {
+                "_id": this.jsonToStringId(newJSON.idpathRouteOriginPlace)
+            },
+            "destination" : {
+                "_id": this.jsonToStringId(newJSON.idpathRouteDestinationPlace) 
+            }, 
+            "hour" : new Date(document.getElementById("hour").value) 
+        }
+        console.log(suggestJSON)
+        
+        this.axios.post('/routes/suggest' , (suggestJSON) )
+            .then(function (response) {
+                console.log(response.data)
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
 
     autocomplete() {
         const { google, map } = this.props;
@@ -305,7 +375,7 @@ export class MapComponent extends React.Component {
         return new Promise((resolve, reject) => {
             directionsService.route(request, (response, status) => {
                 if (status === 'OK') {
-                    console.log(response)
+                    //console.log(response)
                     resolve(response)
                 } else {
                     window.alert(destination + " ----- " + origin)
@@ -317,6 +387,18 @@ export class MapComponent extends React.Component {
         )
     }
 
+    getAllCommonRoutes(){
+        var self = this;
+        this.axios.get('/point/commonRoute')
+            .then(function (response) {
+            //console.log(response.data)
+            self.setState({ carres: response.data });
+       
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
     //https://stackoverflow.com/questions/26059762/callback-when-dom-is-loaded-in-react-js
     componentDidMount() {
         this.autocomplete();
@@ -325,16 +407,18 @@ export class MapComponent extends React.Component {
         }
     }
 
+
+
+
     componentDidUpdate(prevProps) {
         if (this.props.map !== prevProps.map) {
-            this.autocomplete();
-
+            this.autocomplete();    
+            this.getAllCommonRoutes();
         }
     }
 
     render() {
         const { classes } = this.props;
-        console.log("MARKERS "+JSON.stringify(this.state.markers));
         var mark = this.state.markers.map((td) =>
             <Marker
                 title={td.title}
@@ -393,11 +477,6 @@ export class MapComponent extends React.Component {
                         strokeWeight: 2,
                     }}
                 />
-                <div id="buttom">
-                <Fab id="fab" color="primary" aria-label="add" className={classes.fab} onClick={() => this.setDirectionRoute()}>
-                    <NavigationIcon />
-                </Fab>
-                </div>
                 
                 <div>
                     <Button variant="outlined" color="primary" onClick={this.handleOpen}>

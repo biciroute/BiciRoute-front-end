@@ -45,15 +45,8 @@ export default function PaperSheet(props) {
     //return <Redirect to={{pathname: "/myroutes"}}/>;
   };
   const handleOnSearch = () =>{
-    swal({
-      title: "loading",
-      text: "The best route was found for you!!",
-      icon: "success",
-      timer: 2000,
-      button: false,
-    }).then(() => {
-      //window.location.href = "/home";
-    });
+    //setDirectionRoute()
+    props.onChangePaintRoute();
   }
 
   return (
@@ -99,7 +92,10 @@ export default function PaperSheet(props) {
                 <Grid item style={{width: "30%"}}>
                     <MuiPickersUtilsProvider utils={DateFnsUtils} style={{width: "100%"}}>
                       <KeyboardTimePicker
+                          id = "hour"
                           margin="normal"
+                          ampm = {false}
+                          format =  "yyyy-MM-dd HH:mm:ss" 
                           label="Departure time"
                           value={selectedHour}
                           onChange={handleHourChange}

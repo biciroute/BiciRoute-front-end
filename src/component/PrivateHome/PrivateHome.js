@@ -6,12 +6,26 @@ import { GoogleApiWrapper, Map, Marker, Polyline } from 'google-maps-react';
 
 export class PrivateHome extends React.Component{
 
+    constructor(props){
+        super(props);
+        this.state = {
+            paintRoute  : null
+        }
+        this.changePaintRoute = this.changePaintRoute.bind(this);
+    }
+
+    changePaintRoute(newRoute){
+        this.setState({
+            paintRoute : newRoute,
+        });
+    }
+
     render(){
         return(
             <React.Fragment>
                 <MyNavBar/>
-                <MapComponent/>
-                <RouteForm />
+                <MapComponent onChangePaintRoute={this.changePaintRoute}/>
+                <RouteForm key={this.changePaintRoute} onChangePaintRoute={this.state.paintRoute}/>
             </React.Fragment>
         );
     }
