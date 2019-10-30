@@ -12,6 +12,7 @@ import {
 import './ModalModify.css';
 import Box from '@material-ui/core/Box';
 import swal from 'sweetalert';
+import axios from 'axios';
 
 export default class ModalModify extends Component {
 
@@ -46,6 +47,42 @@ export default class ModalModify extends Component {
     }
   }
 
+  submitHandler(e){
+    e.preventDefault();
+    var info = {
+      name: this.state.name,
+      email: this.state.email,
+      city: this.state.city,
+      bicicle: {
+        brand: "Fox",
+        color: "White"
+      }
+    }
+    localStorage.setItem("info",info);
+    axios.put('http://localhost:8080/v1/user',info)
+      .then(function(response){
+        console.log(response.data);
+        swal({
+          title:"Good job",
+          text: "You have updated your profile sucessfully",
+          icon:"success",
+          timer:2000,
+          button:false,
+        }).then(() =>{
+          window.location.reload(true);
+        });
+      })
+      .catch(function(error){
+        swal({
+          title: "Ooops!",
+            text: error.response,
+            icon: "error",
+            timer: 2000,
+            button: false,
+        });
+      });
+  } ;
+
   render() {
     return (
       <Popup trigger={<TouchableOpacity style={styles.buttonContainer} activeOpacity={.7}>
@@ -60,7 +97,7 @@ export default class ModalModify extends Component {
                 <ScrollView contentContainerStyle={styles.modalInfo}>
                   <Image style={styles.image} source={{ uri: 'https://bootdey.com/img/Content/avatar/avatar2.png' }} />
                   <hr />
-                  <form noValidate autoComplete="off" className="form" id="formModify">
+                  <form noValidate autoComplete="off" className="form" id="formModify" onSubmit={this.submitHandler}>
                     <TextField
                       disabled
                       id="name"
@@ -100,7 +137,8 @@ export default class ModalModify extends Component {
             <View style={styles.popupButtons}>
               <div className="actions">
                 <Box display="flex">
-                  <TouchableOpacity style={styles.btnSave} activeOpacity={.7} onClick={() => { close(); swal("Modify", "You clicked the button!", "success"); window.location.reload(true); }}>
+                  Aqui es donde tiene que ir el onSubmi
+                  <TouchableOpacity style={styles.btnSave} activeOpacity={.7} onClick={() => { }}>
                     <Text>Modify</Text>
                   </TouchableOpacity>
                   <TouchableOpacity style={styles.btnClose} activeOpacity={.7} onClick={() => { close(); }}>
