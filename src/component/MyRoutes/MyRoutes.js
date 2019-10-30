@@ -7,6 +7,7 @@ import RestoreSharpIcon from '@material-ui/icons/RestoreSharp';
 import UpdateSharpIcon from '@material-ui/icons/UpdateSharp';
 import swal from 'sweetalert';
 import axios from 'axios';
+import Geocode from 'google-maps-react';
 
 export class MyRoutes extends Component{
 
@@ -72,14 +73,47 @@ export class MyRoutes extends Component{
           });
     }
     
-    makeGetRequest(url){
-          
+    fromLatLngToAddress(latitude, longitude){
+        Geocode.fromLatLng(latitude, longitude).then(
+            response => {
+              const address = response.results[0].formatted_address;
+            console.log(address);
+        },
+        error => {
+            console.error(error);
+        }
+        );
     }
+    
 
     componentDidMount(){
         this.axios.get('https://biciroute-api.herokuapp.com/v1/routes/user/'+ localStorage.getItem("userId"))
         .then((response)=>{
-            console.log(response.data);
+            
+            this.setState({
+                routeList: [],
+                pastRoutes: [],
+                upcomingRoutes: []
+            });
+            var routes = response.data
+            console.log(routes);
+            for(var i=0; i<routes.length; i++){
+                var origin = "Origin->["+routes[i].origin.latitude+","+routes[i].origin.longitude+"]";
+                var destination = "Destination->["+routes[i].destination.latitude+","+routes[i].destination.longitude+"]";
+                var date = routes[i]._id.date
+                var timestamp = routes[i]._id.timestamp
+                var route = {origin, destination, date}
+                var currentTimeInMs = Math.floor(Date.now() / 1000);
+                if(currentTimeInMs>=timestamp){
+                    this.setState(prevState => ({
+                        pastRoutes: [...prevState.pastRoutes, route]
+                    }))
+                }else{
+                    this.setState(prevState => ({
+                        upcomingRoutes: [...prevState.upcomingRoutes, route]
+                    }))
+                }
+            }
         }).catch((error)=>{
             swal({
                 title: "Ooops!",

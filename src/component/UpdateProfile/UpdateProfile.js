@@ -129,7 +129,6 @@ export default function UpdateProfile(props) {
             password: password
         }
 
-
         if( brand != "" || color != "" ){
             let bike = {
                 brand: brand,
@@ -157,7 +156,8 @@ export default function UpdateProfile(props) {
                     timer: 2000,
                     button: false,
                 }).then(() => {
-                    props.onClose();
+                    //props.onClose();
+                    window.location.reload();
                 });
             }).catch(function (error) {
                 swal({
