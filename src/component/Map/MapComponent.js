@@ -167,7 +167,7 @@ export class MapComponent extends React.Component {
 
 
     async setDirectionRoute() {
-        this.handleOpen();
+        //this.handleOpen();
         localStorage.setItem("viaje", true);
         const origin =  document.getElementById("source").value;
         const destination = document.getElementById("target").value;
@@ -350,7 +350,6 @@ export class MapComponent extends React.Component {
         return (
         <React.Fragment>               
             <div id="bar">
-                {/*<SearchBar></SearchBar>*/}
                 <Map
                     className="map"
                     google={this.props.google}

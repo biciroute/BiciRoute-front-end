@@ -33,6 +33,7 @@ import TextField from '@material-ui/core/TextField';
 export default function PaperSheet(props) {
   const classes = RouteFormStyles();
   const [state, setState] = React.useState({origin: null, destination: null});
+  const [routeFound, SetRouteFound] = React.useState(false);
 
   const handleChangeState = prop => event =>{
     setState({
@@ -69,7 +70,8 @@ export default function PaperSheet(props) {
         timer: 2000,
         button: false,
       }).then(() => {
-          props.paintRoute();
+        SetRouteFound(true);
+        props.paintRoute();
       });
     }
 
@@ -133,6 +135,20 @@ export default function PaperSheet(props) {
                     </MuiPickersUtilsProvider>
                 </Grid>
                 <Grid item style={{width: "60%"}}>
+                  {(routeFound)?
+                  <Container style={{textAlign: "center"}}>
+                      <Button variant="contained" color="primary"
+                        style={{width:"40%", backgroundColor: "#00FF00", color: "#FFFFFA", margin: "4px"}}
+                        >
+                        Confirm
+                      </Button>
+                      <Button variant="contained" color="secondary"
+                        style={{width:"40%", color: "#FFFFFA", margin: "4px"}}
+                        >
+                        Cancel
+                      </Button>
+                  </Container>
+                  :
                   <Container style={{textAlign: "center"}}>
                     <div>
                       <Button variant="contained" color="secondary"
@@ -141,7 +157,8 @@ export default function PaperSheet(props) {
                         Search
                       </Button>
                     </div>
-                  </Container>
+                  </Container>}
+                  
                   
                 </Grid>
             </Grid>
