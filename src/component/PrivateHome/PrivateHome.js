@@ -11,7 +11,7 @@ export class PrivateHome extends React.Component{
             <React.Fragment>
                 <MyNavBar/>
                 <MapComponent/>
-                <RouteForm />
+                {/*<RouteForm />*/}
             </React.Fragment>
         );
     }

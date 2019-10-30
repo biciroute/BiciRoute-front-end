@@ -16,6 +16,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import RouteForm from '../RouteForm/RouteForm.js';
 
 const mapStyles = {
     width: '100%',
@@ -350,7 +351,6 @@ export class MapComponent extends React.Component {
         <React.Fragment>               
             <div id="bar">
                 {/*<SearchBar></SearchBar>*/}
-                
                 <Map
                     className="map"
                     google={this.props.google}
@@ -422,7 +422,8 @@ export class MapComponent extends React.Component {
                     </DialogActions>
                     </Dialog>
                 </div>
-            </Map>   
+            </Map>
+            <RouteForm paintRoute={this.setDirectionRoute}/>
         </div>    
         </React.Fragment>     
         );

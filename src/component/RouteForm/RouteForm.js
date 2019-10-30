@@ -32,6 +32,13 @@ import TextField from '@material-ui/core/TextField';
 
 export default function PaperSheet(props) {
   const classes = RouteFormStyles();
+  const [state, setState] = React.useState({origin: null, destination: null});
+
+  const handleChangeState = prop => event =>{
+    setState({
+      ...state, [prop]: event.target.value
+    });
+  }
 
   const [selectedHour, setSelectedHour] = React.useState();
   const handleHourChange = hour => {
@@ -44,16 +51,28 @@ export default function PaperSheet(props) {
     window.location.href="/myroutes";
     //return <Redirect to={{pathname: "/myroutes"}}/>;
   };
+
   const handleOnSearch = () =>{
-    swal({
-      title: "loading",
-      text: "The best route was found for you!!",
-      icon: "success",
-      timer: 2000,
-      button: false,
-    }).then(() => {
-      //window.location.href = "/home";
-    });
+    if(state.origin === null || state.destination=== null){
+      swal({
+        title: "Ooops!",
+        text: "You must fill in origin and destination!!",
+        icon: "error",
+        button: false,
+        timer: 2000
+      });
+    }else{
+      swal({
+        title: "loading",
+        text: "The best route was found for you!!",
+        icon: "success",
+        timer: 2000,
+        button: false,
+      }).then(() => {
+          props.paintRoute();
+      });
+    }
+
   }
 
   return (
@@ -72,7 +91,8 @@ export default function PaperSheet(props) {
                     <TextField label="Origin"
                         fullWidth
                         id="source"
-                        style={{color: "#212121"}} 
+                        style={{color: "#212121"}}
+                        onChange ={handleChangeState('origin')}
                     />
                 </Grid>
             </Grid>
@@ -83,10 +103,11 @@ export default function PaperSheet(props) {
                     <SearchIcon />
                 </Grid>
                 <Grid item style={{width: "90%"}}>
-                    <TextField label="destination"
+                    <TextField label="Destination"
                         fullWidth
                         id="target"
                         style={{color: "#212121"}}
+                        onChange ={handleChangeState('destination')}
                     />
                 </Grid>
             </Grid>
@@ -120,7 +141,6 @@ export default function PaperSheet(props) {
                         Search
                       </Button>
                     </div>
-                      
                   </Container>
                   
                 </Grid>
