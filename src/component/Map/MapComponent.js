@@ -19,6 +19,8 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 import RouteForm from '../RouteForm/RouteForm.js'
 
+
+
 const mapStyles = {
     width: '100%',
     height: '100%',
@@ -114,8 +116,10 @@ export class MapComponent extends React.Component {
         //Dialog
         this.handleDialogNoRouteOpen = this.handleDialogNoRouteOpen.bind(this);
         this.handleDialogNoRouteClose = this.handleDialogNoRouteClose.bind(this);
+        
         this.handleDialogRouteOpen = this.handleDialogRouteOpen.bind(this);
         this.createANewRoute = this.createANewRoute.bind(this);
+
         
     }
 
@@ -168,7 +172,7 @@ export class MapComponent extends React.Component {
                 if (status === 'OK') {
                     resolve(results[0].geometry.location)
                 } else {
-                    window.alert('Directions ' + address + ' request failed due to ' + status);
+                    console.log('Directions ' + address + ' request failed due to ' + status);
                     reject(status)
                 }
             });
@@ -218,7 +222,7 @@ export class MapComponent extends React.Component {
 
     async setDirectionRoute() {
         //this.handleOpen();
-        //localStorage.setItem("viaje", true);
+        localStorage.setItem("viaje", true);
         const origin =  document.getElementById("source").value;
         const destination = document.getElementById("target").value;
 
@@ -286,6 +290,7 @@ export class MapComponent extends React.Component {
                 "latitude"  : latLngDestination.lat(),
                 "longitude" : latLngDestination.lng()
             },
+           
             "commonRoute" : {
                 "origin": {
                     "_id": this.jsonToStringId(newJSON.idpathRouteOriginPlace)
@@ -296,11 +301,17 @@ export class MapComponent extends React.Component {
                 "hour" : new Date(document.getElementById("hour").value) 
             },
             "user" :{
-                "_id" : JSON.parse(localStorage.getItem('loggedUser')).userId
+                "_id" : localStorage.getItem("userId")
             }
-        }
-        localStorage.setItem('newRoute', JSON.stringify(createRoute));
 
+        }
+        this.axios.post('/routes' , createRoute )
+        .then(function (response) {
+            console.log(response.data + "Enter");
+        }).catch(function (error) {
+            console.log(error);
+        });
+        console.log(createRoute)
         this.setState({suggestRouteJSON : JSON.stringify(newJSON)})
         
         this.suggestRoute(newJSON);
@@ -606,4 +617,3 @@ export default withStyles(useStyles)(GoogleApiWrapper({
     apiKey: 'AIzaSyCVmCTy45uFYzpIslnjYBcVgt02M8KSQ84',
     language: "es",
 })(MapWrapper));
-
