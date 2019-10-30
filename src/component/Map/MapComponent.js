@@ -107,6 +107,7 @@ export class MapComponent extends React.Component {
         this.handleOpen = this.handleOpen.bind(this);
         this.handleStatusChange= this.handleStatusChange.bind(this);
         this.changeStatus=this.changeStatus.bind(this);
+        //reload form
     }
     handleStatusChange(e) {
         this.setState({
@@ -125,7 +126,6 @@ export class MapComponent extends React.Component {
     changeStatus(checked) {
         this.setState({ checked: checked });    
     }
-
 
     async getLanLnt(address) {
         const { google } = this.props;
@@ -422,7 +422,7 @@ export class MapComponent extends React.Component {
                     </Dialog>
                 </div>
             </Map>
-            <RouteForm paintRoute={this.setDirectionRoute}/>
+            <RouteForm paintRoute={this.setDirectionRoute} key={this.state.reloadForm} forceReload={this.handleForceReloadForm}/>
         </div>    
         </React.Fragment>     
         );
