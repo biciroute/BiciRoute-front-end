@@ -9,7 +9,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
-import { TextField , MenuItem } from '@material-ui/core';
+import { TextField, MenuItem } from '@material-ui/core';
 import UpdateProfileStyles from './UpdateProfileStyles.js'
 import clsx from 'clsx';
 import Grid from '@material-ui/core/Grid';
@@ -74,83 +74,106 @@ const atributos = [
 
 export default function UpdateProfile(props) {
 
+
     const classes = UpdateProfileStyles();
-    const [name, setName] = React.useState(props.state.name);
-    const [email] = React.useState(props.state.email);
-    const [color, setColor] = React.useState(props.state.color);
-    const [brand, setBrand] = React.useState(props.state.marca);
-    const [password, setPassword] = React.useState("");
+    const [name, setName] = React.useState(props.user.firstName);
+    const [email] = React.useState(props.user.email);
+    const [color, setColor] = React.useState(props.bici  ? props.bici.color : "");
+    const [brand, setBrand] = React.useState(props.bici  ? props.bici.brand : "");
+    const [password, setPassword] = React.useState(props.user.password);
     const [showPassword, setShowPassword] = React.useState(false);
 
-    const handleNameChange = (e) =>{
+    const handleNameChange = (e) => {
         setName(e.target.value);
     }
 
-    const handleColorChange = (e) =>{
+    const handleColorChange = (e) => {
         setColor(e.target.value);
     }
 
-    const handleBrandChange = (e) =>{
+    const handleBrandChange = (e) => {
         setBrand(e.target.value);
     }
 
-    const handlePasswordChange = (e) =>{
+    const handlePasswordChange = (e) => {
         setPassword(e.target.value);
     }
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
     };
-    
+
     const handleMouseDownPassword = event => {
         event.preventDefault();
     };
 
-    const handleSaveChanges = () =>{
-        var arrName = name.split(" ");
-        if(props.state.bicicle){
-            console.log("asdjfnsdk")
-        }else{
-            console.log("fkjssssss")
-        }
+    const hex = (length, n) => {
+        n = n.toString(16);
+        return (n.length === length) ? n : "00000000".substring(n.length, length) + n;
+    }
+
+    const jsonToStringId = (json) => {
+        var idToParse = json
+        var idString = hex(8, idToParse.timestamp) + hex(6, idToParse.machineIdentifier) + hex(4, idToParse.processIdentifier) + hex(6, idToParse.counter);
+        return idString
+    }
+
+
+
+    const handleSaveChanges = () => {
         var info = {
-            firstName: arrName[0],
-            lastName: (arrName.length>1)? arrName[1]: "",
+            _id :  localStorage.getItem("userId"),
+            firstName: name,
+            lastName: props.user.lastName,
             email: email,
-            password: password,
-            bicicle: {
+            password: password
+        }
+
+
+        if( brand != "" || color != "" ){
+            let bike = {
                 brand: brand,
                 color: color
             }
+
+            if(props.bici != null ){
+                bike["_id"] = jsonToStringId(props.bici._id);
+            }
+
+            info["bicicle"] = bike;
         }
-        localStorage.setItem("info",info);
-        axios.put('http://localhost:8080/v1/user',info)
-            .then((response)=>{
+
+        console.log(info)
+        console.log(props.bici)
+
+        localStorage.setItem("info", info);
+        axios.put('http://localhost:8080/v1/user', info)
+            .then((response) => {
                 console.log(response.data);
                 swal({
-                    title:"Good job",
+                    title: "Good job",
                     text: "You have updated your profile sucessfully",
-                    icon:"success",
-                    timer:2000,
-                    button:false,
-                }).then(() =>{
+                    icon: "success",
+                    timer: 2000,
+                    button: false,
+                }).then(() => {
                     props.onClose();
                 });
-        }).catch(function(error){
-            swal({
-            title: "Ooops!",
-                text: "Fail update profile",
-                icon: "error",
-                timer: 2000,
-                button: false,
+            }).catch(function (error) {
+                swal({
+                    title: "Ooops!",
+                    text: "Fail update profile",
+                    icon: "error",
+                    timer: 2000,
+                    button: false,
+                });
             });
-        });
-        
+
     }
 
     return (
         <React.Fragment>
-            <Dialog style={{margin:"auto"}} onClose={props.onClose} aria-labelledby="customized-dialog-title" open={props.open}>
+            <Dialog style={{ margin: "auto" }} onClose={props.onClose} aria-labelledby="customized-dialog-title" open={props.open}>
                 <DialogTitle id="customized-dialog-title" variant="h3" style={{ margin: "auto" }} onClose={props.onClose}> Edit Profile </DialogTitle>
                 <DialogContent dividers>
                     <div className={classes.root}>
@@ -183,15 +206,15 @@ export default function UpdateProfile(props) {
                                         value={password}
                                         onChange={handlePasswordChange}
                                         endAdornment={
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            >
-                                            {showPassword ? <Visibility /> : <VisibilityOff />}
-                                            </IconButton>
-                                        </InputAdornment>
+                                            <InputAdornment position="end">
+                                                <IconButton
+                                                    aria-label="toggle password visibility"
+                                                    onClick={handleClickShowPassword}
+                                                    onMouseDown={handleMouseDownPassword}
+                                                >
+                                                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                                                </IconButton>
+                                            </InputAdornment>
                                         }
                                     />
                                 </FormControl>
@@ -203,9 +226,10 @@ export default function UpdateProfile(props) {
                                     select
                                     id="standard-marca"
                                     label="Brand"
-                                    value={brand}
-                                    onChange={handleBrandChange}
                                     className={clsx(classes.textField, classes.dense)}
+                                    onChange={handleBrandChange}
+                                    value={brand}
+                                    defaultValue={brand}
                                     margin="auto"
                                 >{brands.map(option => (<MenuItem key={option.value} value={option.value}>
                                     {option.value}</MenuItem>))}
@@ -216,6 +240,7 @@ export default function UpdateProfile(props) {
                                     id="standard-color"
                                     label="Color"
                                     value={color}
+                                    defaultValue={color}
                                     onChange={handleColorChange}
                                     className={clsx(classes.textField, classes.dense)}
                                     margin="dense"

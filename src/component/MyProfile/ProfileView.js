@@ -145,7 +145,7 @@ export default class ProfileView extends Component {
                   {/*<ModalModifyBici style={styles.buttonContainer} bici={this.state.bici} ></ModalModifyBici>*/}
                 </View>)}
             <Button variant="outlined" color="primary" style={{ backgroundColor: "#212121", width: "300px", color: "#FFFFFA" }} onClick={this.onOpen} > Edit </Button>
-            <UpdateProfile open={this.state.open} onClose={this.onClose} key={this.state.open} state={this.state}
+            <UpdateProfile open={this.state.open} onClose={this.onClose} key={this.state.open} user={this.state.user} bici={this.state.bici}
              />
           </View>
 
@@ -184,10 +184,11 @@ export default class ProfileView extends Component {
 
   fetchTaks() {
     let Profile = this
-    this.axios.get('http://localhost:8080/v1/user/5db53231895d2a050cb2f821')
+    this.axios.get('http://localhost:8080/v1/user/'+ localStorage.getItem("userId"))
       .then(function (response) {
         let user = response.data
         localStorage.setItem("loggedUser", JSON.stringify(user))
+        console.log(user)
         if(user.bicicle != null){
           Profile.setState({
             name: user.firstName + " " + user.lastName, email: user.email, marca: user.bicicle.brand, color: user.bicicle.color,
@@ -196,10 +197,10 @@ export default class ProfileView extends Component {
         }else{
           Profile.setState({
             name: user.firstName + " " + user.lastName, email: user.email, marca: "", color: "",
-            user: user, bici: {},
+            user: user, bici: null,
           });
         }
-        console.log(Profile.state.bici)
+        
       })
       .catch(function (error) {
         console.log(error)
