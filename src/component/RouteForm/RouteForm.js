@@ -17,12 +17,19 @@ import {
 import DateFnsUtils from "@date-io/date-fns";
 import TextField from '@material-ui/core/TextField';
 import { Route, Redirect } from 'react-router';
+import axios from 'axios';
 
 export default function RouteForm(props) {
   const classes = RouteFormStyles();
   const [state, setState] = React.useState({origin: null, destination: null});
   const [routeFound, setRouteFound] = React.useState(false);
   const [confirm, setConfirm] = React.useState(null);
+
+  const [axiosRequest] = React.useState(axios.create({
+      baseURL: 'http://localhost:8080/v1/',
+      timeout: 1000,
+      //headers: { 'Authorization': 'Bearer ' + localStorage.getItem("Bearer") }
+  }));
 
   const handleChangeState = prop => event =>{
     setState({
@@ -37,8 +44,7 @@ export default function RouteForm(props) {
 
 
   const handleOnSearch = () =>{
-    props.paintRoute();
-    /*
+    
     if(state.origin === null || state.destination=== null){
       swal({
         title: "Ooops!",
@@ -48,32 +54,59 @@ export default function RouteForm(props) {
         timer: 2000
       });
     }else{
-      props.paintRoute();
-      swal({
-        title: "loading",
-        text: "The best route was found for you!!",
-        icon: "success",
-        timer: 3000,
-        button: false,
-      }).then(() => {
-        setRouteFound(true);
-        document.getElementById("source").disabled = true;
-        document.getElementById("target").disabled = true;
-        document.getElementById("hour").disabled = true;
-      });*/
+      try{
+        props.paintRoute();
+        swal({
+          title: "Ooops!",
+          text: "Something happened!!. Please try again",
+          icon: "error",
+          button: false,
+          timer: 2000
+        }).then(()=>{
+          window.location.reload();
+        });
+      }catch(error){
+        swal({
+          title: "loading",
+          text: "The best route was found for you!!",
+          icon: "success",
+          timer: 3000,
+          button: false,
+        }).then(() => {
+          setRouteFound(true);
+          document.getElementById("source").disabled = true;
+          document.getElementById("target").disabled = true;
+          document.getElementById("hour").disabled = true;
+        });
+      }
+    }
   }
   
 
   const handleOnConfirm = () =>{
-    swal({
-      title: "Good job!",
-      text: "You have joined to this route!!!",
-      icon: "success",
-      timer: 3000,
-      button: false,
-    }).then(() => {
-      setConfirm(true);
-    });
+    this.axios.post('https://biciroute-api.herokuapp.com/routes' , JSON.parse(localStorage.getItem('newRoute')))
+      .then((response)=>{
+        swal({
+          title: "Good job!",
+          text: "You have joined to this route!!!",
+          icon: "success",
+          timer: 3000,
+          button: false,
+        }).then(() => {
+          setConfirm(true);
+        });
+      }).catch(function (error) {
+        swal({
+          title: "Ooops!",
+          text: "Something happened!!. This route couldn’t be saved. Please try again.",
+          icon: "error",
+          button: false,
+          timer: 2000
+        }).then(()=>{
+          window.location.reload();
+        });
+      });
+    
   }
 
   const handleOnCancel = () =>{
@@ -168,9 +201,7 @@ export default function RouteForm(props) {
                         Search
                       </Button>
                     </div>
-                  </Container>}
-                  
-                  
+                  </Container>}                  
                 </Grid>
             </Grid>
         </div>
