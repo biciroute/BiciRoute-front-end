@@ -37,9 +37,9 @@ export default function RouteForm(props) {
 
 
   const handleOnSearch = () =>{
-    //props.paintRoute();
+    props.paintRoute();
     
-    if(state.origin === null || state.destination=== null){
+    /*if(state.origin === null || state.destination=== null){
       swal({
         title: "Ooops!",
         text: "You must fill in origin and destination!!",
@@ -61,7 +61,7 @@ export default function RouteForm(props) {
         document.getElementById("target").disabled = true;
         document.getElementById("hour").disabled = true;
       });
-    }
+    }*/
   }
   
 

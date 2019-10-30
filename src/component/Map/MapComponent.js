@@ -101,8 +101,7 @@ export class MapComponent extends React.Component {
             carres: []
         };
         this.axios = axios.create({
-            baseURL: 'http://localhost:8080/v1/',
-            timeout: 1000,
+            baseURL: 'http://localhost:8080/v1/'
             //headers: { 'Authorization': 'Bearer ' + localStorage.getItem("Bearer") }
         });
 
@@ -221,45 +220,47 @@ export class MapComponent extends React.Component {
 
 
     async setDirectionRoute() {
+        
         //this.handleOpen();
         localStorage.setItem("viaje", true);
         const origin =  document.getElementById("source").value;
         const destination = document.getElementById("target").value;
-
-        //Define route the  shortest of the origin to some place 
-        var theBestOriginToPlace = [1e9, "undefine", null,JSON.stringify({})];
-        var theBestDestinationToPlace = [1e9, "undefine", null,JSON.stringify({})];
-        for (var i = 0; i < this.state.carres.length; i++) {
-            var commonRoute = this.state.carres[i];
+        var commonRoutePlace = []
+        for(var j = 0 ; j < this.state.carres.length ; j++){
+            var commonRoute = this.state.carres[j];
             const latLng = {lat: parseFloat(commonRoute.latitude), lng: parseFloat(commonRoute.longitude)};
             var place = await this.reverseGeocode(latLng);
-            var newPathRoute = await this.calculateRoute(origin, place);
+            commonRoutePlace.push(place) 
+        }
+
+        //Define route the  shortest of the origin to some place 
+        var theBestOriginToPlace = [1e9, "undefine", null,JSON.stringify({}),null];
+        var theBestDestinationToPlace = [1e9, "undefine", null,JSON.stringify({}),null];
+        for (var i = 0; i < this.state.carres.length ; i++) {
+            var newPathRoute = await this.calculateRoute(origin, commonRoutePlace[i]);
             var distance = newPathRoute.routes[0].legs[0].distance.text;
             distance = parseFloat(distance.split(" ")[0].replace(",", "."));
             if (distance < theBestOriginToPlace[0]) {
-                theBestOriginToPlace[1] = place;
+                theBestOriginToPlace[1] = commonRoutePlace[i];
                 theBestOriginToPlace[0] = Math.min(distance, theBestOriginToPlace[0])
                 theBestOriginToPlace[2] = newPathRoute.routes[0].overview_path;
                 theBestOriginToPlace[3] = commonRoute._id
+                theBestOriginToPlace[4] = this.state.carres[i]
             }
         }
         for (i = 0; i < this.state.carres.length; i++) {
-            var commonRoute = this.state.carres[i];
-            const latLng = {lat: parseFloat(commonRoute.latitude), lng: parseFloat(commonRoute.longitude)};         
-            try {
-                place = await this.reverseGeocode(latLng);
-                newPathRoute = await this.calculateRoute(destination, place);
+                //place = await this.reverseGeocode(latLng);
+                newPathRoute = await this.calculateRoute(destination, commonRoutePlace[i]);
                 distance = newPathRoute.routes[0].legs[0].distance.text;
                 distance = parseFloat(distance.split(" ")[0].replace(",", "."));
-                if (distance < theBestDestinationToPlace[0]) {
-                    theBestDestinationToPlace[1] = place;
+                if (distance < theBestDestinationToPlace[0] && theBestDestinationToPlace[1] !== theBestOriginToPlace[1]) {
+                    theBestDestinationToPlace[1] = commonRoutePlace[i];
                     theBestDestinationToPlace[0] = Math.min(distance, theBestDestinationToPlace[0])
                     theBestDestinationToPlace[2] = newPathRoute.routes[0].overview_path;
                     theBestDestinationToPlace[3] = commonRoute._id
+                    theBestDestinationToPlace[4] =  this.state.carres[i]
                 }
-            } catch (error) {
-
-            }
+           
         }
         newPathRoute = await this.calculateRoute(theBestDestinationToPlace[1], theBestOriginToPlace[1]);
         this.setState({
@@ -273,22 +274,74 @@ export class MapComponent extends React.Component {
             destination :  destination,
             pathRouteDestinationPlace : theBestDestinationToPlace[1],
             idpathRouteDestinationPlace : theBestDestinationToPlace[3],
+            latLngpathRouteDestinationPlace : theBestDestinationToPlace[4],
             pathRouteOriginPlace : theBestOriginToPlace[1],
             idpathRouteOriginPlace : theBestOriginToPlace[3],
+            latlngpathRouteOriginPlace : theBestOriginToPlace[4],
+            latLngOrigin : await this.getLanLnt(origin),
+            latLngDestination : await this.getLanLnt(destination)
 
         };
-
-        var latLngOrigin = await this.getLanLnt(origin)
-        var latLngDestination = await this.getLanLnt(destination)
-        console.log(latLngOrigin[0] + " " + latLngDestination)
+        this.setState({suggestRouteJSON : JSON.stringify(newJSON)})
+        
+        if (localStorage.getItem('lastroutes') === undefined || localStorage.getItem('lastroutes') === null ) {
+            localStorage.setItem('lastroutes', JSON.stringify([newJSON]))
+        }else{
+            var tdListJSON = []
+            var tdLists = JSON.parse(localStorage.getItem("lastroutes"));
+            for(var i = 0 ; i < tdLists.length  ; ++i ){
+                tdListJSON.push(tdLists[i]);
+            } 
+            tdListJSON.push(newJSON);
+            localStorage.setItem("lastroutes",JSON.stringify(tdListJSON));
+        }
+        const places = [newJSON.latLngOrigin, newJSON.latLngDestination, newJSON.latLngpathRouteDestinationPlace, newJSON.latlngpathRouteOriginPlace]
+        this.setState({
+            markers: []
+        })
+        console.log(JSON.stringify(newJSON))
+        for (i = 0; i < 4; ++i) {
+            const latAndLng = places[i];
+            
+            var newMarker={};
+            if(i===0){
+                newMarker = {
+                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
+                    title: newJSON.origin,
+                    name: places[i],
+                    icon:bici,
+                }
+            }
+            else if(i===1){
+                newMarker = {
+                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
+                    title: newJSON.destination,
+                    name: places[i],
+                    icon:final,
+                }
+            }
+            else{
+                newMarker = {
+                    university: { lat: latAndLng.latitude, lng: latAndLng.longitude },
+                    title: places[i],
+                    name: places[i],
+                    icon: bicis,
+                }
+            }
+            
+            this.state.markers.push(newMarker);
+        }
+        await this.getCenterMap(origin, destination);
+        
+       
         var createRoute = {
             "origin" :{
-                "latitude"  : latLngOrigin.lat(),
-                "longitude" : latLngOrigin.lng()
+                "latitude"  : newJSON.latLngOrigin.lat(),
+                "longitude" : newJSON.latLngOrigin.lng()
             },
             "destination" : {
-                "latitude"  : latLngDestination.lat(),
-                "longitude" : latLngDestination.lng()
+                "latitude"  : newJSON.latLngDestination.lat(),
+                "longitude" : newJSON.latLngDestination.lng()
             },
            
             "commonRoute" : {
@@ -305,58 +358,9 @@ export class MapComponent extends React.Component {
             }
 
         }
-        localStorage.setItem("newRoute", JSON.stringify(createRoute));
-        
-        console.log(createRoute)
-        this.setState({suggestRouteJSON : JSON.stringify(newJSON)})
-        
         this.suggestRoute(newJSON);
-        if (localStorage.getItem('lastroutes') === undefined || localStorage.getItem('lastroutes') === null ) {
-            localStorage.setItem('lastroutes', JSON.stringify([newJSON]))
-        }else{
-            var tdListJSON = []
-            var tdLists = JSON.parse(localStorage.getItem("lastroutes"));
-            for(var i = 0 ; i < tdLists.length  ; ++i ){
-                tdListJSON.push(tdLists[i]);
-            } 
-            tdListJSON.push(newJSON);
-            localStorage.setItem("lastroutes",JSON.stringify(tdListJSON));
-        }
-        const places = [origin, destination, theBestDestinationToPlace[1], theBestOriginToPlace[1]]
-        this.setState({
-            markers: []
-        })
-        for (i = 0; i < 4; ++i) {
-            const latAndLng = await this.getLanLnt(places[i]);
-            var newMarker={};
-            if(i===0){
-                newMarker = {
-                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
-                    title: places[i],
-                    name: places[i],
-                    icon:bici,
-                }
-            }
-            else if(i===1){
-                newMarker = {
-                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
-                    title: places[i],
-                    name: places[i],
-                    icon:final,
-                }
-            }
-            else{
-                newMarker = {
-                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
-                    title: places[i],
-                    name: places[i],
-                    icon: bicis,
-                }
-            }
-            
-            this.state.markers.push(newMarker);
-        }
-        //this.getCenterMap(origin, destination);
+        
+
     }
 
 
