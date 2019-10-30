@@ -37,8 +37,8 @@ export default function RouteForm(props) {
 
 
   const handleOnSearch = () =>{
-    props.paintRoute();
-    /*
+    //props.paintRoute();
+    
     if(state.origin === null || state.destination=== null){
       swal({
         title: "Ooops!",
@@ -60,7 +60,8 @@ export default function RouteForm(props) {
         document.getElementById("source").disabled = true;
         document.getElementById("target").disabled = true;
         document.getElementById("hour").disabled = true;
-      });*/
+      });
+    }
   }
   
 
@@ -73,6 +74,14 @@ export default function RouteForm(props) {
       button: false,
     }).then(() => {
       setConfirm(true);
+      var newRoute = JSON.parse(localStorage.getItem("newRoute"));
+      console.log(newRoute);
+      /*this.axios.post('/routes' , ))
+      .then(function (response) {
+          console.log(response.data + "Enter");
+      }).catch(function (error) {
+          console.log(error);
+      });*/
     });
   }
 

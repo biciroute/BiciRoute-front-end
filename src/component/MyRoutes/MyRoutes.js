@@ -73,18 +73,6 @@ export class MyRoutes extends Component{
           });
     }
     
-    fromLatLngToAddress(latitude, longitude){
-        Geocode.fromLatLng(latitude, longitude).then(
-            response => {
-              const address = response.results[0].formatted_address;
-            console.log(address);
-        },
-        error => {
-            console.error(error);
-        }
-        );
-    }
-    
 
     componentDidMount(){
         this.axios.get('https://biciroute-api.herokuapp.com/v1/routes/user/'+ localStorage.getItem("userId"))
@@ -96,6 +84,7 @@ export class MyRoutes extends Component{
                 upcomingRoutes: []
             });
             var routes = response.data
+            console.log("MY ROUTES");
             console.log(routes);
             for(var i=0; i<routes.length; i++){
                 var origin = "Origin->["+routes[i].origin.latitude+","+routes[i].origin.longitude+"]";
@@ -115,7 +104,7 @@ export class MyRoutes extends Component{
                 }
             }
         }).catch((error)=>{
-            swal({
+            /*swal({
                 title: "Ooops!",
                 text: "Something happened!!. Please, try again!",
                 icon: "error",
@@ -123,7 +112,7 @@ export class MyRoutes extends Component{
                 button: false
             }).then(()=>{
                 //window.location.reload();
-            });
+            });*/
         });
     }
 

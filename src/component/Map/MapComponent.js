@@ -305,12 +305,8 @@ export class MapComponent extends React.Component {
             }
 
         }
-        this.axios.post('/routes' , createRoute )
-        .then(function (response) {
-            console.log(response.data + "Enter");
-        }).catch(function (error) {
-            console.log(error);
-        });
+        localStorage.setItem("newRoute", JSON.stringify(createRoute));
+        
         console.log(createRoute)
         this.setState({suggestRouteJSON : JSON.stringify(newJSON)})
         
