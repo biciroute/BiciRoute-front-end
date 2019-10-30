@@ -173,7 +173,7 @@ export default class ProfileView extends Component {
 
   componentDidMount() {
     this.axios = axios.create({
-      baseURL: 'http://localhost:8080/',
+      baseURL: 'https://biciroute-api.herokuapp.com/',
       timeout: 1000,
       headers: { 'Authorization': 'Bearer ' + localStorage.getItem("accessToken") }
     });
@@ -184,10 +184,10 @@ export default class ProfileView extends Component {
 
   fetchTaks() {
     let Profile = this
-    this.axios.get('http://localhost:8080/v1/user/'+ localStorage.getItem("userId"))
+    this.axios.get('https://biciroute-api.herokuapp.com/v1/user/'+ localStorage.getItem("userId"))
       .then(function (response) {
         let user = response.data
-        localStorage.setItem("loggedUser", JSON.stringify(user))
+        localStorage.setItem("loggedUser", JSON.stringify(user));
         console.log(user)
         if(user.bicicle != null){
           Profile.setState({

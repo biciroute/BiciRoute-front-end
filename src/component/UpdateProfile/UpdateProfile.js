@@ -122,7 +122,7 @@ export default function UpdateProfile(props) {
 
     const handleSaveChanges = () => {
         var info = {
-            _id :  localStorage.getItem("userId"),
+            _id :  JSON.parse(localStorage.getItem("loggedUser")).userId,
             firstName: name,
             lastName: props.user.lastName,
             email: email,
@@ -147,7 +147,7 @@ export default function UpdateProfile(props) {
         console.log(props.bici)
 
         localStorage.setItem("info", info);
-        axios.put('http://localhost:8080/v1/user', info)
+        axios.put('https://biciroute-api.herokuapp.com/v1/user', info)
             .then((response) => {
                 console.log(response.data);
                 swal({
@@ -162,7 +162,7 @@ export default function UpdateProfile(props) {
             }).catch(function (error) {
                 swal({
                     title: "Ooops!",
-                    text: "Fail update profile",
+                    text: "An error occurred while trying to update your profile!!. Please, try again.",
                     icon: "error",
                     timer: 2000,
                     button: false,
