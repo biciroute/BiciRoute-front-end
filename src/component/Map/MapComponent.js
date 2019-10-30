@@ -299,9 +299,18 @@ export class MapComponent extends React.Component {
                     "_id": this.jsonToStringId(newJSON.idpathRouteDestinationPlace) 
                 }, 
                 "hour" : new Date(document.getElementById("hour").value) 
+            },
+            "user" :{
+                "_id" : "5db52cc3895d2a4e206bbac3"
             }
 
         }
+        this.axios.post('/routes' , createRoute )
+        .then(function (response) {
+            console.log(response.data + "Enter");
+        }).catch(function (error) {
+            console.log(error);
+        });
         console.log(createRoute)
         this.setState({suggestRouteJSON : JSON.stringify(newJSON)})
         
