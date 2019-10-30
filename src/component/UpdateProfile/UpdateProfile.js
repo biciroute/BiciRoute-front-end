@@ -122,7 +122,7 @@ export default function UpdateProfile(props) {
 
     const handleSaveChanges = () => {
         var info = {
-            _id :  JSON.parse(localStorage.getItem("loggedUser")).userId,
+            _id :  localStorage.getItem("userId"),
             firstName: name,
             lastName: props.user.lastName,
             email: email,
