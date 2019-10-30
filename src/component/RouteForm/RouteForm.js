@@ -1,59 +1,94 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import RouteFormStyles from './RouteFormStyles.js';
 import Divider from '@material-ui/core/Divider';
-
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import InputBase from '@material-ui/core/InputBase';
 import SearchIcon from '@material-ui/icons/Search';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import NavigationIcon from '@material-ui/icons/Navigation';
-import useScrollTrigger from '@material-ui/core/useScrollTrigger';
-import Slide from '@material-ui/core/Slide';
-import SearchBar from '../Map/SearchBar.js';
 import DirectionsBikeIcon from '@material-ui/icons/DirectionsBike';
 import swal from 'sweetalert';
 import {
-    MuiPickersUtilsProvider,
-    KeyboardDatePicker,
-    KeyboardTimePicker
-  } from '@material-ui/pickers';
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker
+} from '@material-ui/pickers';
 
 import DateFnsUtils from "@date-io/date-fns";
-import InputLabel from '@material-ui/core/InputLabel';
-import InputAdornment from '@material-ui/core/InputAdornment';
 import TextField from '@material-ui/core/TextField';
+import { Route, Redirect } from 'react-router';
 
-
-export default function PaperSheet(props) {
+export default function RouteForm(props) {
   const classes = RouteFormStyles();
+  const [state, setState] = React.useState({origin: null, destination: null});
+  const [routeFound, setRouteFound] = React.useState(false);
+  const [confirm, setConfirm] = React.useState(null);
+
+  const handleChangeState = prop => event =>{
+    setState({
+      ...state, [prop]: event.target.value
+    });
+  }
 
   const [selectedHour, setSelectedHour] = React.useState();
   const handleHourChange = hour => {
     setSelectedHour(hour);
   };
-  const [autoComplete] = React.useState(props.autoComplete);
 
-  const handleViaje = () => {
-    localStorage.setItem('viaje', false);
-    window.location.href="/myroutes";
-    //return <Redirect to={{pathname: "/myroutes"}}/>;
-  };
+
   const handleOnSearch = () =>{
-    //setDirectionRoute()
-    props.onChangePaintRoute();
+    props.paintRoute();
+    /*
+    if(state.origin === null || state.destination=== null){
+      swal({
+        title: "Ooops!",
+        text: "You must fill in origin and destination!!",
+        icon: "error",
+        button: false,
+        timer: 2000
+      });
+    }else{
+      props.paintRoute();
+      swal({
+        title: "loading",
+        text: "The best route was found for you!!",
+        icon: "success",
+        timer: 3000,
+        button: false,
+      }).then(() => {
+        setRouteFound(true);
+        document.getElementById("source").disabled = true;
+        document.getElementById("target").disabled = true;
+        document.getElementById("hour").disabled = true;
+      });*/
+  }
+  
+
+  const handleOnConfirm = () =>{
+    swal({
+      title: "Good job!",
+      text: "You have joined to this route!!!",
+      icon: "success",
+      timer: 3000,
+      button: false,
+    }).then(() => {
+      setConfirm(true);
+    });
+  }
+
+  const handleOnCancel = () =>{
+    setConfirm(false);
+    window.location.reload();
   }
 
   return (
-    <div className={classes.container}>
+    
+    <Container className={classes.container}>
+      {(confirm==false) ? <Redirect to="/home"/>:
+       (confirm===true)? <Redirect to="/myroutes"/>: <React.Fragment></React.Fragment>}
       <Paper className={classes.paper}>
         <Typography variant="h6" component="h3" align="center">
-          Welcome {JSON.parse(localStorage.getItem('loggedUser')).firstName}!!
+          Welcome {JSON.parse(localStorage.getItem('loggedUser')).firstName}!
         </Typography>
         <Divider variant="middle" />
         <div className={classes.margin}>
@@ -65,7 +100,8 @@ export default function PaperSheet(props) {
                     <TextField label="Origin"
                         fullWidth
                         id="source"
-                        style={{color: "#212121"}} 
+                        style={{color: "#212121"}}
+                        onChange ={handleChangeState('origin')}
                     />
                 </Grid>
             </Grid>
@@ -76,10 +112,11 @@ export default function PaperSheet(props) {
                     <SearchIcon />
                 </Grid>
                 <Grid item style={{width: "90%"}}>
-                    <TextField label="destination"
+                    <TextField label="Destination"
                         fullWidth
                         id="target"
                         style={{color: "#212121"}}
+                        onChange ={handleChangeState('destination')}
                     />
                 </Grid>
             </Grid>
@@ -93,9 +130,9 @@ export default function PaperSheet(props) {
                     <MuiPickersUtilsProvider utils={DateFnsUtils} style={{width: "100%"}}>
                       <KeyboardTimePicker
                           id = "hour"
-                          margin="normal"
                           ampm = {false}
                           format =  "yyyy-MM-dd HH:mm:ss" 
+                          margin="normal"
                           label="Departure time"
                           value={selectedHour}
                           onChange={handleHourChange}
@@ -108,6 +145,21 @@ export default function PaperSheet(props) {
                     </MuiPickersUtilsProvider>
                 </Grid>
                 <Grid item style={{width: "60%"}}>
+                  {(routeFound)?
+                  <Container style={{textAlign: "center"}}>
+                      <Button variant="contained" color="primary"
+                        style={{width:"40%", backgroundColor: "#00FF00", color: "#FFFFFA", margin: "4px"}}
+                          onClick={handleOnConfirm}>
+                        Confirm
+                      </Button>
+                      <Button variant="contained" color="secondary"
+                        style={{width:"40%", color: "#FFFFFA", margin: "4px"}}
+                        onClick={handleOnCancel}
+                        >
+                        Cancel
+                      </Button>
+                  </Container>
+                  :
                   <Container style={{textAlign: "center"}}>
                     <div>
                       <Button variant="contained" color="secondary"
@@ -116,13 +168,13 @@ export default function PaperSheet(props) {
                         Search
                       </Button>
                     </div>
-                      
-                  </Container>
+                  </Container>}
+                  
                   
                 </Grid>
             </Grid>
         </div>
       </Paper>
-    </div>
+    </Container>
   );
 }

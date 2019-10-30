@@ -128,17 +128,11 @@ export class SignUp extends React.Component {
         email: this.state.email,
         password: this.state.password,
         firstName: this.state.firstName,
-        lastName: this.state.lastName,
-        bicicle: {
-          brand: "Fox",
-          color: "White"
-        }
+        lastName: this.state.lastName
       }
 
-      axios.post('http://localhost:8080/v1/user/register', info)
-        .then(function (response) {
-          console.log(response.data);
-
+      axios.post('https://biciroute-api.herokuapp.com/user/register', info)
+        .then(function(response) {
           localStorage.setItem("isLoggedIn", true);
           swal({
             title: "Good job!",
@@ -156,54 +150,15 @@ export class SignUp extends React.Component {
             window.location.href = "/home";
           });
         })
-        .catch(function (error) {
+        .catch(function (error){
           swal({
             title: "Ooops!",
-            text: error.response,
+            text: error.response.data,
             icon: "error",
             timer: 2000,
-            button: false,
+            button: false
           });
         });
-
-      /*
-      if(localStorage.getItem("email="+this.state.email)!==null){
-          swal({
-            title:"Ooops!",
-            text: "This email does already exist!. Please sign up with other email.!",
-            icon: "error",
-            timer: 2000,
-            button: false,
-          });
-      }else{
-          localStorage.setItem("name", this.state.firstName);
-          localStorage.setItem("lastName", this.state.lastName);
-          localStorage.setItem("marca","Fox");
-          localStorage.setItem("color","White");
-          var info = {
-            email: this.state.email,
-            password: this.state.password,
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            bici: {
-              brand: "Fox",
-              color: "White"
-            }
-          }
-          localStorage.setItem("email="+this.state.email,JSON.stringify(info)); //push to the database
-          localStorage.setItem("isLoggedIn",true);
-          localStorage.setItem("loggedUser",JSON.stringify(info));
-
-          swal({
-            title:"Good job!",
-            text: "You have signed up sucessfully!",
-            icon: "success",
-            timer: 2000,
-            button: false,
-          }).then(() => {
-            window.location.href = "/home";
-          });
-      }*/
     }
   };
 

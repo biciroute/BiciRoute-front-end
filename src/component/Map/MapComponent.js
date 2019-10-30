@@ -17,6 +17,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
+import RouteForm from '../RouteForm/RouteForm.js'
+
 
 
 const mapStyles = {
@@ -70,18 +72,24 @@ const useStyles = theme => ({
 });
 
 
-export class MapComponent extends React.Component {
 
+
+export class MapComponent extends React.Component {
+    
     constructor(props) {
         super(props);
         this.state = {
             university: { lat: 4.782715, lng: -74.042611 },
             open: false,
+            dialogNoRoute  : false,
+            dialogRoute  : false,
+            
             pathRoute: [],
             pathRouteOriginPlace: [],
             pathRouteDestinationPlace: [],
             position: null,
             checked: false,
+            suggestRouteJSON : null,
             markers: [
                 {
                     university: { lat: 4.782715, lng: -74.042611 },
@@ -91,15 +99,6 @@ export class MapComponent extends React.Component {
                 },
             ],
             carres: []
-            
-            /*[
-                "Calle 100, Troncal Autopista Norte, Cundinamarca, Colombia",
-                "Andino, Avenida Calle 82, Bogotá, Colombia",
-                "Parque El Virrey, Calle 88, Bogotá, Colombia",
-                
-                "Parque 93, Cl. 93a #13-25, Bogotá",
-                "Parque Del Japon, Carrera 11, Bogotá"
-            ]*/
         };
         this.axios = axios.create({
             baseURL: 'http://localhost:8080/v1/',
@@ -110,13 +109,18 @@ export class MapComponent extends React.Component {
         // Route
         this.autocomplete = this.autocomplete.bind(this);
         this.setDirectionRoute = this.setDirectionRoute.bind(this);
-        //this.renderDirections =  this.renderDirections.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.handleStatusChange= this.handleStatusChange.bind(this);
         this.changeStatus=this.changeStatus.bind(this);
+        //Dialog
+        this.handleDialogNoRouteOpen = this.handleDialogNoRouteOpen.bind(this);
+        this.handleDialogNoRouteClose = this.handleDialogNoRouteClose.bind(this);
+        
+        this.handleDialogRouteOpen = this.handleDialogRouteOpen.bind(this);
+        this.createANewRoute = this.createANewRoute.bind(this);
 
-        props.onChangePaintRoute(this.setDirectionRoute);
+        
     }
 
 
@@ -133,6 +137,26 @@ export class MapComponent extends React.Component {
 
     handleClose(e) {
         this.setState({ open: false });
+    }
+
+
+    handleDialogNoRouteOpen(e){
+        this.setState({ dialogNoRoute: true });
+    }
+
+    handleDialogNoRouteClose(e){
+        
+        this.setState({ dialogNoRoute: false });
+    }
+
+    handleDialogRouteOpen(e){
+
+        this.setState({ dialogRoute: true });
+    }
+
+
+    handleDialogRouteClose(e){
+        this.setState({ dialogRoute: false });
     }
 
     changeStatus(checked) {
@@ -192,12 +216,12 @@ export class MapComponent extends React.Component {
             position: bounds.getCenter()
         });
         map.fitBounds(bounds);
-        return coordinatesDestinations
+        return coordinatesDestinations;
     }
 
 
     async setDirectionRoute() {
-        this.handleOpen();
+        //this.handleOpen();
         localStorage.setItem("viaje", true);
         const origin =  document.getElementById("source").value;
         const destination = document.getElementById("target").value;
@@ -232,14 +256,11 @@ export class MapComponent extends React.Component {
                     theBestDestinationToPlace[0] = Math.min(distance, theBestDestinationToPlace[0])
                     theBestDestinationToPlace[2] = newPathRoute.routes[0].overview_path;
                     theBestDestinationToPlace[3] = commonRoute._id
-                    console.log( commonRoute._id)
-           
                 }
             } catch (error) {
 
             }
         }
-        console.log(theBestOriginToPlace[1], theBestDestinationToPlace[1])
         newPathRoute = await this.calculateRoute(theBestDestinationToPlace[1], theBestOriginToPlace[1]);
         this.setState({
             pathRoute: newPathRoute.routes[0].overview_path,
@@ -256,6 +277,33 @@ export class MapComponent extends React.Component {
             idpathRouteOriginPlace : theBestOriginToPlace[3],
 
         };
+
+        var latLngOrigin = await this.getLanLnt(origin)
+        var latLngDestination = await this.getLanLnt(destination)
+        console.log(latLngOrigin[0] + " " + latLngDestination)
+        var createRoute = {
+            "origin" :{
+                "latitude"  : latLngOrigin.lat(),
+                "longitude" : latLngOrigin.lng()
+            },
+            "destination" : {
+                "latitude"  : latLngDestination.lat(),
+                "longitude" : latLngDestination.lng()
+            },
+           
+            "commonRoute" : {
+                "origin": {
+                    "_id": this.jsonToStringId(newJSON.idpathRouteOriginPlace)
+                },
+                "destination" : {
+                    "_id": this.jsonToStringId(newJSON.idpathRouteDestinationPlace) 
+                }, 
+                "hour" : new Date(document.getElementById("hour").value) 
+            }
+
+        }
+        console.log(createRoute)
+        this.setState({suggestRouteJSON : JSON.stringify(newJSON)})
         
         this.suggestRoute(newJSON);
         if (localStorage.getItem('lastroutes') === undefined || localStorage.getItem('lastroutes') === null ) {
@@ -303,7 +351,7 @@ export class MapComponent extends React.Component {
             
             this.state.markers.push(newMarker);
         }
-        this.getCenterMap(origin, destination);
+        //this.getCenterMap(origin, destination);
     }
 
 
@@ -331,12 +379,18 @@ export class MapComponent extends React.Component {
                 "_id": this.jsonToStringId(newJSON.idpathRouteDestinationPlace) 
             }, 
             "hour" : new Date(document.getElementById("hour").value) 
-        }
-        console.log(suggestJSON)
-        
+        } 
         this.axios.post('/routes/suggest' , (suggestJSON) )
             .then(function (response) {
-                console.log(response.data)
+                console.log(response.data);
+                var listSuggest = response.data;
+                console.log(listSuggest.length == 0)
+                if(listSuggest.length == 0){
+                    self.handleDialogNoRouteOpen();
+                }else{
+
+                }
+                 
         }).catch(function (error) {
             console.log(error);
         });
@@ -407,7 +461,13 @@ export class MapComponent extends React.Component {
         }
     }
 
+    createANewRoute(){
+        console.log("Kha " +this.state.suggestRouteJSON)
+        this.handleDialogNoRouteClose();
+       
+        
 
+    }
 
 
     componentDidUpdate(prevProps) {
@@ -500,8 +560,31 @@ export class MapComponent extends React.Component {
                         </Button>
                     </DialogActions>
                     </Dialog>
+
+                    <Dialog
+                        open={this.state.dialogNoRoute}
+                        onClose={this.handleDialogNoRouteClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description">
+                        <DialogTitle id="dialogNoRoute">{"Suggest a route"}</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Don't have routes avaliable, do u want to create a route?
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={this.handleDialogNoRouteClose} color="primary">
+                            Denied
+                        </Button>
+                        <Button onClick={this.createANewRoute} color="primary" autoFocus>
+                            Accept
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
                 </div>
-            </Map>   
+            </Map> 
+            <RouteForm paintRoute={this.setDirectionRoute} key={this.state.reloadForm} forceReload={this.handleForceReloadForm}/>
+  
         </div>    
         </React.Fragment>     
         );
@@ -525,3 +608,4 @@ export default withStyles(useStyles)(GoogleApiWrapper({
     apiKey: 'AIzaSyCVmCTy45uFYzpIslnjYBcVgt02M8KSQ84',
     language: "es",
 })(MapWrapper));
+
