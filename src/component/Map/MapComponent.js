@@ -352,15 +352,13 @@ export class MapComponent extends React.Component {
                 "latitude"  : newJSON.latLngDestination.lat(),
                 "longitude" : newJSON.latLngDestination.lng()
             },  
-            "commonRoute" : {
-                "_id" : null,
-            },
+          
             "user" :{
                 "_id" : localStorage.getItem("userId")
             }
         }
         
-        this.createRouteST = createRoute;
+        this.state.createRouteST = createRoute;
 
         this.suggestRoute(newJSON);
         
@@ -381,7 +379,7 @@ export class MapComponent extends React.Component {
     }
   
 
-    suggestRoute(newJSON){
+    async suggestRoute(newJSON){
         var self = this;
         
         var suggestJSON = {
@@ -401,9 +399,16 @@ export class MapComponent extends React.Component {
                 var listSuggest = response.data;
                 console.log(listSuggest.length == 0)
                 if(listSuggest.length == 0){
+                    self.state.createRouteST["commonRoute"] =    {
+                        "_id" : null,
+                    }
                     self.handleDialogNoRouteOpen();
                 }else{
-                    
+                    self.state.createRouteST["commonRoute"] =    {
+                        "_id" : self.jsonToStringId(listSuggest[0]._id),
+                    }
+                    console.log(self.state.createRouteST)
+                    self.state.msgSuggestRoute = "We offer you the following common points, starting at "+ newJSON.pathRouteOriginPlace +" and ending the route at " + newJSON.pathRouteDestinationPlace +"."
                     self.handleDialogRouteOpen();
                 } 
         }).catch(function (error) {
@@ -477,23 +482,23 @@ export class MapComponent extends React.Component {
 
     createANewRoute(){
         console.log("Kha " +this.state.createRouteST)
-        /*this.axios.post('/routes' , (this.state.createRouteST) )
+        this.axios.post('/routes' , (this.state.createRouteST) )
             .then(function (response) {}
             ).catch(function (error) {
             console.log(error);
         });
-        */
+    
         this.handleDialogNoRouteClose();
     
     }
 
     confirmRoute(){
         console.log("Kha " +this.state.createRouteST)
-        /*this.axios.post('/routes' , (this.state.createRouteST) )
+        this.axios.post('/routes' , (this.state.createRouteST) )
             .then(function (response) {}
             ).catch(function (error) {
             console.log(error);
-        });*/
+        });
         this.handleDialogRouteClose();
     }
 
@@ -619,7 +624,7 @@ export class MapComponent extends React.Component {
                         <DialogTitle id="dialogRoute">{"Suggest a route"}</DialogTitle>
                         <DialogContent>
                         <DialogContentText id="exitsroute">
-                            saijo
+                            {this.state.msgSuggestRoute}
                         </DialogContentText>
                         </DialogContent>
                         <DialogActions>
