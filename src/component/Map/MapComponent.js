@@ -493,7 +493,7 @@ export class MapComponent extends React.Component {
             .then(function (response) {}
             ).catch(function (error) {
             console.log(error);
-        });
+        });*/
         this.handleDialogRouteClose();
     }
 
