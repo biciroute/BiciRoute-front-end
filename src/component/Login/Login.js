@@ -98,17 +98,19 @@ export class Login extends React.Component {
     e.preventDefault();
     if (this.validForm()) {
 
-      axios.post('http://localhost:8080/v1/user/login', {
+      axios.post('https://biciroute-api.herokuapp.com/user/login', {
         email: this.state.email,
         password: this.state.password
       })
         .then(function (response) {
           localStorage.setItem("accessToken", response.data.accessToken);
           var loggedUser = {
-            firstName: response.data.firstName
+            firstName: response.data.firstName,
+            userId: response.data.userId
           }
           localStorage.setItem("loggedUser", JSON.stringify(loggedUser))
           localStorage.setItem("isLoggedIn", true);
+          localStorage.setItem("userId",response.data.userId);
           window.location.href = "/home";
         })
         .catch(function (error) {
@@ -120,24 +122,6 @@ export class Login extends React.Component {
             timer: 2000
           });
         });
-
-
-
-
-      /*var info = JSON.parse(localStorage.getItem("email="+this.state.email));
-      if(info!==null && info.password===this.state.password){
-          localStorage.setItem('isLoggedIn',true);
-          localStorage.setItem("loggedUser",JSON.stringify(info));
-          window.location.href = "/home";
-      } else {
-        swal({
-          title:"Ooops!",
-          text: "Email or Password is incorrect!",
-          icon: "error",
-          button: false,
-          timer: 2000
-        });
-      }*/
     }
   }
 

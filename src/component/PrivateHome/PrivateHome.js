@@ -1,15 +1,29 @@
 import React from 'react';
 import MapComponent from '../Map/MapComponent.js';
 import MyNavBar from '../MyNavBar/MyNavBar.js';
-import Grid from '@material-ui/core/Grid';
+
 
 export class PrivateHome extends React.Component{
+
+    constructor(props){
+        super(props);
+        this.state = {
+            paintRoute  : null
+        }
+        this.changePaintRoute = this.changePaintRoute.bind(this);
+    }
+
+    changePaintRoute(newRoute){
+        this.setState({
+            paintRoute : newRoute,
+        });
+    }
 
     render(){
         return(
             <React.Fragment>
-                <div><MyNavBar/></div>
-                <div><MapComponent/></div>
+                <MyNavBar/>
+                <MapComponent/>
             </React.Fragment>
         );
     }

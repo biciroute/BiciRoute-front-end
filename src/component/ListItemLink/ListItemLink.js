@@ -1,5 +1,4 @@
 import React from "react";
-import { useTheme } from "@material-ui/core/styles";
 
 import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -10,7 +9,6 @@ import ListItemLinkStyles from './ListItemLinkStyles.js';
 
 function ListItemLink(props) {
     const classes = ListItemLinkStyles();
-    const theme = useTheme();
 
     const { icon, primary, to } = props;
 

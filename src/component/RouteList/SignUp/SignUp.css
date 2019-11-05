@@ -1,0 +1,238 @@
+/* Extra small devices (portrait phones, less than 576px)*/
+@media (max-width: 575px) {
+    .avatar{
+        margin-top: 0.5px;
+        margin-bottom: 0px;
+        width: 70px;
+        height: 70px;
+        align-self: center;
+        border-radius: 50%;
+    }
+    #submit {
+        margin-top: 2px;
+        font-size: 0.65rem; /* -65% of 1rem*/
+        width: 100%;
+        max-height: 40px;
+        align-items: center;
+        margin: 0px;
+        margin-bottom: 5px;
+    }
+    #firstNameInput, #lastNameInput, #emailInput, #passwordInput, #invalidCheck, .custom-control-label, .grey-text{
+        font-size: 0.6rem; /* -40% of 1rem */
+    }
+
+    .form-control.is-invalid~.invalid-feedback, .form-control.is-invalid~.invalid-tooltip, .was-validated .form-control:invalid~.invalid-feedback, .was-validated .form-control:invalid~.invalid-tooltip{
+        font-size: 0.35rem; /* -40% of 1rem*/
+    }
+
+    .custom-control-input.is-invalid~.invalid-feedback, .custom-control-input.is-invalid~.invalid-tooltip, .was-validated .custom-control-input:invalid~.invalid-feedback, .was-validated .custom-control-input:invalid~.invalid-tooltip{
+        font-size: 0.35rem; /* -40% */
+    }
+
+    .sign-post-biciroute{
+        font-size: 0.9rem;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    a{
+        margin-top: 0px;
+        font-size: 0.5rem;
+    }
+
+}
+
+/* Small devices (landscape phones, 576px and up)*/
+@media (min-width: 576px) and (max-width: 767px) {
+    .avatar{
+        margin-top: 5px;
+        width: 90px;
+        height: 90px;
+        align-self: center;
+        border-radius: 50%;
+    }
+    
+    #submit {
+        margin-top: 17px;
+        font-size: 0.7375rem;
+        width: 100%;
+        max-height: 45px;
+        align-items: center;
+        margin: 0px;
+        margin-bottom: 5px;
+    }
+    #firstNameInput, #lastNameInput, #emailInput, #passwordInput, #invalidCheck, .custom-control-label, .grey-text{
+        font-size: 0.7rem;
+    }
+
+    .form-control.is-invalid~.invalid-feedback, .form-control.is-invalid~.invalid-tooltip, .was-validated .form-control:invalid~.invalid-feedback, .was-validated .form-control:invalid~.invalid-tooltip{
+        font-size: 0.475rem;
+    }
+
+    .custom-control-input.is-invalid~.invalid-feedback, .custom-control-input.is-invalid~.invalid-tooltip, .was-validated .custom-control-input:invalid~.invalid-feedback, .was-validated .custom-control-input:invalid~.invalid-tooltip{
+        font-size: 0.475rem;
+    }
+
+    .sign-post-biciroute{
+        font-size: 1.05rem;
+        margin-top: 0px;
+        margin-bottom: 0px;
+    }
+
+    a{
+        margin-top: 0px;
+        font-size: 0.6rem;
+    }
+    
+}
+
+/* Medium devices (tablets, 768px and up)*/
+@media (min-width: 768px) and (max-width: 991px) {
+    .avatar{
+        margin-top: 5px;
+        width: 110px;
+        height: 110px;
+        align-self: center;
+        border-radius: 50%;
+    }
+    #submit {
+        margin-top: 18px;
+        font-size: 0.825rem;
+        width: 100%;
+        max-height: 45px;
+        align-items: center;
+        margin: 0px;
+        margin-bottom: 5px;
+    }
+    #firstNameInput, #lastNameInput, #emailInput, #passwordInput, #invalidCheck, .custom-control-label, .grey-text{
+        font-size: 0.8rem;
+    }
+
+    .form-control.is-invalid~.invalid-feedback, .form-control.is-invalid~.invalid-tooltip, .was-validated .form-control:invalid~.invalid-feedback, .was-validated .form-control:invalid~.invalid-tooltip{
+        font-size: 0.60rem;
+    }
+
+    .custom-control-input.is-invalid~.invalid-feedback, .custom-control-input.is-invalid~.invalid-tooltip, .was-validated .custom-control-input:invalid~.invalid-feedback, .was-validated .custom-control-input:invalid~.invalid-tooltip{
+        font-size: 0.60rem;
+    }
+
+    .sign-post-biciroute{
+        font-size: 1.20rem;
+        margin-top: 1px;
+        margin-bottom: 1px;
+    }
+
+    a{
+        margin-top: 0px;
+        font-size: 0.7rem;
+    }
+}
+
+/* Large devices (desktops, 992px and up)*/
+@media (min-width: 992px) and (max-width: 1199px) {
+    .avatar{
+        margin-top: 5px;
+        width: 130px;
+        height: 130px;
+        align-self: center;
+        border-radius: 50%;
+    }
+    #submit {
+        margin-top: 19px;
+        font-size: 0.9125rem;
+        width: 100%;
+        max-height: 47.5px;
+        align-items: center;
+        margin: 0px;
+        margin-bottom: 5px;
+    }
+    #firstNameInput, #lastNameInput, #emailInput, #passwordInput, #invalidCheck, .custom-control-label, .grey-text{
+        font-size: 0.9rem; /* -5% of 1rem */
+    }
+
+    .form-control.is-invalid~.invalid-feedback, .form-control.is-invalid~.invalid-tooltip, .was-validated .form-control:invalid~.invalid-feedback, .was-validated .form-control:invalid~.invalid-tooltip{
+        font-size: 0.725rem;
+    }
+
+    .custom-control-input.is-invalid~.invalid-feedback, .custom-control-input.is-invalid~.invalid-tooltip, .was-validated .custom-control-input:invalid~.invalid-feedback, .was-validated .custom-control-input:invalid~.invalid-tooltip{
+        font-size: 0.725rem;
+    }
+
+    .sign-post-biciroute{
+        font-size: 1.35rem;
+        margin-top: 2px;
+        margin-bottom: 2px;
+    }
+    a{
+        margin-top: 0px;
+        font-size: 0.8rem;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up)*/
+@media (min-width: 1200px) {
+    .avatar{
+        margin-top: 10px;
+        width: 150px;
+        height: 150px;
+        align-self: center;
+        border-radius: 50%;
+    }
+    #submit {
+        margin-top: 20px;
+        font-size: 1rem;
+        width: 100%;
+        max-height: 50px;
+        align-items: center;
+        margin: 0px;
+        margin-bottom: 5px;
+    }
+    #firstNameInput, #lastNameInput, #emailInput, #passwordInput, #invalidCheck, .custom-control-label, .grey-text{
+        font-size: 1rem; /* -0% of 1rem */
+    }
+
+    .form-control.is-invalid~.invalid-feedback, .form-control.is-invalid~.invalid-tooltip, .was-validated .form-control:invalid~.invalid-feedback, .was-validated .form-control:invalid~.invalid-tooltip{
+        font-size: 0.85rem;
+    }
+
+    .custom-control-input.is-invalid~.invalid-feedback, .custom-control-input.is-invalid~.invalid-tooltip, .was-validated .custom-control-input:invalid~.invalid-feedback, .was-validated .custom-control-input:invalid~.invalid-tooltip{
+        font-size: 0.85rem;
+    }
+
+    .sign-post-biciroute{
+        font-size: 1.5rem;
+        margin-top: 2px;
+        margin-bottom: 4px;
+    }
+
+    a{
+        font-size: 1rem;
+    }
+
+}
+
+/* ---------------------------------------------------------------------------*/
+
+.card-body{
+    height: 100vh;
+}
+
+.card {
+    margin-top: 5%;
+    position: fixed;
+    height: 92%;
+}
+
+#viewBackground {
+    height: 100vh;
+    width: 100vw;
+    background-image: url('https://source.unsplash.com/random');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+.rowBackground{
+    background-color: #212121;  
+    height: 100vh;
+}

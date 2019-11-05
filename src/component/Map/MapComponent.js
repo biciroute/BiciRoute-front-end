@@ -16,6 +16,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import axios from 'axios';
+import RouteForm from '../RouteForm/RouteForm.js'
+
+
 
 const mapStyles = {
     width: '100%',
@@ -68,18 +72,25 @@ const useStyles = theme => ({
 });
 
 
-export class MapComponent extends React.Component {
 
+
+export class MapComponent extends React.Component {
+    
     constructor(props) {
         super(props);
         this.state = {
             university: { lat: 4.782715, lng: -74.042611 },
             open: false,
+            dialogNoRoute  : false,
+            dialogRoute  : false,
+            createRouteST : null,
             pathRoute: [],
             pathRouteOriginPlace: [],
             pathRouteDestinationPlace: [],
             position: null,
             checked: false,
+            suggestRouteJSON : null,
+            msgSuggestRoute : null,
             markers: [
                 {
                     university: { lat: 4.782715, lng: -74.042611 },
@@ -88,22 +99,33 @@ export class MapComponent extends React.Component {
                     icon: bici,
                 },
             ],
-            carres: [
-                "Calle 100, Troncal Autopista Norte, Cundinamarca, Colombia",
-                "Parque Nacional, Calle 36, Bogotá, Colombia",
-                "Virrey Solis Castellana, Autopista Norte, Bogotá, Colombia",
-            ]
+            carres: []
         };
+        this.axios = axios.create({
+            baseURL: 'http://localhost:8080/v1/'
+            //headers: { 'Authorization': 'Bearer ' + localStorage.getItem("Bearer") }
+        });
 
         // Route
         this.autocomplete = this.autocomplete.bind(this);
         this.setDirectionRoute = this.setDirectionRoute.bind(this);
-        //this.renderDirections =  this.renderDirections.bind(this);
         this.handleClose = this.handleClose.bind(this);
         this.handleOpen = this.handleOpen.bind(this);
         this.handleStatusChange= this.handleStatusChange.bind(this);
         this.changeStatus=this.changeStatus.bind(this);
+        //Dialog
+        this.handleDialogNoRouteOpen = this.handleDialogNoRouteOpen.bind(this);
+        this.handleDialogNoRouteClose = this.handleDialogNoRouteClose.bind(this);
+        
+        this.handleDialogRouteOpen = this.handleDialogRouteOpen.bind(this);
+        this.createANewRoute = this.createANewRoute.bind(this);
+        this.confirmRoute = this.confirmRoute.bind(this);
+
+        
     }
+
+
+
     handleStatusChange(e) {
         this.setState({
             status: e.target.value
@@ -118,9 +140,31 @@ export class MapComponent extends React.Component {
         this.setState({ open: false });
     }
 
+
+    handleDialogNoRouteOpen(e){
+        this.setState({ dialogNoRoute: true });
+    }
+
+    handleDialogNoRouteClose(e){
+        
+        this.setState({ dialogNoRoute: false });
+    }
+
+    handleDialogRouteOpen(e){
+
+        this.setState({ dialogRoute: true });
+    }
+
+
+    handleDialogRouteClose(e){
+        this.setState({ dialogRoute: false });
+    }
+
     changeStatus(checked) {
         this.setState({ checked: checked });    
     }
+
+   
 
 
     async getLanLnt(address) {
@@ -131,12 +175,30 @@ export class MapComponent extends React.Component {
                 if (status === 'OK') {
                     resolve(results[0].geometry.location)
                 } else {
-                    window.alert('Directions ' + address + ' request failed due to ' + status);
+                    console.log('Directions ' + address + ' request failed due to ' + status);
                     reject(status)
                 }
             });
         })
     }
+
+    
+    async reverseGeocode(latLng) {
+        
+        const {google} = this.props;
+        const geocoder = new google.maps.Geocoder;
+        return new Promise((resolve, reject) => {
+            geocoder.geocode({ 'location': latLng }, function (results, status) {
+                if (status === 'OK') {
+                    resolve(results[0].formatted_address)
+                } else {
+                    window.alert('Directions ' + latLng + ' request failed due to ' + status);
+                    reject(status)
+                }
+            });
+        })
+    }
+
 
     async getCenterMap(sourceRoute, targetRoute) {
         const { google, map } = this.props;
@@ -158,50 +220,57 @@ export class MapComponent extends React.Component {
             position: bounds.getCenter()
         });
         map.fitBounds(bounds);
-        return coordinatesDestinations
+        return coordinatesDestinations;
     }
 
 
     async setDirectionRoute() {
-        this.handleOpen();
+        
+        //this.handleOpen();
         localStorage.setItem("viaje", true);
         const origin =  document.getElementById("source").value;
         const destination = document.getElementById("target").value;
-        //Define route the  shortest of the origin to some place 
-        var theBestOriginToPlace = [1e9, "undefine", null];
-        var theBestDestinationToPlace = [1e9, "undefine", null];
+        var commonRoutePlace = []
+        var commonRouteID = []
+        
+        for(var j = 0 ; j < this.state.carres.length ; j++){
+            var commonRoute = this.state.carres[j];
+            const latLng = {lat: parseFloat(commonRoute.latitude), lng: parseFloat(commonRoute.longitude)};
+            var place = await this.reverseGeocode(latLng);
+            commonRoutePlace.push(place) 
+            commonRouteID.push(commonRoute._id)
+        }
+        console.log(commonRouteID)
 
-        for (var i = 0; i < this.state.carres.length; i++) {
-            var place = this.state.carres[i];
-            var newPathRoute = await this.calculateRoute(origin, place);
+        //Define route the  shortest of the origin to some place 
+        var theBestOriginToPlace = [1e9, "undefine", null,null,null];
+        var theBestDestinationToPlace = [1e9, "undefine", null,null,null];
+        for (var i = 0; i < this.state.carres.length ; i++) {
+            var newPathRoute = await this.calculateRoute(origin, commonRoutePlace[i]);
             var distance = newPathRoute.routes[0].legs[0].distance.text;
             distance = parseFloat(distance.split(" ")[0].replace(",", "."));
             if (distance < theBestOriginToPlace[0]) {
-                theBestOriginToPlace[1] = place;
+                theBestOriginToPlace[1] = commonRoutePlace[i];
                 theBestOriginToPlace[0] = Math.min(distance, theBestOriginToPlace[0])
                 theBestOriginToPlace[2] = newPathRoute.routes[0].overview_path;
+                theBestOriginToPlace[3] = commonRouteID[i]
+                theBestOriginToPlace[4] = this.state.carres[i]
             }
         }
-        console.log(destination)
         for (i = 0; i < this.state.carres.length; i++) {
-            place = this.state.carres[i];
-            //if(place === theBestOriginToPlace[1])continue;
-            try {
-                newPathRoute = await this.calculateRoute(destination, place);
+                //place = await this.reverseGeocode(latLng);
+                newPathRoute = await this.calculateRoute(destination, commonRoutePlace[i]);
                 distance = newPathRoute.routes[0].legs[0].distance.text;
                 distance = parseFloat(distance.split(" ")[0].replace(",", "."));
-                if (distance < theBestDestinationToPlace[0]) {
-                    theBestDestinationToPlace[1] = place;
+                if (distance < theBestDestinationToPlace[0] &&   theBestOriginToPlace[1] !== commonRoutePlace[i]) {
+                    theBestDestinationToPlace[1] = commonRoutePlace[i];
                     theBestDestinationToPlace[0] = Math.min(distance, theBestDestinationToPlace[0])
                     theBestDestinationToPlace[2] = newPathRoute.routes[0].overview_path;
+                    theBestDestinationToPlace[3] = commonRouteID[i]
+                    theBestDestinationToPlace[4] =  this.state.carres[i]
                 }
-
-
-            } catch (error) {
-
-            }
+           
         }
-        console.log(theBestOriginToPlace[1], theBestDestinationToPlace[1])
         newPathRoute = await this.calculateRoute(theBestDestinationToPlace[1], theBestOriginToPlace[1]);
         this.setState({
             pathRoute: newPathRoute.routes[0].overview_path,
@@ -209,14 +278,21 @@ export class MapComponent extends React.Component {
             pathRouteOriginPlace: theBestOriginToPlace[2],
             open: false
         });
-
-        var newJSON = JSON.stringify( {
+        var newJSON = {
             origin : origin,
             destination :  destination,
             pathRouteDestinationPlace : theBestDestinationToPlace[1],
-            pathRouteOriginPlace : theBestOriginToPlace[1]
-        });
+            idpathRouteDestinationPlace : theBestDestinationToPlace[3],
+            latLngpathRouteDestinationPlace : theBestDestinationToPlace[4],
+            pathRouteOriginPlace : theBestOriginToPlace[1],
+            idpathRouteOriginPlace : theBestOriginToPlace[3],
+            latlngpathRouteOriginPlace : theBestOriginToPlace[4],
+            latLngOrigin : await this.getLanLnt(origin),
+            latLngDestination : await this.getLanLnt(destination)
 
+        };
+        this.setState({suggestRouteJSON : JSON.stringify(newJSON)})
+        
         if (localStorage.getItem('lastroutes') === undefined || localStorage.getItem('lastroutes') === null ) {
             localStorage.setItem('lastroutes', JSON.stringify([newJSON]))
         }else{
@@ -228,19 +304,19 @@ export class MapComponent extends React.Component {
             tdListJSON.push(newJSON);
             localStorage.setItem("lastroutes",JSON.stringify(tdListJSON));
         }
-
-
-        const places = [origin, destination, theBestDestinationToPlace[1], theBestOriginToPlace[1]]
+        const places = [newJSON.latLngOrigin, newJSON.latLngDestination, newJSON.latLngpathRouteDestinationPlace, newJSON.latlngpathRouteOriginPlace]
         this.setState({
             markers: []
         })
+        console.log(JSON.stringify(newJSON))
         for (i = 0; i < 4; ++i) {
-            const latAndLng = await this.getLanLnt(places[i]);
+            const latAndLng = places[i];
+            
             var newMarker={};
             if(i===0){
                 newMarker = {
                     university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
-                    title: places[i],
+                    title: newJSON.origin,
                     name: places[i],
                     icon:bici,
                 }
@@ -248,14 +324,14 @@ export class MapComponent extends React.Component {
             else if(i===1){
                 newMarker = {
                     university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
-                    title: places[i],
+                    title: newJSON.destination,
                     name: places[i],
                     icon:final,
                 }
             }
             else{
                 newMarker = {
-                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
+                    university: { lat: latAndLng.latitude, lng: latAndLng.longitude },
                     title: places[i],
                     name: places[i],
                     icon: bicis,
@@ -264,11 +340,82 @@ export class MapComponent extends React.Component {
             
             this.state.markers.push(newMarker);
         }
-        console.log(this.state.markers)
+        await this.getCenterMap(origin, destination);
+        
+        var createRoute = {
+            
+            "origin" :{
+                "latitude"  : newJSON.latLngOrigin.lat(),
+                "longitude" : newJSON.latLngOrigin.lng()
+            },
+            "destination" : {
+                "latitude"  : newJSON.latLngDestination.lat(),
+                "longitude" : newJSON.latLngDestination.lng()
+            },  
+          
+            "user" :{
+                "_id" : localStorage.getItem("userId")
+            }
+        }
+        
+        this.state.createRouteST = createRoute;
 
-        this.getCenterMap(origin, destination);
+        this.suggestRoute(newJSON);
+        
 
     }
+
+
+    hex(length, n) {
+        n = n.toString(16);
+        return (n.length===length)? n : "00000000".substring(n.length, length) + n;
+    }
+
+    jsonToStringId(json){
+        var idToParse = json
+        var idString = this.hex(8,idToParse.timestamp)+this.hex(6,idToParse.machineIdentifier)+this.hex(4,idToParse.processIdentifier)+this.hex(6,idToParse.counter);
+        return idString
+ 
+    }
+  
+
+    async suggestRoute(newJSON){
+        var self = this;
+        
+        var suggestJSON = {
+            
+            "origin": {
+                "_id": this.jsonToStringId(newJSON.idpathRouteOriginPlace)
+            },
+            "destination" : {
+                "_id": this.jsonToStringId(newJSON.idpathRouteDestinationPlace) 
+            }, 
+            "hour" : new Date(document.getElementById("hour").value) 
+        } 
+        console.log(suggestJSON)
+        this.axios.post('/routes/suggest' , (suggestJSON) )
+            .then(function (response) {
+                console.log(response.data);
+                var listSuggest = response.data;
+                console.log(listSuggest.length == 0)
+                if(listSuggest.length == 0){
+                    self.state.createRouteST["commonRoute"] =    {
+                        "_id" : null,
+                    }
+                    self.handleDialogNoRouteOpen();
+                }else{
+                    self.state.createRouteST["commonRoute"] =    {
+                        "_id" : self.jsonToStringId(listSuggest[0]._id),
+                    }
+                    console.log(self.state.createRouteST)
+                    self.state.msgSuggestRoute = "We offer you the following common points, starting at "+ newJSON.pathRouteOriginPlace +" and ending the route at " + newJSON.pathRouteDestinationPlace +"."
+                    self.handleDialogRouteOpen();
+                } 
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
 
     autocomplete() {
         const { google, map } = this.props;
@@ -286,8 +433,6 @@ export class MapComponent extends React.Component {
             { 'country': ['co'] });
         autoTgt.setComponentRestrictions(
             { 'country': ['co'] });
-
-
     }
 
 
@@ -304,7 +449,7 @@ export class MapComponent extends React.Component {
         return new Promise((resolve, reject) => {
             directionsService.route(request, (response, status) => {
                 if (status === 'OK') {
-                    console.log(response)
+                    //console.log(response)
                     resolve(response)
                 } else {
                     window.alert(destination + " ----- " + origin)
@@ -316,6 +461,17 @@ export class MapComponent extends React.Component {
         )
     }
 
+    getAllCommonRoutes(){
+        var self = this;
+        this.axios.get('/point/commonRoute')
+            .then(function (response) {
+            self.setState({ carres: response.data });
+    
+        }).catch(function (error) {
+            console.log(error);
+        });
+    }
+
     //https://stackoverflow.com/questions/26059762/callback-when-dom-is-loaded-in-react-js
     componentDidMount() {
         this.autocomplete();
@@ -324,16 +480,37 @@ export class MapComponent extends React.Component {
         }
     }
 
+    createANewRoute(){
+        console.log("Kha " +this.state.createRouteST)
+        this.axios.post('/routes' , (this.state.createRouteST) )
+            .then(function (response) {}
+            ).catch(function (error) {
+            console.log(error);
+        });
+    
+        this.handleDialogNoRouteClose();
+    
+    }
+
+    confirmRoute(){
+        console.log("Kha " +this.state.createRouteST)
+        this.axios.post('/routes' , (this.state.createRouteST) )
+            .then(function (response) {}
+            ).catch(function (error) {
+            console.log(error);
+        });
+        this.handleDialogRouteClose();
+    }
+
     componentDidUpdate(prevProps) {
         if (this.props.map !== prevProps.map) {
-            this.autocomplete();
-
+            this.autocomplete();    
+            this.getAllCommonRoutes();
         }
     }
 
     render() {
         const { classes } = this.props;
-        console.log("MARKERS "+JSON.stringify(this.state.markers));
         var mark = this.state.markers.map((td) =>
             <Marker
                 title={td.title}
@@ -348,7 +525,8 @@ export class MapComponent extends React.Component {
         return (
         <React.Fragment>               
             <div id="bar">
-                <SearchBar></SearchBar>
+                {/*<SearchBar></SearchBar>*/}
+                
                 <Map
                     className="map"
                     google={this.props.google}
@@ -391,11 +569,6 @@ export class MapComponent extends React.Component {
                         strokeWeight: 2,
                     }}
                 />
-                <div id="buttom">
-                <Fab id="fab" color="primary" aria-label="add" className={classes.fab} onClick={() => this.setDirectionRoute()}>
-                    <NavigationIcon />
-                </Fab>
-                </div>
                 
                 <div>
                     <Button variant="outlined" color="primary" onClick={this.handleOpen}>
@@ -419,8 +592,54 @@ export class MapComponent extends React.Component {
                         </Button>
                     </DialogActions>
                     </Dialog>
+
+                    <Dialog
+                        open={this.state.dialogNoRoute}
+                        onClose={this.handleDialogNoRouteClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description">
+                        <DialogTitle id="dialogNoRoute">{"Suggest a route"}</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="alert-dialog-description">
+                            Don't have routes avaliable, do u want to create a route?
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={this.handleDialogNoRouteClose} color="primary">
+                            Denied
+                        </Button>
+                        <Button onClick={this.createANewRoute} color="primary" autoFocus>
+                            Accept
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
+
+
+
+                    <Dialog
+                        open={this.state.dialogRoute}
+                        onClose={this.handleDialogRouteClose}
+                        aria-labelledby="dialog-title"
+                        aria-describedby="exitsroute-description">
+                        <DialogTitle id="dialogRoute">{"Suggest a route"}</DialogTitle>
+                        <DialogContent>
+                        <DialogContentText id="exitsroute">
+                            {this.state.msgSuggestRoute}
+                        </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                        <Button onClick={this.handleDialogRouteClose} color="primary">
+                            Denied
+                        </Button>
+                        <Button onClick={this.confirmRoute} color="primary" autoFocus>
+                            Accept
+                        </Button>
+                        </DialogActions>
+                    </Dialog>
                 </div>
-            </Map>   
+            </Map> 
+            <RouteForm paintRoute={this.setDirectionRoute} key={this.state.reloadForm} forceReload={this.handleForceReloadForm}/>
+  
         </div>    
         </React.Fragment>     
         );
