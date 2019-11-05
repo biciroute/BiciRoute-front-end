@@ -77,7 +77,6 @@ export class MyRoutes extends Component{
     componentDidMount(){
         this.axios.get('https://biciroute-api.herokuapp.com/v1/routes/user/'+ localStorage.getItem("userId"))
         .then((response)=>{
-            
             this.setState({
                 routeList: [],
                 pastRoutes: [],
@@ -104,7 +103,7 @@ export class MyRoutes extends Component{
                 }
             }
         }).catch((error)=>{
-            /*swal({
+            swal({
                 title: "Ooops!",
                 text: "Something happened!!. Please, try again!",
                 icon: "error",
@@ -112,7 +111,7 @@ export class MyRoutes extends Component{
                 button: false
             }).then(()=>{
                 //window.location.reload();
-            });*/
+            });
         });
     }
 
