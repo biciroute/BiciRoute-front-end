@@ -46,7 +46,6 @@ export default function MyMenu() {
 
     return(
         <div className={classes.root}>
-            <CssBaseline />
             
             <AppBar
                 position="fixed"

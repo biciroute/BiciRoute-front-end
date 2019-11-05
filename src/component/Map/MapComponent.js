@@ -18,14 +18,12 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 import RouteForm from '../RouteForm/RouteForm.js'
-
-
+import LegendButton from '../LegendButton/LegendButton.js';
 
 const mapStyles = {
     width: '100%',
     height: '100%',
 };
-
 
 const useStyles = theme => ({
     paper: {
@@ -524,9 +522,7 @@ export class MapComponent extends React.Component {
 
         return (
         <React.Fragment>               
-            <div id="bar">
-                {/*<SearchBar></SearchBar>*/}
-                
+            <div id="bar">                
                 <Map
                     className="map"
                     google={this.props.google}
@@ -537,9 +533,7 @@ export class MapComponent extends React.Component {
                     mapTypeControl={false}
                     center={this.state.position}
                 >
-                
                 {mark}
-
                 <Polyline
                     path={this.state.pathRoute}
                     geodesic={true}
@@ -571,14 +565,14 @@ export class MapComponent extends React.Component {
                 />
                 
                 <div>
-                    <Button variant="outlined" color="primary" onClick={this.handleOpen}>
-                    INFO
+                    {/*<Button variant="outlined" color="primary" onClick={this.handleOpen}>
+                        INFO
                     </Button>
                     <Dialog
-                    open={this.state.open}
-                    onClose={this.handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
+                        open={this.state.open}
+                        onClose={this.handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
                     >
                     <DialogTitle id="alert-dialog-title">{"IMPORTANTE"}</DialogTitle>
                     <DialogContent>
@@ -588,10 +582,10 @@ export class MapComponent extends React.Component {
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={this.handleClose} color="primary">
-                        Close
+                            Close
                         </Button>
                     </DialogActions>
-                    </Dialog>
+                    </Dialog>*/}
 
                     <Dialog
                         open={this.state.dialogNoRoute}
@@ -637,10 +631,11 @@ export class MapComponent extends React.Component {
                         </DialogActions>
                     </Dialog>
                 </div>
-            </Map> 
+            </Map>
+        </div>
             <RouteForm paintRoute={this.setDirectionRoute} key={this.state.reloadForm} forceReload={this.handleForceReloadForm}/>
-  
-        </div>    
+            <LegendButton />
+            
         </React.Fragment>     
         );
     }
