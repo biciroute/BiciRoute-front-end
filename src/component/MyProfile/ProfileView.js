@@ -79,7 +79,7 @@ export default class ProfileView extends Component {
             <Text style={styles.title}>Following</Text>
             <Text id="following" style={styles.count}>{this.state.following}</Text>
           </View>
-          <View style={styles.detailContent}>
+          <View style={styles.detailContent1}>
             <Text style={styles.title}>Traveled</Text>
             <Text id="traveled" style={styles.count}>{this.state.distanceTraveled} Km</Text>
           </View>
@@ -101,13 +101,13 @@ export default class ProfileView extends Component {
               <View id="myProfile" style={styles.bodyContent2}>
                 <MDBRow>
                   <MDBCol md="6" className="mb-1">
-                    <View style={styles.detailContent}>
+                    <View style={styles.detailContent1}>
                       <Text style={styles.title}>Trips Badge</Text>
                       <Text id="TripBadge" style={styles.count}>{TripBadge(this.state.trips)}</Text>
                     </View>
                   </MDBCol>
                   <MDBCol md="6" className="mb-1">
-                    <View style={styles.detailContent}>
+                    <View style={styles.detailContent1}>
                       <Text style={styles.title}>Dist. Badge</Text>
                       <Text id="DistanceBadge" style={styles.count}>{DistanceBadge(this.state.distanceTraveled)}</Text>
                     </View>

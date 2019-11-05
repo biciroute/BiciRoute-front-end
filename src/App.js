@@ -34,7 +34,7 @@ class App extends Component {
 
     const ProfileVieww = () => (
       <React.Fragment>
-        {localStorage.getItem('isLoggedIn') ? <React.Fragment><MyAppBar title="My profile"/><ProfileView/></React.Fragment> : <Login />}
+       <MyAppBar title="My profile"/><ProfileView/>
       </React.Fragment>
     );
 

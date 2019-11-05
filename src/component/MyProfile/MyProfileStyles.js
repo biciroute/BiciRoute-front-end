@@ -4,9 +4,9 @@ import {
 
 const profileStyles = StyleSheet.create({
     header: {
-        backgroundColor: "#ADADAD",
-        borderColor: "#212121",
-        borderBottomWidth: "thick"
+        backgroundColor:"#033040",
+        borderColor: "#022935",
+        borderBottomWidth: "2px"
       },
       headerContent: {
         padding: 30,
@@ -33,7 +33,7 @@ const profileStyles = StyleSheet.create({
         width: 130,
         height: 130,
         borderRadius: 63,
-        borderWidth: 4,
+        borderWidth: 2,
         borderColor: "white",
         marginBottom: 10,
       },
@@ -59,10 +59,10 @@ const profileStyles = StyleSheet.create({
         flexDirection: 'row',
         position: 'absolute',
         backgroundColor: "#ffffff",
-        borderColor: "#212121",
-        borderTopWidth: "thick",
-        borderLeftWidth: "thick",
-        borderRightWidth: "thick"
+        borderColor: "#022935",
+        borderTopWidth: "2px",
+        borderLeftWidth: "1px",
+        borderRightWidth: "1px"
       },
       badgesDetail: {
         alignSelf: 'center',
@@ -92,12 +92,21 @@ const profileStyles = StyleSheet.create({
         marginRight: 5,
       },
       detailContent: {
-        margin: 10,
-        alignItems: 'center'
+        marginTop: 10,
+        alignItems: 'center',
+        borderColor: "#68A3B6",
+        marginLeft:10,
+        borderRightWidth: "1px"
+      },
+      detailContent1: {
+        marginTop: 10,
+        alignItems: 'center',
+        marginLeft:10
       },
       title: {
         fontSize: 20,
-        color: "#095d7b"
+        color: "#095d7b",
+        marginRight:10
       },
       count: {
         fontSize: 18,
