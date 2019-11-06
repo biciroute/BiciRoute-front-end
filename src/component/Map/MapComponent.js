@@ -19,6 +19,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 import RouteForm from '../RouteForm/RouteForm.js'
 import LegendButton from '../LegendButton/LegendButton.js';
+import swal from 'sweetalert';
 
 const mapStyles = {
     width: '100%',
@@ -397,14 +398,13 @@ export class MapComponent extends React.Component {
                 var listSuggest = response.data;
                 console.log(listSuggest.length == 0)
                 if(listSuggest.length == 0){
-                    self.state.createRouteST["commonRoute"] =    {
-                        "_id" : null,
-                    }
+                    //swal.close()
+                    suggestJSON["_id"] = null
+                    self.state.createRouteST["commonRoute"] = suggestJSON
                     self.handleDialogNoRouteOpen();
                 }else{
-                    self.state.createRouteST["commonRoute"] =    {
-                        "_id" : self.jsonToStringId(listSuggest[0]._id),
-                    }
+                    suggestJSON["_id"] = self.jsonToStringId(listSuggest[0]._id)
+                    self.state.createRouteST["commonRoute"] = suggestJSON
                     console.log(self.state.createRouteST)
                     self.state.msgSuggestRoute = "We offer you the following common points, starting at "+ newJSON.pathRouteOriginPlace +" and ending the route at " + newJSON.pathRouteDestinationPlace +"."
                     self.handleDialogRouteOpen();
@@ -412,6 +412,13 @@ export class MapComponent extends React.Component {
         }).catch(function (error) {
             console.log(error);
         });
+
+        /*swal({
+            title: "loading",
+            text: "We are seraching the best route for you",
+            icon: "info",
+            button: false,
+          })]*/
     }
 
 
