@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import HelpIcon from '@material-ui/icons/Help';
 import Dialog from '@material-ui/core/Dialog';
@@ -13,24 +13,10 @@ import bicis from './img/bicis.png';
 import final from './img/final.png';
 import { width, height } from '@material-ui/system';
 import "./LegendButton.css";
-
-const useStyles = makeStyles(theme => ({
-  speedDial: {
-    position: 'absolute',
-    '&.MuiSpeedDial-directionUp, &.MuiSpeedDial-directionLeft': {
-      bottom: theme.spacing(2),
-      right: theme.spacing(2),
-    },
-    '&.MuiSpeedDial-directionDown, &.MuiSpeedDial-directionRight': {
-      top: theme.spacing(2),
-      left: theme.spacing(2),
-    },
-    margin: "50px"
-  },
-}));
+import LegendButtonStyles from './LegendButtonStyles.js';
 
 export default function SpeedDials() {
-  const classes = useStyles();
+  const classes = LegendButtonStyles();
   const [direction, setDirection] = React.useState('right');
   const [open, setOpen] = React.useState();
 

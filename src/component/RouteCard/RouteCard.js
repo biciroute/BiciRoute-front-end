@@ -16,7 +16,7 @@ import InfoRouteCard from '../InfoRouteCard/InfoRouteCard.js';
 export default function RouteCard(props) {
   const classes = RouteCardStyles();
 
-  const [route]=React.useState(props.origin+" - "+props.destination);
+  const [route]=React.useState("origin["+props.origin.lat+","+props.origin.lng+"] - destination["+props.destination.lat+","+props.destination.lng+"]");
   const [showInfo, setShowInfo] = React.useState(false);
 
   const handleOpen = () =>{
@@ -51,6 +51,8 @@ export default function RouteCard(props) {
             image={process.env.PUBLIC_URL+ "/images/map.PNG"}
           />
         </a>
+
+        {/*------------------------------------------------------*/}
         <CardContent>
           <Grid container>
             <Grid item xs={1}>
