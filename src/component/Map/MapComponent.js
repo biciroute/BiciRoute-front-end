@@ -559,27 +559,6 @@ export class MapComponent extends React.Component {
                 />
                 
                 <div>
-                    {/*<Button variant="outlined" color="primary" onClick={this.handleOpen}>
-                        INFO
-                    </Button>
-                    <Dialog
-                        open={this.state.open}
-                        onClose={this.handleClose}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description"
-                    >
-                    <DialogTitle id="alert-dialog-title">{"IMPORTANTE"}</DialogTitle>
-                    <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                        Si eres un usuario nuevo, debes aprender el significado de cada uno de nuestros puntos.
-                        </DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={this.handleClose} color="primary">
-                            Close
-                        </Button>
-                    </DialogActions>
-                    </Dialog>*/}
 
                     <Dialog
                         open={this.state.dialogNoRoute}
@@ -601,8 +580,6 @@ export class MapComponent extends React.Component {
                         </Button>
                         </DialogActions>
                     </Dialog>
-
-
 
                     <Dialog
                         open={this.state.dialogRoute}
