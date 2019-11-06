@@ -1,12 +1,9 @@
 import React from 'react';
 import { GoogleApiWrapper, Map, Marker, Polyline } from 'google-maps-react';
 import "./Map.css";
-import NavigationIcon from '@material-ui/icons/Navigation';
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from 'prop-types';
 import { fade } from '@material-ui/core/styles';
-import Fab from '@material-ui/core/Fab';
-import SearchBar from './SearchBar.js';
 import bici from './img/bici.png';
 import bicis from './img/bicis.png';
 import final from './img/final.png';
@@ -46,13 +43,11 @@ const useStyles = theme => ({
             marginLeft: theme.spacing(2),
             width: "auto"
         },
-
     },
     Modal: {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-
     },
     fab: {
         margin: theme.spacing.unit, // You might not need this now
@@ -66,7 +61,6 @@ const useStyles = theme => ({
     fullList: {
         width: 'auto',
     },
-
 });
 
 
@@ -75,6 +69,8 @@ const useStyles = theme => ({
 export class MapComponent extends React.Component {
     
     constructor(props) {
+        console.log("MAPS PROPS ->");
+        console.log(props);
         super(props);
         this.state = {
             university: { lat: 4.782715, lng: -74.042611 },
@@ -119,7 +115,6 @@ export class MapComponent extends React.Component {
         this.createANewRoute = this.createANewRoute.bind(this);
         this.confirmRoute = this.confirmRoute.bind(this);
 
-        
     }
 
 
@@ -221,7 +216,6 @@ export class MapComponent extends React.Component {
         return coordinatesDestinations;
     }
 
-
     async setDirectionRoute() {
         
         //this.handleOpen();
@@ -287,7 +281,6 @@ export class MapComponent extends React.Component {
             latlngpathRouteOriginPlace : theBestOriginToPlace[4],
             latLngOrigin : await this.getLanLnt(origin),
             latLngDestination : await this.getLanLnt(destination)
-
         };
         this.setState({suggestRouteJSON : JSON.stringify(newJSON)})
         
@@ -522,7 +515,8 @@ export class MapComponent extends React.Component {
 
         return (
         <React.Fragment>               
-            <div id="bar">                
+            <div id="bar">     
+                         
                 <Map
                     className="map"
                     google={this.props.google}
@@ -595,12 +589,12 @@ export class MapComponent extends React.Component {
                         <DialogTitle id="dialogNoRoute">{"Suggest a route"}</DialogTitle>
                         <DialogContent>
                         <DialogContentText id="alert-dialog-description">
-                            Don't have routes avaliable, do u want to create a route?
+                            There are still no available routes for this route. Would you like to be the route leader?
                         </DialogContentText>
                         </DialogContent>
                         <DialogActions>
                         <Button onClick={this.handleDialogNoRouteClose} color="primary">
-                            Denied
+                            Cancel
                         </Button>
                         <Button onClick={this.createANewRoute} color="primary" autoFocus>
                             Accept
