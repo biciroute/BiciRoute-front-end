@@ -36,7 +36,7 @@ export class MyRoutes extends React.Component{
                 console.log(routes[i]);
                 var origin = {lat: parseFloat(routes[i].origin.latitude), lng: parseFloat(routes[i].origin.longitude)};
                 var destination = {lat: parseFloat(routes[i].destination.latitude), lng: parseFloat(routes[i].destination.longitude)};
-                /*var commonRoute = {
+                var commonRoute = {
                     origin:{
                         lat: parseFloat(routes[i].commonRoute.origin.latitude),
                         lng: parseFloat(routes[i].commonRoute.origin.longitude)
@@ -45,10 +45,9 @@ export class MyRoutes extends React.Component{
                         lat: parseFloat(routes[i].commonRoute.destination.latitude),
                         lng: parseFloat(routes[i].commonRoute.destination.longitude)
                     }
-                }*/
-                var date = routes[i]._id.commonRoute.hour;
+                }
                 var timestamp = routes[i]._id.timestamp;
-                var route = {origin, destination, date};
+                var route = {origin, destination, date: routes[i].commonRoute.hour};
                 var currentTimeInMs = Math.floor(Date.now() / 1000);
                 if(currentTimeInMs>=timestamp){
                     this.setState(prevState => ({
