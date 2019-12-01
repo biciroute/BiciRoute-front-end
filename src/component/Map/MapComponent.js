@@ -16,7 +16,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import axios from 'axios';
 import RouteForm from '../RouteForm/RouteForm.js'
 import LegendButton from '../LegendButton/LegendButton.js';
-import swal from 'sweetalert';
 
 const mapStyles = {
     width: '100%',
@@ -63,8 +62,6 @@ const useStyles = theme => ({
         width: 'auto',
     },
 });
-
-
 
 
 export class MapComponent extends React.Component {
@@ -115,10 +112,9 @@ export class MapComponent extends React.Component {
         this.handleDialogRouteOpen = this.handleDialogRouteOpen.bind(this);
         this.createANewRoute = this.createANewRoute.bind(this);
         this.confirmRoute = this.confirmRoute.bind(this);
+        this.drawRoutes = this.drawRoutes.bind(this);
 
     }
-
-
 
     handleStatusChange(e) {
         this.setState({
@@ -134,13 +130,11 @@ export class MapComponent extends React.Component {
         this.setState({ open: false });
     }
 
-
     handleDialogNoRouteOpen(e){
         this.setState({ dialogNoRoute: true });
     }
 
     handleDialogNoRouteClose(e){
-        
         this.setState({ dialogNoRoute: false });
     }
 
@@ -158,9 +152,6 @@ export class MapComponent extends React.Component {
         this.setState({ checked: checked });    
     }
 
-   
-
-
     async getLanLnt(address) {
         const { google } = this.props;
         const geocoder = new google.maps.Geocoder();
@@ -176,9 +167,7 @@ export class MapComponent extends React.Component {
         })
     }
 
-    
     async reverseGeocode(latLng) {
-        
         const {google} = this.props;
         const geocoder = new google.maps.Geocoder;
         return new Promise((resolve, reject) => {
@@ -192,7 +181,6 @@ export class MapComponent extends React.Component {
             });
         })
     }
-
 
     async getCenterMap(sourceRoute, targetRoute) {
         const { google, map } = this.props;
@@ -219,12 +207,10 @@ export class MapComponent extends React.Component {
 
     async setDirectionRoute() {
         
-        //this.handleOpen();
-        localStorage.setItem("viaje", true);
         const origin =  document.getElementById("source").value;
         const destination = document.getElementById("target").value;
-        var commonRoutePlace = []
-        var commonRouteID = []
+        var commonRoutePlace = [];
+        var commonRouteID = [];
         
         for(var j = 0 ; j < this.state.carres.length ; j++){
             var commonRoute = this.state.carres[j];
@@ -233,7 +219,7 @@ export class MapComponent extends React.Component {
             commonRoutePlace.push(place) 
             commonRouteID.push(commonRoute._id)
         }
-        console.log(commonRouteID)
+        console.log(commonRouteID);
 
         //Define route the  shortest of the origin to some place 
         var theBestOriginToPlace = [1e9, "undefine", null,null,null];
@@ -250,19 +236,19 @@ export class MapComponent extends React.Component {
                 theBestOriginToPlace[4] = this.state.carres[i]
             }
         }
+        
         for (i = 0; i < this.state.carres.length; i++) {
-                //place = await this.reverseGeocode(latLng);
-                newPathRoute = await this.calculateRoute(destination, commonRoutePlace[i]);
-                distance = newPathRoute.routes[0].legs[0].distance.text;
-                distance = parseFloat(distance.split(" ")[0].replace(",", "."));
-                if (distance < theBestDestinationToPlace[0] &&   theBestOriginToPlace[1] !== commonRoutePlace[i]) {
-                    theBestDestinationToPlace[1] = commonRoutePlace[i];
-                    theBestDestinationToPlace[0] = Math.min(distance, theBestDestinationToPlace[0])
-                    theBestDestinationToPlace[2] = newPathRoute.routes[0].overview_path;
-                    theBestDestinationToPlace[3] = commonRouteID[i]
-                    theBestDestinationToPlace[4] =  this.state.carres[i]
-                }
-           
+            //place = await this.reverseGeocode(latLng); 
+            newPathRoute = await this.calculateRoute(destination, commonRoutePlace[i]);
+            distance = newPathRoute.routes[0].legs[0].distance.text;
+            distance = parseFloat(distance.split(" ")[0].replace(",", "."));
+            if (distance < theBestDestinationToPlace[0] &&   theBestOriginToPlace[1] !== commonRoutePlace[i]) {
+                theBestDestinationToPlace[1] = commonRoutePlace[i];
+                theBestDestinationToPlace[0] = Math.min(distance, theBestDestinationToPlace[0])
+                theBestDestinationToPlace[2] = newPathRoute.routes[0].overview_path;
+                theBestDestinationToPlace[3] = commonRouteID[i]
+                theBestDestinationToPlace[4] =  this.state.carres[i]
+            }
         }
         newPathRoute = await this.calculateRoute(theBestDestinationToPlace[1], theBestOriginToPlace[1]);
         this.setState({
@@ -283,8 +269,8 @@ export class MapComponent extends React.Component {
             latLngOrigin : await this.getLanLnt(origin),
             latLngDestination : await this.getLanLnt(destination)
         };
-        this.setState({suggestRouteJSON : JSON.stringify(newJSON)})
-        
+
+        this.setState({suggestRouteJSON : JSON.stringify(newJSON)});
         if (localStorage.getItem('lastroutes') === undefined || localStorage.getItem('lastroutes') === null ) {
             localStorage.setItem('lastroutes', JSON.stringify([newJSON]))
         }else{
@@ -297,45 +283,9 @@ export class MapComponent extends React.Component {
             localStorage.setItem("lastroutes",JSON.stringify(tdListJSON));
         }
         const places = [newJSON.latLngOrigin, newJSON.latLngDestination, newJSON.latLngpathRouteDestinationPlace, newJSON.latlngpathRouteOriginPlace]
-        this.setState({
-            markers: []
-        })
-        console.log(JSON.stringify(newJSON))
-        for (i = 0; i < 4; ++i) {
-            const latAndLng = places[i];
-            
-            var newMarker={};
-            if(i===0){
-                newMarker = {
-                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
-                    title: newJSON.origin,
-                    name: places[i],
-                    icon:bici,
-                }
-            }
-            else if(i===1){
-                newMarker = {
-                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
-                    title: newJSON.destination,
-                    name: places[i],
-                    icon:final,
-                }
-            }
-            else{
-                newMarker = {
-                    university: { lat: latAndLng.latitude, lng: latAndLng.longitude },
-                    title: places[i],
-                    name: places[i],
-                    icon: bicis,
-                }
-            }
-            
-            this.state.markers.push(newMarker);
-        }
-        await this.getCenterMap(origin, destination);
+        this.drawRoutes(places, newJSON);
         
         var createRoute = {
-            
             "origin" :{
                 "latitude"  : newJSON.latLngOrigin.lat(),
                 "longitude" : newJSON.latLngOrigin.lng()
@@ -344,19 +294,52 @@ export class MapComponent extends React.Component {
                 "latitude"  : newJSON.latLngDestination.lat(),
                 "longitude" : newJSON.latLngDestination.lng()
             },  
-          
             "user" :{
                 "_id" : localStorage.getItem("userId")
             }
         }
-        
         this.state.createRouteST = createRoute;
-
         this.suggestRoute(newJSON);
-        
 
     }
 
+    async drawRoutes(placesLatLng, placesJSON){
+        this.setState({
+            markers: []
+        })
+        console.log(JSON.stringify(placesJSON))
+        for (var i = 0; i < 4; ++i) {
+            const latAndLng = placesLatLng[i];
+            
+            var newMarker={};
+            if(i===0){
+                newMarker = {
+                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
+                    title: placesJSON.origin,
+                    name: placesLatLng[i],
+                    icon:bici,
+                }
+            }
+            else if(i===1){
+                newMarker = {
+                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
+                    title: placesJSON.destination,
+                    name: placesLatLng[i],
+                    icon:final,
+                }
+            }
+            else{
+                newMarker = {
+                    university: { lat: latAndLng.latitude, lng: latAndLng.longitude },
+                    title: placesLatLng[i],
+                    name: placesLatLng[i],
+                    icon: bicis,
+                }
+            }
+            this.state.markers.push(newMarker);
+        }
+        await this.getCenterMap(placesJSON.origin, placesJSON.destination);
+    }
 
     hex(length, n) {
         n = n.toString(16);
@@ -373,9 +356,7 @@ export class MapComponent extends React.Component {
 
     async suggestRoute(newJSON){
         var self = this;
-        
         var suggestJSON = {
-            
             "origin": {
                 "_id": this.jsonToStringId(newJSON.idpathRouteOriginPlace)
             },
@@ -464,7 +445,6 @@ export class MapComponent extends React.Component {
         this.axios.get('/point/commonRoute')
             .then(function (response) {
             self.setState({ carres: response.data });
-    
         }).catch(function (error) {
             console.log(error);
         });
@@ -485,9 +465,7 @@ export class MapComponent extends React.Component {
             ).catch(function (error) {
             console.log(error);
         });
-    
         this.handleDialogNoRouteClose();
-    
     }
 
     confirmRoute(){
@@ -522,8 +500,7 @@ export class MapComponent extends React.Component {
 
         return (
         <React.Fragment>               
-            <div id="bar">     
-                         
+            <div id="bar">
                 <Map
                     className="map"
                     google={this.props.google}
@@ -534,39 +511,39 @@ export class MapComponent extends React.Component {
                     mapTypeControl={false}
                     center={this.state.position}
                 >
-                {mark}
-                <Polyline
-                    path={this.state.pathRoute}
-                    geodesic={true}
-                    options={{
-                        strokeColor: '#354BD9',
-                        strokeOpacity: 1,
-                        strokeWeight: 2,
-                    }}
-                />
+                    {mark}
+                    <Polyline
+                        path={this.state.pathRoute}
+                        geodesic={true}
+                        options={{
+                            strokeColor: '#354BD9',
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                        }}
+                    />
 
-                <Polyline
-                    path={this.state.pathRouteDestinationPlace}
-                    geodesic={true}
-                    options={{
-                        strokeColor: '#38B44F',
-                        strokeOpacity: 1,
-                        strokeWeight: 2,
-                    }}
-                />
+                    <Polyline
+                        path={this.state.pathRouteDestinationPlace}
+                        geodesic={true}
+                        options={{
+                            strokeColor: '#38B44F',
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                        }}
+                    />
 
-                <Polyline
-                    path={this.state.pathRouteOriginPlace}
-                    geodesic={true}
-                    options={{
-                        strokeColor: '#38B44F',
-                        strokeOpacity: 1,
-                        strokeWeight: 2,
-                    }}
-                />
+                    <Polyline
+                        path={this.state.pathRouteOriginPlace}
+                        geodesic={true}
+                        options={{
+                            strokeColor: '#38B44F',
+                            strokeOpacity: 1,
+                            strokeWeight: 2,
+                        }}
+                    />
                 
-                <div>
-
+                    <div>
+                    
                     <Dialog
                         open={this.state.dialogNoRoute}
                         onClose={this.handleDialogNoRouteClose}
@@ -613,7 +590,6 @@ export class MapComponent extends React.Component {
         </div>
             <RouteForm paintRoute={this.setDirectionRoute} key={this.state.reloadForm} forceReload={this.handleForceReloadForm}/>
             <LegendButton />
-            
         </React.Fragment>     
         );
     }

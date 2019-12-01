@@ -130,7 +130,7 @@ export default function MyMenu() {
                         <Fab variant="extended" size="small" className={classes.fab} onClick={handleSignOut}>
                             <ExitToAppIcon style={{color:"#212121"}}/>
                             <Typography variant="button" noWrap style={{color:"#212121"}}>
-                                Sign out
+                                Log out
                             </Typography>
                         </Fab>
                     </ListItem>
