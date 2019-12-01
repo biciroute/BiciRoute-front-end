@@ -91,7 +91,8 @@ export class MapComponent extends React.Component {
                     icon: bici,
                 },
             ],
-            carres: []
+            carres: [],
+            wantToRide: null
         };
         this.axios = axios.create({
             baseURL: 'http://localhost:8080/v1/'
@@ -110,9 +111,11 @@ export class MapComponent extends React.Component {
         this.handleDialogNoRouteClose = this.handleDialogNoRouteClose.bind(this);
         
         this.handleDialogRouteOpen = this.handleDialogRouteOpen.bind(this);
+        this.handleDialogRouteClose = this.handleDialogRouteClose.bind(this); 
         this.createANewRoute = this.createANewRoute.bind(this);
         this.confirmRoute = this.confirmRoute.bind(this);
         this.drawRoutes = this.drawRoutes.bind(this);
+        this.suggestRoute = this.suggestRoute.bind(this);
 
     }
 
@@ -139,10 +142,8 @@ export class MapComponent extends React.Component {
     }
 
     handleDialogRouteOpen(e){
-
         this.setState({ dialogRoute: true });
     }
-
 
     handleDialogRouteClose(e){
         this.setState({ dialogRoute: false });
@@ -293,24 +294,23 @@ export class MapComponent extends React.Component {
             "destination" : {
                 "latitude"  : newJSON.latLngDestination.lat(),
                 "longitude" : newJSON.latLngDestination.lng()
-            },  
+            },
             "user" :{
                 "_id" : localStorage.getItem("userId")
             }
         }
         this.state.createRouteST = createRoute;
-        this.suggestRoute(newJSON);
-
+        localStorage.setItem("suggestedRoute", JSON.stringify(newJSON));
+        //this.suggestRoute(newJSON);
     }
 
     async drawRoutes(placesLatLng, placesJSON){
         this.setState({
             markers: []
         })
-        console.log(JSON.stringify(placesJSON))
+        console.log(JSON.stringify(placesJSON));
         for (var i = 0; i < 4; ++i) {
             const latAndLng = placesLatLng[i];
-            
             var newMarker={};
             if(i===0){
                 newMarker = {
@@ -347,14 +347,14 @@ export class MapComponent extends React.Component {
     }
 
     jsonToStringId(json){
-        var idToParse = json
+        var idToParse = json;
         var idString = this.hex(8,idToParse.timestamp)+this.hex(6,idToParse.machineIdentifier)+this.hex(4,idToParse.processIdentifier)+this.hex(6,idToParse.counter);
-        return idString
- 
+        return idString;
     }
   
-
     async suggestRoute(newJSON){
+        //alert("SUGGEST ROUTE-----------------");
+        console.log(newJSON);
         var self = this;
         var suggestJSON = {
             "origin": {
@@ -365,12 +365,12 @@ export class MapComponent extends React.Component {
             }, 
             "hour" : new Date(document.getElementById("hour").value) 
         } 
-        console.log(suggestJSON)
+        console.log(suggestJSON);
         this.axios.post('/routes/suggest' , (suggestJSON) )
             .then(function (response) {
                 console.log(response.data);
                 var listSuggest = response.data;
-                console.log(listSuggest.length == 0)
+                console.log(listSuggest.length == 0);
                 if(listSuggest.length == 0){
                     //swal.close()
                     suggestJSON["_id"] = null
@@ -386,13 +386,6 @@ export class MapComponent extends React.Component {
         }).catch(function (error) {
             console.log(error);
         });
-
-        /*swal({
-            title: "loading",
-            text: "We are seraching the best route for you",
-            icon: "info",
-            button: false,
-          })]*/
     }
 
 
@@ -465,7 +458,7 @@ export class MapComponent extends React.Component {
             ).catch(function (error) {
             console.log(error);
         });
-        this.handleDialogNoRouteClose();
+        window.location.href = "/myroutes";
     }
 
     confirmRoute(){
@@ -475,7 +468,7 @@ export class MapComponent extends React.Component {
             ).catch(function (error) {
             console.log(error);
         });
-        this.handleDialogRouteClose();
+        window.location.href = "/myroutes";
     }
 
     componentDidUpdate(prevProps) {
@@ -588,13 +581,13 @@ export class MapComponent extends React.Component {
                 </div>
             </Map>
         </div>
-            <RouteForm paintRoute={this.setDirectionRoute} key={this.state.reloadForm} forceReload={this.handleForceReloadForm}/>
+            <RouteForm paintRoute={this.setDirectionRoute} key={this.state.wantToRide} wantToRide={this.state.wantToRide}
+                suggestRoute={this.suggestRoute}/>
             <LegendButton />
         </React.Fragment>     
         );
+        }
     }
-
-}
 //https://es.reactjs.org/docs/hooks-reference.html#usestate
 MapComponent.propTypes = {
     classes: PropTypes.object.isRequired,

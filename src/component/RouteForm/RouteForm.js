@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
@@ -24,6 +24,13 @@ export default function RouteForm(props) {
   const [routeFound, setRouteFound] = React.useState(false);
   const [confirm, setConfirm] = React.useState(null);
 
+  useEffect(() => { //didMount in a functional component
+    setRouteFound(false);
+    document.getElementById("source").disabled = false;
+    document.getElementById("target").disabled = false;
+    document.getElementById("hour").disabled = false;
+  }, []);
+
   const handleChangeState = prop => event =>{
     setState({
       ...state, [prop]: event.target.value
@@ -37,9 +44,8 @@ export default function RouteForm(props) {
 
 
   const handleOnSearch = () =>{
-    props.paintRoute();
-    
-    /*if(state.origin === null || state.destination=== null){
+    //props.paintRoute();
+    if(state.origin === null || state.destination=== null){
       swal({
         title: "Ooops!",
         text: "You must fill in origin and destination!!",
@@ -48,41 +54,26 @@ export default function RouteForm(props) {
         timer: 2000
       });
     }else{
-      props.paintRoute();
-      swal({
-        title: "loading",
-        text: "The best route was found for you!!",
-        icon: "success",
-        timer: 3000,
-        button: false,
-      }).then(() => {
-        setRouteFound(true);
-        document.getElementById("source").disabled = true;
-        document.getElementById("target").disabled = true;
-        document.getElementById("hour").disabled = true;
+      props.paintRoute().then(()=>{
+        swal({
+          title: "loading",
+          text: "The best route was found for you!!",
+          icon: "success",
+          timer: 3000,
+          button: false,
+        }).then(() => {
+          setRouteFound(true);
+          document.getElementById("source").disabled = true;
+          document.getElementById("target").disabled = true;
+          document.getElementById("hour").disabled = true;
+        });
       });
-    }*/
+    }
   }
   
 
   const handleOnConfirm = () =>{
-    swal({
-      title: "Good job!",
-      text: "You have joined to this route!!!",
-      icon: "success",
-      timer: 3000,
-      button: false,
-    }).then(() => {
-      setConfirm(true);
-      var newRoute = JSON.parse(localStorage.getItem("newRoute"));
-      console.log(newRoute);
-      /*this.axios.post('/routes' , ))
-      .then(function (response) {
-          console.log(response.data + "Enter");
-      }).catch(function (error) {
-          console.log(error);
-      });*/
-    });
+    props.suggestRoute(JSON.parse(localStorage.getItem('suggestedRoute')));
   }
 
   const handleOnCancel = () =>{
@@ -157,7 +148,7 @@ export default function RouteForm(props) {
                   {(routeFound)?
                   <Container style={{textAlign: "center"}}>
                       <Button variant="contained" color="primary"
-                        style={{width:"40%", backgroundColor: "#00FF00", color: "#FFFFFA", margin: "4px"}}
+                        style={{width:"40%", backgroundColor: "#00FF00", color: "#212121", margin: "4px"}}
                           onClick={handleOnConfirm}>
                         Confirm
                       </Button>

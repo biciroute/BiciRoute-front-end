@@ -18,7 +18,7 @@ export class MyRoutes extends React.Component{
             value: 1,
         }
         this.axios= axios.create({
-            baseURL: 'https://biciroute-api.herokuapp.com/',
+            baseURL: 'https://biciroute-api.herokuapp.com/v1',
             timeout: 1000,
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem("accessToken")}
           });
@@ -26,7 +26,7 @@ export class MyRoutes extends React.Component{
     }
 
     componentDidMount(){
-        this.axios.get('https://biciroute-api.herokuapp.com/v1/routes/user/'+ localStorage.getItem("userId"))
+        this.axios.get('/routes/user/'+ localStorage.getItem("userId"))
         .then((response)=>{
             this.setState({
                 routeList: [], pastRoutes: [], upcomingRoutes: []
