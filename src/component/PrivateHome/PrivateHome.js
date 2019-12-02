@@ -7,8 +7,8 @@ export class PrivateHome extends React.Component{
     render(){
         return(
             <React.Fragment>
-                <MyNavBar/>
-                <MapComponent/>
+                <MyNavBar />
+                <MapComponent requestRoute="true"/>
             </React.Fragment>
         );
     }

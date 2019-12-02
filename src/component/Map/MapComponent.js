@@ -83,8 +83,7 @@ export class MapComponent extends React.Component {
             checked: false,
             suggestRouteJSON : null,
             msgSuggestRoute : null,
-            markers: [
-                {
+            markers: [{
                     university: { lat: 4.782715, lng: -74.042611 },
                     title: "Escuela colombiana de ingenieria Julio Garavito",
                     name: "Escuela colombiana de ingenieria Julio Garavito",
@@ -186,8 +185,8 @@ export class MapComponent extends React.Component {
     async getCenterMap(sourceRoute, targetRoute) {
         const { google, map } = this.props;
         const coordinatesDestinations = []
-        var x = await this.getLanLnt(sourceRoute)
-        var y = await this.getLanLnt(targetRoute)
+        var x = await this.getLanLnt(sourceRoute);
+        var y = await this.getLanLnt(targetRoute);
         coordinatesDestinations.push(x);
         coordinatesDestinations.push(y);
         var bounds = new google.maps.LatLngBounds();
@@ -514,7 +513,6 @@ export class MapComponent extends React.Component {
                             strokeWeight: 2,
                         }}
                     />
-
                     <Polyline
                         path={this.state.pathRouteDestinationPlace}
                         geodesic={true}
@@ -524,7 +522,6 @@ export class MapComponent extends React.Component {
                             strokeWeight: 2,
                         }}
                     />
-
                     <Polyline
                         path={this.state.pathRouteOriginPlace}
                         geodesic={true}
@@ -534,56 +531,58 @@ export class MapComponent extends React.Component {
                             strokeWeight: 2,
                         }}
                     />
-                
-                    <div>
-                    
-                    <Dialog
-                        open={this.state.dialogNoRoute}
-                        onClose={this.handleDialogNoRouteClose}
-                        aria-labelledby="alert-dialog-title"
-                        aria-describedby="alert-dialog-description">
-                        <DialogTitle id="dialogNoRoute">{"Suggest a route"}</DialogTitle>
-                        <DialogContent>
-                        <DialogContentText id="alert-dialog-description">
-                            There are still no available routes for this route. Would you like to be the route leader?
-                        </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                        <Button onClick={this.handleDialogNoRouteClose} color="primary">
-                            Cancel
-                        </Button>
-                        <Button onClick={this.createANewRoute} color="primary" autoFocus>
-                            Accept
-                        </Button>
-                        </DialogActions>
-                    </Dialog>
-
-                    <Dialog
-                        open={this.state.dialogRoute}
-                        onClose={this.handleDialogRouteClose}
-                        aria-labelledby="dialog-title"
-                        aria-describedby="exitsroute-description">
-                        <DialogTitle id="dialogRoute">{"Suggest a route"}</DialogTitle>
-                        <DialogContent>
-                        <DialogContentText id="exitsroute">
-                            {this.state.msgSuggestRoute}
-                        </DialogContentText>
-                        </DialogContent>
-                        <DialogActions>
-                        <Button onClick={this.handleDialogRouteClose} color="primary">
-                            Denied
-                        </Button>
-                        <Button onClick={this.confirmRoute} color="primary" autoFocus>
-                            Accept
-                        </Button>
-                        </DialogActions>
-                    </Dialog>
-                </div>
             </Map>
         </div>
+        
+        {(this.props.requestRoute)?
+        <div id="requestRoute">
+            <Dialog
+                open={this.state.dialogNoRoute}
+                onClose={this.handleDialogNoRouteClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description">
+                <DialogTitle id="dialogNoRoute">{"Suggest a route"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        There are still no available routes for this route. Would you like to be the route leader?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.handleDialogNoRouteClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={this.createANewRoute} color="primary" autoFocus>
+                        Accept
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={this.state.dialogRoute}
+                onClose={this.handleDialogRouteClose}
+                aria-labelledby="dialog-title"
+                aria-describedby="exitsroute-description">
+                <DialogTitle id="dialogRoute">{"Suggest a route"}</DialogTitle>
+                <DialogContent>
+                <DialogContentText id="exitsroute">
+                    {this.state.msgSuggestRoute}
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.handleDialogRouteClose} color="primary">
+                        Denied
+                    </Button>
+                    <Button onClick={this.confirmRoute} color="primary" autoFocus>
+                        Accept
+                    </Button>
+                </DialogActions>
+            </Dialog>
             <RouteForm paintRoute={this.setDirectionRoute} key={this.state.wantToRide} wantToRide={this.state.wantToRide}
                 suggestRoute={this.suggestRoute}/>
             <LegendButton />
+        </div>
+        : <React.Fragment></React.Fragment>}
+            
         </React.Fragment>     
         );
         }
