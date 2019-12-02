@@ -17,14 +17,9 @@ import axios from 'axios';
 import RouteForm from '../RouteForm/RouteForm.js'
 import LegendButton from '../LegendButton/LegendButton.js';
 
-const mapStyles = {
-    width: '100%',
-    height: '100%',
-};
-
 const useStyles = theme => ({
     paper: {
-        width: "100%",
+        width: "95%",
         backgroundColor: theme.palette.background.paper,
         border: '2px solid #000',
         boxShadow: theme.shadows[5],
@@ -71,7 +66,7 @@ export class MapComponent extends React.Component {
         console.log(props);
         super(props);
         this.state = {
-            university: { lat: 4.782715, lng: -74.042611 },
+            location: this.props.location.latLng,
             open: false,
             dialogNoRoute  : false,
             dialogRoute  : false,
@@ -84,9 +79,9 @@ export class MapComponent extends React.Component {
             suggestRouteJSON : null,
             msgSuggestRoute : null,
             markers: [{
-                    university: { lat: 4.782715, lng: -74.042611 },
-                    title: "Escuela colombiana de ingenieria Julio Garavito",
-                    name: "Escuela colombiana de ingenieria Julio Garavito",
+                    location: this.props.location.latLng,
+                    title: this.props.location.name,
+                    name: this.props.location.name,
                     icon: bici,
                 },
             ],
@@ -115,7 +110,32 @@ export class MapComponent extends React.Component {
         this.confirmRoute = this.confirmRoute.bind(this);
         this.drawRoutes = this.drawRoutes.bind(this);
         this.suggestRoute = this.suggestRoute.bind(this);
+        this.getLanLnt = this.getLanLnt.bind(this);
 
+        if(this.props.route){
+            alert("ROUTE ->");
+            this.resolvePaintingRoute();            
+        }
+    }
+
+    async resolvePaintingRoute(){
+        var routeAddresses = {
+            origin: await this.reverseGeocode(this.props.route.origin),
+            destination: await this.reverseGeocode(this.props.route.destination),
+            commonRouteOrigin: await this.reverseGeocode(this.props.route.commonRoute.origin),
+            commonRouteDestination: await this.reverseGeocode(this.props.route.commonRoute.destination)
+        }
+        var placesLatLng = [
+            await this.getLanLnt(routeAddresses.origin),
+            await this.getLanLnt(routeAddresses.destination),
+            await this.getLanLnt(routeAddresses.commonRouteOrigin),
+            await this.getLanLnt(routeAddresses.commonRouteDestination)
+        ];
+        var placesJSON = {
+            origin: routeAddresses.origin,
+            destination: routeAddresses.destination
+        }
+        this.drawRoutes(placesLatLng, placesJSON);
     }
 
     handleStatusChange(e) {
@@ -313,7 +333,7 @@ export class MapComponent extends React.Component {
             var newMarker={};
             if(i===0){
                 newMarker = {
-                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
+                    location: { lat: latAndLng.lat(), lng: latAndLng.lng() },
                     title: placesJSON.origin,
                     name: placesLatLng[i],
                     icon:bici,
@@ -321,7 +341,7 @@ export class MapComponent extends React.Component {
             }
             else if(i===1){
                 newMarker = {
-                    university: { lat: latAndLng.lat(), lng: latAndLng.lng() },
+                    location: { lat: latAndLng.lat(), lng: latAndLng.lng() },
                     title: placesJSON.destination,
                     name: placesLatLng[i],
                     icon:final,
@@ -329,7 +349,7 @@ export class MapComponent extends React.Component {
             }
             else{
                 newMarker = {
-                    university: { lat: latAndLng.latitude, lng: latAndLng.longitude },
+                    location: { lat: latAndLng.latitude, lng: latAndLng.longitude },
                     title: placesLatLng[i],
                     name: placesLatLng[i],
                     icon: bicis,
@@ -386,7 +406,6 @@ export class MapComponent extends React.Component {
             console.log(error);
         });
     }
-
 
     autocomplete() {
         const { google, map } = this.props;
@@ -482,7 +501,7 @@ export class MapComponent extends React.Component {
         var mark = this.state.markers.map((td) =>
             <Marker
                 title={td.title}
-                position={td.university}
+                position={td.location}
                 animation={this.props.google.maps.Animation.DROP}
                 name={td.name}
                 description={td.description}
@@ -491,17 +510,17 @@ export class MapComponent extends React.Component {
         );
 
         return (
-        <React.Fragment>               
-            <div id="bar">
+        <React.Fragment>
+            <div class="containerMap">
                 <Map
                     className="map"
                     google={this.props.google}
                     zoom={15}
-                    style={mapStyles}
-                    initialCenter={this.state.university}
+                    initialCenter={this.state.location}
                     centerAroundCurrentLocation={false}
                     mapTypeControl={false}
                     center={this.state.position}
+                    style={{width: "100%", height: "95%", position: "fixed"}}
                 >
                     {mark}
                     <Polyline
@@ -532,8 +551,8 @@ export class MapComponent extends React.Component {
                         }}
                     />
             </Map>
+            <LegendButton />
         </div>
-        
         {(this.props.requestRoute)?
         <div id="requestRoute">
             <Dialog
@@ -579,7 +598,6 @@ export class MapComponent extends React.Component {
             </Dialog>
             <RouteForm paintRoute={this.setDirectionRoute} key={this.state.wantToRide} wantToRide={this.state.wantToRide}
                 suggestRoute={this.suggestRoute}/>
-            <LegendButton />
         </div>
         : <React.Fragment></React.Fragment>}
             

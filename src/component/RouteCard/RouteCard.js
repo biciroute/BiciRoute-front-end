@@ -16,7 +16,7 @@ import InfoRouteCard from '../InfoRouteCard/InfoRouteCard.js';
 export default function RouteCard(props) {
   const classes = RouteCardStyles();
 
-  const [route]=React.useState("origin["+props.origin.lat+","+props.origin.lng+"] - destination["+props.destination.lat+","+props.destination.lng+"]");
+  const [originDestination]=React.useState("origin["+props.origin.lat+","+props.origin.lng+"] - destination["+props.destination.lat+","+props.destination.lng+"]");
   const [showInfo, setShowInfo] = React.useState(false);
 
   const handleOpen = () =>{
@@ -31,7 +31,9 @@ export default function RouteCard(props) {
     <React.Fragment>
       <InfoRouteCard key={showInfo} open={showInfo} onClose={handleClose}
         data={{
-          route: route,
+          origin: props.origin,
+          destination: props.destination,
+          commonRoute: props.commonRoute,
           date: props.date,
           accompaniers: "20"
         }}/>
@@ -42,7 +44,7 @@ export default function RouteCard(props) {
               <MoreVertIcon />
             </IconButton>
           }
-          title={route}
+          title={originDestination}
           subheader={props.date}
         />
         <a onClick={handleOpen}>

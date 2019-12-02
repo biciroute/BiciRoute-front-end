@@ -10,6 +10,7 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import Paper from '@material-ui/core/Paper';
 import Box from '@material-ui/core/Box';
 import MapComponent from '../Map/MapComponent.js';
+import Container from '@material-ui/core/Container';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -18,6 +19,12 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function InfoRouteCard(props) {
     const classes = InfoRouteCardStyles();
     const [data, setData] = React.useState(props.data);
+
+    const route = {
+        origin: props.data.origin,
+        destination: props.data.destination,
+        commonRoute: props.data.commonRoute
+    }
 
     return (
         <Dialog fullScreen open={props.open} onClose={props.onClose} TransitionComponent={Transition}>
@@ -31,23 +38,13 @@ export default function InfoRouteCard(props) {
                 </Typography>
                 </Toolbar>
             </AppBar>
-            <Paper className={classes.paper}>
-                
-                <Toolbar style={{flexGrow: 1}}>
-                    <Typography variant="h6" style={{flexGrow: 1}}>
-                        {props.data.route}
-                    </Typography>
-                    <Typography variant="h6">
-                        {props.data.date}
-                    </Typography>
-                </Toolbar>
-
-                <Box width={1} className={classes.containerImage}>
-                    <MapComponent />
-                </Box>
-            </Paper>
-
-            
+            <MapComponent route={route}
+                location={{ 
+                    latLng: {
+                        lat: 4.782715, lng: -74.042611
+                    }, 
+                    name: "Escuela Colombiana de Ingeniería Julio Garavito"
+                }}/>
         </Dialog>
     );
 }

@@ -12,8 +12,9 @@ export class RouteList extends Component{
                 <RouteCard key={i}
                     origin = {route.origin}
                     destination = {route.destination}
+                    commonRoute = {route.commonRoute}
                     description = {route.description}
-                    date = {route.date}
+                    date = {route.commonRoute.hour}
                     />
             );
         });

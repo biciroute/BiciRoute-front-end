@@ -1,13 +1,3 @@
-
-
-#searchModal{
-    background-color: aliceblue
-}
-
-#modal {
-    z-index: 20  !important;
-    top : 50%,
-}
 #from{
     margin-top: 10px;
     margin-bottom: 5px;
@@ -46,4 +36,8 @@
 }
 #bar{
     margin-top:1%;
+}
+
+.map {
+    position: fixed !important;
 }
