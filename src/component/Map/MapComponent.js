@@ -113,7 +113,7 @@ export class MapComponent extends React.Component {
         this.getLanLnt = this.getLanLnt.bind(this);
 
         if(this.props.route){
-            alert("ROUTE ->");
+            //alert("ROUTE ->");
             this.resolvePaintingRoute();            
         }
     }
@@ -520,7 +520,7 @@ export class MapComponent extends React.Component {
                     centerAroundCurrentLocation={false}
                     mapTypeControl={false}
                     center={this.state.position}
-                    style={{width: "100%", height: "95%", position: "fixed"}}
+                    style={this.props.style}
                 >
                     {mark}
                     <Polyline

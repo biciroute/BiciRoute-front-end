@@ -19,7 +19,7 @@ export class MyRoutes extends React.Component{
         }
         this.axios= axios.create({
             baseURL: 'https://biciroute-api.herokuapp.com/v1',
-            timeout: 1000,
+            timeout: 1500,
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem("accessToken")}
           });
 
@@ -48,7 +48,12 @@ export class MyRoutes extends React.Component{
                     hour: routes[i].commonRoute.hour
                 }
                 var timestamp = routes[i]._id.timestamp;
-                var route = {origin, destination, commonRoute: commonRoute};
+                var route = {
+                    origin: origin,
+                    //originAddress: routes[i].origin.address,
+                    destination: destination,
+                    //destinationAddress: routes[i].destination.address
+                    commonRoute: commonRoute};
                 var currentTimeInMs = Math.floor(Date.now() / 1000);
                 if(currentTimeInMs>=timestamp){
                     this.setState(prevState => ({

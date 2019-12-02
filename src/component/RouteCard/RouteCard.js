@@ -12,12 +12,14 @@ import Grid from '@material-ui/core/Grid';
 import RouteCardStyles from './RouteCardStyles.js';
 import StarHalfRoundedIcon from '@material-ui/icons/StarHalfRounded';
 import InfoRouteCard from '../InfoRouteCard/InfoRouteCard.js';
+import MapComponent from '../Map/MapComponent.js';
 
 export default function RouteCard(props) {
   const classes = RouteCardStyles();
 
-  const [originDestination]=React.useState("origin["+props.origin.lat+","+props.origin.lng+"] - destination["+props.destination.lat+","+props.destination.lng+"]");
   const [showInfo, setShowInfo] = React.useState(false);
+  const [origin, setOrigin] = React.useState("origin["+props.origin.lat+","+props.origin.lng+"]");
+  const [destination, setDestination] = React.useState("destination["+props.destination.lat+","+props.destination.lng+"]");
 
   const handleOpen = () =>{
     setShowInfo(true);
@@ -26,6 +28,11 @@ export default function RouteCard(props) {
   const handleClose = () => {
     setShowInfo(false);
   };
+
+  const resolvePointsToAddresses = (listAddresses) => {
+    setOrigin(listAddresses[0]);
+    setDestination(listAddresses[1]);
+  }
 
   return (
     <React.Fragment>
@@ -36,7 +43,8 @@ export default function RouteCard(props) {
           commonRoute: props.commonRoute,
           date: props.date,
           accompaniers: "20"
-        }}/>
+        }}
+        />
       <Card className={classes.card}>
         <CardHeader
           action={
@@ -44,7 +52,7 @@ export default function RouteCard(props) {
               <MoreVertIcon />
             </IconButton>
           }
-          title={originDestination}
+          title={origin + "-" +destination}
           subheader={props.date}
         />
         <a onClick={handleOpen}>
