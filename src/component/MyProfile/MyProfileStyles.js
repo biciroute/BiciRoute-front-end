@@ -63,7 +63,7 @@ const profileStyles = StyleSheet.create({
         borderTopWidth: "2px",
         borderLeftWidth: "1px",
         borderRightWidth: "1px",
-        width:452
+        width:364
       },
       badgesDetail: {
         alignSelf: 'center',
@@ -96,14 +96,14 @@ const profileStyles = StyleSheet.create({
         marginTop: 'auto',
         alignItems: 'center',
         borderColor: "#68A3B6",
-        marginLeft:'auto',
-        borderRightWidth: "1px"
+        marginLeft:'0px',
+        borderRightWidth: "1px",
+        borderLeftWidth: "1px",
       },
       detailContent1: {
         marginTop: 10,
         alignItems: 'center',
-        width:120,
-        marginLeft:10
+        width:'120%'
       },
       title: {
         fontSize: 20,
@@ -123,7 +123,7 @@ const profileStyles = StyleSheet.create({
         flex: 1,
         maxwith: '100%',
         maxHeight: '100%',
-        alignItems: 'center',
+        alignItems: 'left',
         padding: 1,
         marginBottom: 5
       },
