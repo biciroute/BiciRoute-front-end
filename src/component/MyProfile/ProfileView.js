@@ -100,7 +100,7 @@ export default class ProfileView extends Component {
             <Text style={styles.title}>Following</Text>
             <Text id="following" style={styles.count}>{this.state.following}</Text>
           </View>
-          <View style={styles.detailContent1}>
+          <View style={styles.detailContent}>
             <Text style={styles.title}>Traveled</Text>
             <Text id="traveled" style={styles.count}>{this.state.distanceTraveled} Km</Text>
           </View>

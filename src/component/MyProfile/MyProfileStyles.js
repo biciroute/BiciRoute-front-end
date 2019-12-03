@@ -62,7 +62,8 @@ const profileStyles = StyleSheet.create({
         borderColor: "#022935",
         borderTopWidth: "2px",
         borderLeftWidth: "1px",
-        borderRightWidth: "1px"
+        borderRightWidth: "1px",
+        width:452
       },
       badgesDetail: {
         alignSelf: 'center',
@@ -92,15 +93,16 @@ const profileStyles = StyleSheet.create({
         marginRight: 5,
       },
       detailContent: {
-        marginTop: 10,
+        marginTop: 'auto',
         alignItems: 'center',
         borderColor: "#68A3B6",
-        marginLeft:10,
+        marginLeft:'auto',
         borderRightWidth: "1px"
       },
       detailContent1: {
         marginTop: 10,
         alignItems: 'center',
+        width:120,
         marginLeft:10
       },
       title: {
@@ -122,7 +124,7 @@ const profileStyles = StyleSheet.create({
         maxwith: '100%',
         maxHeight: '100%',
         alignItems: 'center',
-        padding: 10,
+        padding: 1,
         marginBottom: 5
       },
       buttonContainer: {
