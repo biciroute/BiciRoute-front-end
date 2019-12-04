@@ -41,7 +41,6 @@ export default function RouteCard(props) {
           origin: props.origin,
           destination: props.destination,
           commonRoute: props.commonRoute,
-          date: props.date,
           accompaniers: "20"
         }}
         />
@@ -52,8 +51,8 @@ export default function RouteCard(props) {
               <MoreVertIcon />
             </IconButton>
           }
-          title={origin + "-" +destination}
-          subheader={props.date}
+          title={props.origin.address +" -> "+props.destination.address}
+          subheader={props.commonRoute.hour}
         />
         <a onClick={handleOpen}>
           <CardMedia

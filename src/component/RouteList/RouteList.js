@@ -14,7 +14,6 @@ export class RouteList extends Component{
                     destination = {route.destination}
                     commonRoute = {route.commonRoute}
                     description = {route.description}
-                    date = {route.commonRoute.hour}
                     />
             );
         });

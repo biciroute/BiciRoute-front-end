@@ -34,26 +34,33 @@ export class MyRoutes extends React.Component{
             var routes = response.data;
             for(var i=0; i<routes.length; i++){
                 console.log(routes[i]);
-                var origin = {lat: parseFloat(routes[i].origin.latitude), lng: parseFloat(routes[i].origin.longitude)};
-                var destination = {lat: parseFloat(routes[i].destination.latitude), lng: parseFloat(routes[i].destination.longitude)};
+                var origin = {
+                    lat: parseFloat(routes[i].origin.latitude),
+                    lng: parseFloat(routes[i].origin.longitude),
+                    address: routes[i].origin.address
+                };
+                var destination = {
+                    lat: parseFloat(routes[i].destination.latitude), 
+                    lng: parseFloat(routes[i].destination.longitude),
+                    address: routes[i].destination.address
+                };
+                
                 var commonRoute = {
                     origin:{
                         lat: parseFloat(routes[i].commonRoute.origin.latitude),
-                        lng: parseFloat(routes[i].commonRoute.origin.longitude)
-                    } ,
+                        lng: parseFloat(routes[i].commonRoute.origin.longitude),
+                        address: routes[i].commonRoute.origin.address
+                    },
                     destination:{
                         lat: parseFloat(routes[i].commonRoute.destination.latitude),
-                        lng: parseFloat(routes[i].commonRoute.destination.longitude)
+                        lng: parseFloat(routes[i].commonRoute.destination.longitude),
+                        address: routes[i].commonRoute.destination.address
                     },
                     hour: routes[i].commonRoute.hour
                 }
                 var timestamp = routes[i]._id.timestamp;
-                var route = {
-                    origin: origin,
-                    //originAddress: routes[i].origin.address,
-                    destination: destination,
-                    //destinationAddress: routes[i].destination.address
-                    commonRoute: commonRoute};
+                var route = {origin: origin, destination: destination, commonRoute: commonRoute};
+
                 var currentTimeInMs = Math.floor(Date.now() / 1000);
                 if(currentTimeInMs>=timestamp){
                     this.setState(prevState => ({

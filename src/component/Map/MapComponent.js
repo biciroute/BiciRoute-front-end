@@ -113,7 +113,6 @@ export class MapComponent extends React.Component {
         this.getLanLnt = this.getLanLnt.bind(this);
 
         if(this.props.route){
-            //alert("ROUTE ->");
             this.resolvePaintingRoute();            
         }
     }
@@ -135,6 +134,8 @@ export class MapComponent extends React.Component {
             origin: routeAddresses.origin,
             destination: routeAddresses.destination
         }
+        console.log("places lat&lng ->\n"+placesLatLng);
+        console.log("origin&destination ->\n"+placesJSON);
         this.drawRoutes(placesLatLng, placesJSON);
     }
 
@@ -236,10 +237,9 @@ export class MapComponent extends React.Component {
             var commonRoute = this.state.carres[j];
             const latLng = {lat: parseFloat(commonRoute.latitude), lng: parseFloat(commonRoute.longitude)};
             var place = await this.reverseGeocode(latLng);
-            commonRoutePlace.push(place) 
-            commonRouteID.push(commonRoute._id)
+            commonRoutePlace.push(place) ;
+            commonRouteID.push(commonRoute._id);
         }
-        console.log(commonRouteID);
 
         //Define route the  shortest of the origin to some place 
         var theBestOriginToPlace = [1e9, "undefine", null,null,null];
@@ -270,6 +270,7 @@ export class MapComponent extends React.Component {
                 theBestDestinationToPlace[4] =  this.state.carres[i]
             }
         }
+
         newPathRoute = await this.calculateRoute(theBestDestinationToPlace[1], theBestOriginToPlace[1]);
         this.setState({
             pathRoute: newPathRoute.routes[0].overview_path,
@@ -289,7 +290,6 @@ export class MapComponent extends React.Component {
             latLngOrigin : await this.getLanLnt(origin),
             latLngDestination : await this.getLanLnt(destination)
         };
-
         this.setState({suggestRouteJSON : JSON.stringify(newJSON)});
         if (localStorage.getItem('lastroutes') === undefined || localStorage.getItem('lastroutes') === null ) {
             localStorage.setItem('lastroutes', JSON.stringify([newJSON]))
@@ -308,14 +308,16 @@ export class MapComponent extends React.Component {
         var createRoute = {
             "origin" :{
                 "latitude"  : newJSON.latLngOrigin.lat(),
-                "longitude" : newJSON.latLngOrigin.lng()
+                "longitude" : newJSON.latLngOrigin.lng(),
+                "address": newJSON.origin
             },
             "destination" : {
                 "latitude"  : newJSON.latLngDestination.lat(),
-                "longitude" : newJSON.latLngDestination.lng()
+                "longitude" : newJSON.latLngDestination.lng(),
+                "address": newJSON.destination
             },
             "user" :{
-                "_id" : localStorage.getItem("userId")
+                "_id" : localStorage.getItem("userId"),
             }
         }
         this.state.createRouteST = createRoute;
@@ -372,18 +374,20 @@ export class MapComponent extends React.Component {
     }
   
     async suggestRoute(newJSON){
-        //alert("SUGGEST ROUTE-----------------");
+        alert("SUGGEST ROUTE-----------------");
         console.log(newJSON);
         var self = this;
         var suggestJSON = {
             "origin": {
-                "_id": this.jsonToStringId(newJSON.idpathRouteOriginPlace)
+                "_id": this.jsonToStringId(newJSON.idpathRouteOriginPlace),
+                "address": newJSON.origin
             },
             "destination" : {
-                "_id": this.jsonToStringId(newJSON.idpathRouteDestinationPlace) 
+                "_id": this.jsonToStringId(newJSON.idpathRouteDestinationPlace),
+                "address": newJSON.destination
             }, 
-            "hour" : new Date(document.getElementById("hour").value) 
-        } 
+            "hour" : new Date(document.getElementById("hour").value),
+        }
         console.log(suggestJSON);
         this.axios.post('/routes/suggest' , (suggestJSON) )
             .then(function (response) {
@@ -424,7 +428,6 @@ export class MapComponent extends React.Component {
         autoTgt.setComponentRestrictions(
             { 'country': ['co'] });
     }
-
 
     calculateRoute(origin, destination) {
         const { google, map } = this.props;
@@ -480,7 +483,7 @@ export class MapComponent extends React.Component {
     }
 
     confirmRoute(){
-        console.log("Kha " +this.state.createRouteST)
+        //console.log("Kha " +this.state.createRouteST)
         this.axios.post('/routes' , (this.state.createRouteST) )
             .then(function (response) {}
             ).catch(function (error) {
@@ -511,7 +514,7 @@ export class MapComponent extends React.Component {
 
         return (
         <React.Fragment>
-            <div class="containerMap">
+            <div className="containerMap">
                 <Map
                     className="map"
                     google={this.props.google}
