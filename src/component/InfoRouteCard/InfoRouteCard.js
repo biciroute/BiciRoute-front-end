@@ -20,25 +20,10 @@ export default function InfoRouteCard(props) {
     const classes = InfoRouteCardStyles();
     const [data, setData] = React.useState(props.data);
 
-    const routeLatLng = {
-        origin: {
-            lat: props.data.origin.lat,
-            lng: props.data.origin.lng
-        },
-        destination: {
-            lat: props.data.destination.lat,
-            lng: props.data.destination.lng
-        },
-        commonRoute: {
-            origin:{
-                lat: props.data.commonRoute.origin.lat,
-                lng: props.data.commonRoute.origin.lng
-            },
-            destination:{
-                lat: props.data.commonRoute.destination.lat,
-                lng: props.data.commonRoute.destination.lng
-            },
-        }
+    const route= {
+        origin: props.data.origin,
+        destination: props.data.destination,
+        commonRoute: props.data.commonRoute
     }
 
     return (
@@ -53,9 +38,9 @@ export default function InfoRouteCard(props) {
                 </Typography>
                 </Toolbar>
             </AppBar>
-            <MapComponent route={routeLatLng}
+            <MapComponent route={route}
                 location={{ 
-                    latLng: props.data.origin,
+                    latLng: {lat: route.origin.lat, lng: route.origin.lng},
                     name: "Escuela Colombiana de Ingeniería Julio Garavito"
                 }}/>
         </Dialog>

@@ -103,7 +103,6 @@ export class MapComponent extends React.Component {
         //Dialog
         this.handleDialogNoRouteOpen = this.handleDialogNoRouteOpen.bind(this);
         this.handleDialogNoRouteClose = this.handleDialogNoRouteClose.bind(this);
-        
         this.handleDialogRouteOpen = this.handleDialogRouteOpen.bind(this);
         this.handleDialogRouteClose = this.handleDialogRouteClose.bind(this); 
         this.createANewRoute = this.createANewRoute.bind(this);
@@ -118,25 +117,28 @@ export class MapComponent extends React.Component {
     }
 
     async resolvePaintingRoute(){
-        var routeAddresses = {
-            origin: await this.reverseGeocode(this.props.route.origin),
-            destination: await this.reverseGeocode(this.props.route.destination),
-            commonRouteOrigin: await this.reverseGeocode(this.props.route.commonRoute.origin),
-            commonRouteDestination: await this.reverseGeocode(this.props.route.commonRoute.destination)
-        }
+
         var placesLatLng = [
-            await this.getLanLnt(routeAddresses.origin),
-            await this.getLanLnt(routeAddresses.destination),
-            await this.getLanLnt(routeAddresses.commonRouteOrigin),
-            await this.getLanLnt(routeAddresses.commonRouteDestination)
+            await this.getLanLnt(this.props.route.origin.address),
+            await this.getLanLnt(this.props.route.destination.address),
+            {
+                latitude:  this.props.route.commonRoute.origin.lat,
+                longitude: this.props.route.commonRoute.destination.lng
+            },
+            {
+                latitude:  this.props.route.commonRoute.destination.lat,
+                longitude: this.props.route.commonRoute.destination.lng
+            }
         ];
-        var placesJSON = {
-            origin: routeAddresses.origin,
-            destination: routeAddresses.destination
+        console.log("PLACES IN LATITUDE AND LONGITUDE");
+        for(var i=0; i<placesLatLng.length; i++){
+            console.log(placesLatLng[i]);
         }
-        console.log("places lat&lng ->\n"+placesLatLng);
-        console.log("origin&destination ->\n"+placesJSON);
-        this.drawRoutes(placesLatLng, placesJSON);
+        var placesJSON = {
+            origin: this.props.route.origin.address,
+            destination: this.props.route.destination.address
+        }
+        await this.drawRoutes(placesLatLng, placesJSON);
     }
 
     handleStatusChange(e) {
@@ -258,7 +260,6 @@ export class MapComponent extends React.Component {
         }
         
         for (i = 0; i < this.state.carres.length; i++) {
-            //place = await this.reverseGeocode(latLng); 
             newPathRoute = await this.calculateRoute(destination, commonRoutePlace[i]);
             distance = newPathRoute.routes[0].legs[0].distance.text;
             distance = parseFloat(distance.split(" ")[0].replace(",", "."));
@@ -326,10 +327,9 @@ export class MapComponent extends React.Component {
     }
 
     async drawRoutes(placesLatLng, placesJSON){
-        this.setState({
-            markers: []
-        })
-        console.log(JSON.stringify(placesJSON));
+        this.setState({markers: [] });
+        console.log("PLACES IN ADDRESSES");
+        console.log(placesJSON);
         for (var i = 0; i < 4; ++i) {
             const latAndLng = placesLatLng[i];
             var newMarker={};
@@ -374,7 +374,7 @@ export class MapComponent extends React.Component {
     }
   
     async suggestRoute(newJSON){
-        alert("SUGGEST ROUTE-----------------");
+        //alert("SUGGEST ROUTE-----------------");
         console.log(newJSON);
         var self = this;
         var suggestJSON = {
@@ -385,7 +385,7 @@ export class MapComponent extends React.Component {
             "destination" : {
                 "_id": this.jsonToStringId(newJSON.idpathRouteDestinationPlace),
                 "address": newJSON.destination
-            }, 
+            },
             "hour" : new Date(document.getElementById("hour").value),
         }
         console.log(suggestJSON);
@@ -409,6 +409,16 @@ export class MapComponent extends React.Component {
         }).catch(function (error) {
             console.log(error);
         });
+    }
+
+    createANewRoute(){
+        console.log("Kha " +this.state.createRouteST)
+        this.axios.post('/routes' , (this.state.createRouteST) )
+            .then(function (response) {}
+            ).catch(function (error) {
+            console.log(error);
+        });
+        window.location.href = "/myroutes";
     }
 
     autocomplete() {
@@ -470,16 +480,6 @@ export class MapComponent extends React.Component {
         if (navigator && navigator.geolocation) {
             //navigator.geolocation.getCurrentPosition(this.setCurrentPosition)
         }
-    }
-
-    createANewRoute(){
-        console.log("Kha " +this.state.createRouteST)
-        this.axios.post('/routes' , (this.state.createRouteST) )
-            .then(function (response) {}
-            ).catch(function (error) {
-            console.log(error);
-        });
-        window.location.href = "/myroutes";
     }
 
     confirmRoute(){
