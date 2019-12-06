@@ -7,10 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Slide from '@material-ui/core/Slide';
 import InfoRouteCardStyles from './InfoRouteCardStyles.js';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import Paper from '@material-ui/core/Paper';
-import Box from '@material-ui/core/Box';
 import MapComponent from '../Map/MapComponent.js';
-import Container from '@material-ui/core/Container';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="left" ref={ref} {...props} />;
@@ -18,7 +15,6 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 export default function InfoRouteCard(props) {
     const classes = InfoRouteCardStyles();
-    const [data, setData] = React.useState(props.data);
 
     const route= {
         origin: props.data.origin,

@@ -30,6 +30,10 @@ export function register(config) {
       // serve assets; see https://github.com/facebook/create-react-app/issues/2374
       return;
     }
+    //Add this part of code to your serviceWorker.js
+    window.addEventListener('install', () => {
+        console.log("install!!");
+    });
 
     window.addEventListener('load', () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
