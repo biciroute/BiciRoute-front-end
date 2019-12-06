@@ -59,7 +59,7 @@ export default class ModalModify extends Component {
       }
     }
     localStorage.setItem("info",info);
-    axios.put('http://localhost:8080/v1/user',info)
+    axios.put('https://biciroute-api.herokuapp.com/v1/user',info)
       .then(function(response){
         console.log(response.data);
         swal({

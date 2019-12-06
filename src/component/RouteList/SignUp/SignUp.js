@@ -135,7 +135,7 @@ export class SignUp extends React.Component {
         }
       }
 
-      axios.post('http://localhost:8080/v1/user/register', info)
+      axios.post('https://biciroute-api.herokuapp.com/v1/user/register', info)
         .then(function (response) {
           console.log(response.data);
 

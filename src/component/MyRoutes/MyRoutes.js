@@ -18,7 +18,7 @@ export class MyRoutes extends React.Component{
             value: 1,
         }
         this.axios= axios.create({
-            baseURL: 'http://localhost:8080/v1',
+            baseURL: 'https://biciroute-api.herokuapp.com/v1',
             timeout: 3000,
             headers: { 'Authorization': 'Bearer ' + localStorage.getItem("accessToken")}
           });

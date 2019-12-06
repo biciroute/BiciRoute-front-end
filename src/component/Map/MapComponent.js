@@ -93,7 +93,7 @@ export class MapComponent extends React.Component {
             }
         };
         this.axios = axios.create({
-            baseURL: 'http://localhost:8080/v1/'
+            baseURL: 'https://biciroute-api.herokuapp.com /v1/'
             //headers: { 'Authorization': 'Bearer ' + localStorage.getItem("Bearer") }
         });
 

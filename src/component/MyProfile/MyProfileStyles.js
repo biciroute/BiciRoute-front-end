@@ -4,7 +4,7 @@ import {
 
 const profileStyles = StyleSheet.create({
     header: {
-        backgroundColor:"#033040",
+        backgroundColor:"#99ccde",
         borderColor: "#022935",
         borderBottomWidth: "2px"
       },
@@ -49,7 +49,7 @@ const profileStyles = StyleSheet.create({
       },
       name: {
         fontSize: 22,
-        color: "#FFFFFF",
+        color: "#212121",
         fontWeight: '600',
       },
       profileDetail: {

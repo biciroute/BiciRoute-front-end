@@ -145,7 +145,8 @@ export default class ProfileView extends Component {
                   {/*<ModalModifyBici style={styles.buttonContainer} bici={this.state.bici} ></ModalModifyBici>*/}
                 </View>)}
             <Button variant="outlined" color="primary" style={{ backgroundColor: "#212121", width: "300px", color: "#FFFFFA" }} onClick={this.onOpen} > Edit </Button>
-            <UpdateProfile open={this.state.open} onClose={this.onClose} key={this.state.open} user={this.state.user} bici={this.state.bici}
+            <UpdateProfile open={this.state.open} onClose={this.onClose}
+              key={this.state.open} user={this.state.user} bici={this.state.bici}
              />
           </View>
 
@@ -188,7 +189,7 @@ export default class ProfileView extends Component {
       .then(function (response) {
         let user = response.data
         localStorage.setItem("loggedUser", JSON.stringify(user));
-        console.log(user)
+        console.log(user);
         if(user.bicicle != null){
           Profile.setState({
             name: user.firstName + " " + user.lastName, email: user.email, marca: user.bicicle.brand, color: user.bicicle.color,

@@ -76,7 +76,7 @@ export default function UpdateProfile(props) {
 
 
     const classes = UpdateProfileStyles();
-    const [name, setName] = React.useState(props.user.firstName);
+    const [name, setName] = React.useState(props.user.firstName+" "+props.user.lastName);
     const [email] = React.useState(props.user.email);
     const [color, setColor] = React.useState(props.bici  ? props.bici.color : "");
     const [brand, setBrand] = React.useState(props.bici  ? props.bici.brand : "");
@@ -121,10 +121,17 @@ export default function UpdateProfile(props) {
 
 
     const handleSaveChanges = () => {
+        var nameUpdated = name.split(" ");
+        var firstNameUpdated=nameUpdated[0];
+        var lastNameUpdated = "";
+        for(var i=1; i<nameUpdated.length; i++){
+            lastNameUpdated+=nameUpdated[i];
+            if(i!=nameUpdated.length-1) lastNameUpdated+=" ";
+        }
         var info = {
             _id :  localStorage.getItem("userId"),
-            firstName: name,
-            lastName: props.user.lastName,
+            firstName: firstNameUpdated,
+            lastName: lastNameUpdated,
             email: email,
             password: password
         }
@@ -178,10 +185,11 @@ export default function UpdateProfile(props) {
                 <DialogContent dividers>
                     <div className={classes.root}>
                         <Grid container spacing={3}>
-                            <Grid item xs={6}>
+                            <Grid item xs={12}>
                                 <Typography variant="h6" gutterBottom>Account Settings</Typography>
                                 <Divider />
                                 <TextField
+                                    fullWidth
                                     id="standard-name"
                                     label="Name"
                                     value={name}
@@ -194,6 +202,7 @@ export default function UpdateProfile(props) {
                                     id="standard-email"
                                     label="Email"
                                     value={email}
+                                    fullWidth
                                     className={clsx(classes.textField, classes.dense)}
                                     margin="dense"
                                 />
@@ -201,6 +210,7 @@ export default function UpdateProfile(props) {
                                 <FormControl className={clsx(classes.margin, classes.textField)}>
                                     <InputLabel htmlFor="standard-adornment-password">Password</InputLabel>
                                     <Input
+                                    
                                         id="standard-adornment-password"
                                         type={showPassword ? 'text' : 'password'}
                                         value={password}
@@ -219,7 +229,7 @@ export default function UpdateProfile(props) {
                                     />
                                 </FormControl>
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={12}>
                                 <Typography variant="h6" gutterBottom>Bici Settings</Typography>
                                 <Divider />
                                 <TextField
