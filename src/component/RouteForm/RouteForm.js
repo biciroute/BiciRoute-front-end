@@ -118,103 +118,118 @@ export default function RouteForm(props) {
         </Typography>
             <Divider variant="middle" />
           </React.Fragment>}
-        <div className={classes.margin}>
-          <Grid container spacing={1} alignItems="flex-end">
-            <Grid item style={{ width: "10%" }}>
-              <SearchIcon />
-            </Grid>
-            <Grid item style={{ width: "90%" }}>
-              <TextField label="Origin"
-                fullWidth
-                id="source"
-                style={{ color: "#212121" }}
-                value={state.origin}
-                onChange={handleChangeState('origin')}
-              />
-            </Grid>
-          </Grid>
-        </div>
-        <div className={classes.margin}>
-          <Grid container spacing={1} alignItems="flex-end">
-            <Grid item style={{ width: "10%" }}>
-              <SearchIcon />
-            </Grid>
-            <Grid item style={{ width: "90%" }}>
-              <TextField label="Destination"
-                fullWidth
-                id="target"
-                style={{ color: "#212121" }}
-                value={state.destination}
-                onChange={handleChangeState('destination')}
-              />
-            </Grid>
-          </Grid>
-        </div>
+        
         {(props.origin && props.destination) ?
-          <div>
+          <React.Fragment>
+            <TextField label="Origin"
+              fullWidth
+              id="source"
+              value={props.origin}
+              style={{ color: "#212121" }}
+            />
+            <TextField label="Destination"
+              fullWidth
+              id="target"
+              value={props.destination}
+              style={{ color: "#212121" }}
+            />
             <TextField label="Hour"
               fullWidth
               id="hour"
               value={props.hour}
               style={{ color: "#212121" }}
             />
-          </div>
+          </React.Fragment>
           :
-          <div className={classes.margin}>
-            <Grid container spacing={1} alignItems="flex-end">
-              <Grid item style={{ width: "10%" }}>
-                <DirectionsBikeIcon />
-              </Grid>
-
-              <Grid item style={{ width: "30%" }}>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}
-                  style={{ width: "100%" }}>
-                  <KeyboardTimePicker
-                    id="hour"
-                    ampm={false}
-                    format="yyyy-MM-dd HH:mm:ss"
-                    margin="normal"
-                    label="Departure time"
-                    value={selectedHour}
-                    onChange={(enableDatepicker) ? handleHourChange : doNothing}
-                    KeyboardButtonProps={{
-                      'aria-label': 'change time',
-                      'fill': 'white',
-                    }}
-                    style={{ width: "100%" }}
+          <React.Fragment>
+            <div className={classes.margin}>
+              <Grid container spacing={1} alignItems="flex-end">
+                <Grid item style={{ width: "10%" }}>
+                  <SearchIcon />
+                </Grid>
+                <Grid item style={{ width: "90%" }}>
+                  <TextField label="Origin"
+                    fullWidth
+                    id="source"
+                    style={{ color: "#212121" }}
+                    onChange={handleChangeState('origin')}
                   />
-                </MuiPickersUtilsProvider>
+                </Grid>
               </Grid>
-              <Grid item style={{ width: "60%" }}>
-                {(routeFound) ?
-                  <Container style={{ textAlign: "center" }}>
-                    <Button variant="contained" color="primary"
-                      style={{ width: "40%", backgroundColor: "#00FF00", color: "#212121", margin: "4px" }}
-                      onClick={handleOnConfirm}>
-                      Confirm
-                      </Button>
-                    <Button variant="contained" color="secondary"
-                      style={{ width: "40%", color: "#FFFFFA", margin: "4px" }}
-                      onClick={handleOnCancel}
-                    >
-                      Cancel
-                      </Button>
-                  </Container>
-                  :
-                  <Container style={{ textAlign: "center" }}>
-                    <div>
+            </div>
+            <div className={classes.margin}>
+              <Grid container spacing={1} alignItems="flex-end">
+                <Grid item style={{ width: "10%" }}>
+                  <SearchIcon />
+                </Grid>
+                <Grid item style={{ width: "90%" }}>
+                  <TextField label="Destination"
+                    fullWidth
+                    id="target"
+                    style={{ color: "#212121" }}
+                    onChange={handleChangeState('destination')}
+                  />
+                </Grid>
+              </Grid>
+            </div>
+
+            <div className={classes.margin}>
+              <Grid container spacing={1} alignItems="flex-end">
+                <Grid item style={{ width: "10%" }}>
+                  <DirectionsBikeIcon />
+                </Grid>
+
+                <Grid item style={{ width: "30%" }}>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}
+                    style={{ width: "100%" }}>
+                    <KeyboardTimePicker
+                      id="hour"
+                      ampm={false}
+                      format="yyyy-MM-dd HH:mm:ss"
+                      margin="normal"
+                      label="Departure time"
+                      value={selectedHour}
+                      onChange={(enableDatepicker) ? handleHourChange : doNothing}
+                      KeyboardButtonProps={{
+                        'aria-label': 'change time',
+                        'fill': 'white',
+                      }}
+                      style={{ width: "100%" }}
+                    />
+                  </MuiPickersUtilsProvider>
+                </Grid>
+                <Grid item style={{ width: "60%" }}>
+                  {(routeFound) ?
+                    <Container style={{ textAlign: "center" }}>
+                      <Button variant="contained" color="primary"
+                        style={{ width: "40%", backgroundColor: "#00FF00", color: "#212121", margin: "4px" }}
+                        onClick={handleOnConfirm}>
+                        Confirm
+                        </Button>
                       <Button variant="contained" color="secondary"
-                        style={{ width: "70%", backgroundColor: "#212121", color: "#FFFFFA" }}
-                        onClick={handleOnSearch}>
-                        Search
-                      </Button>
-                    </div>
-                  </Container>}
+                        style={{ width: "40%", color: "#FFFFFA", margin: "4px" }}
+                        onClick={handleOnCancel}
+                      >
+                        Cancel
+                        </Button>
+                    </Container>
+                    :
+                    <Container style={{ textAlign: "center" }}>
+                      <div>
+                        <Button variant="contained" color="secondary"
+                          style={{ width: "70%", backgroundColor: "#212121", color: "#FFFFFA" }}
+                          onClick={handleOnSearch}>
+                          Search
+                        </Button>
+                      </div>
+                    </Container>}
 
 
+                </Grid>
               </Grid>
-            </Grid>
-          </div>}
+            </div>
+          </React.Fragment>}
+
       </Paper>
     </Container>
   );
