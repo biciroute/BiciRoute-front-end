@@ -545,6 +545,8 @@ export class MapComponent extends React.Component {
                     />
             </Map>
             <LegendButton />
+            console.log(this.props.route.origin.address)
+            
         </div>
         {(this.props.requestRoute)?
         <div id="requestRoute">
