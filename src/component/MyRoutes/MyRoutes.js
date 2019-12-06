@@ -60,7 +60,6 @@ export class MyRoutes extends React.Component{
                     timestamp:  new Date(routes[i].commonRoute.hour).getTime()
                 }
                 var route = {origin: origin, destination: destination, commonRoute: commonRoute};
-
                 
                 var currentTime = new Date();
                 var timeRoute = new Date(commonRoute.hour);
