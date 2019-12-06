@@ -613,7 +613,9 @@ export class MapComponent extends React.Component {
             <RouteForm paintRoute={this.setDirectionRoute} key={this.state.wantToRide} wantToRide={this.state.wantToRide}
                 suggestRoute={this.suggestRoute}/>
         </div>
-        : <React.Fragment></React.Fragment>}
+        : <React.Fragment>
+            <RouteForm origin= {this.props.route.origin.address} destination={this.props.route.destination.address} hour={this.props.route.commonRoute.hour}/>
+            </React.Fragment>}
             
         </React.Fragment>     
         );
