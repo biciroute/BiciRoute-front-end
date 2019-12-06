@@ -117,23 +117,52 @@ export class MapComponent extends React.Component {
     }
 
     async resolvePaintingRoute(){
-        var placesLatLng = [
-            await this.getLanLnt(this.props.route.origin.address),
-            await this.getLanLnt(this.props.route.destination.address),
-            {
-                latitude:  this.props.route.commonRoute.origin.lat,
-                longitude: this.props.route.commonRoute.destination.lng
-            },
-            {
-                latitude:  this.props.route.commonRoute.destination.lat,
-                longitude: this.props.route.commonRoute.destination.lng
-            }
-        ];
+        
         var placesJSON = {
             origin: this.props.route.origin.address,
             destination: this.props.route.destination.address
         }
-        await this.drawRoutes(placesLatLng, placesJSON);
+
+        const commonRouteOriginLatLng = {
+            lat: parseFloat(this.props.route.commonRoute.origin.lat),
+            lng: parseFloat(this.props.route.commonRoute.origin.lng)
+        };
+        var commonRouteOriginAddress = await this.reverseGeocode(commonRouteOriginLatLng);
+        
+        const commonRouteDestinationLatLng = {
+            lat: parseFloat(this.props.route.commonRoute.destination.lat),
+            lng: parseFloat(this.props.route.commonRoute.destination.lng)
+        }
+        var commonRouteDestinationAddress = await this.reverseGeocode(commonRouteDestinationLatLng);
+
+
+
+        var newPathRoute = await this.calculateRoute(commonRouteOriginAddress,commonRouteDestinationAddress);
+        var originToCommonRouteOrigin = await this.calculateRoute(placesJSON.origin, commonRouteOriginAddress);
+        var CommonRouteDestinationToDestination = await this.calculateRoute(commonRouteDestinationAddress, placesJSON.destination);
+
+        this.setState({
+            pathRoute: newPathRoute.routes[0].overview_path,
+            pathRouteDestinationPlace: CommonRouteDestinationToDestination.routes[0].overview_path,
+            pathRouteOriginPlace: originToCommonRouteOrigin.routes[0].overview_path
+        });
+
+        var placesLatLng = [
+            await this.getLanLnt(this.props.route.origin.address),
+            await this.getLanLnt(this.props.route.destination.address),
+            {
+                latitude:  newPathRoute.routes[0].legs[0].start_location.lat(),
+                longitude: newPathRoute.routes[0].legs[0].start_location.lng()
+            },
+            {
+                latitude:  newPathRoute.routes[0].legs[0].end_location.lat(),
+                longitude: newPathRoute.routes[0].legs[0].end_location.lng()
+            }
+        ];
+
+        //console.log(placesLatLng);
+        this.drawRoutes(placesLatLng, placesJSON);
+
     }
 
     handleStatusChange(e) {
@@ -232,7 +261,7 @@ export class MapComponent extends React.Component {
             var commonRoute = this.state.carres[j];
             const latLng = {lat: parseFloat(commonRoute.latitude), lng: parseFloat(commonRoute.longitude)};
             var place = await this.reverseGeocode(latLng);
-            commonRoutePlace.push(place) ;
+            commonRoutePlace.push(place);
             commonRouteID.push(commonRoute._id);
         }
 
@@ -431,6 +460,7 @@ export class MapComponent extends React.Component {
     }
 
     calculateRoute(origin, destination) {
+
         const { google, map } = this.props;
         if (!google || !map) return;
         const directionsService = new google.maps.DirectionsService();
