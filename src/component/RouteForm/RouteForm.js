@@ -29,11 +29,11 @@ export default function RouteForm(props) {
 
   useEffect(() => { //didMount in a functional component
     if (props.origin && props.destination) {
-      
+
       document.getElementById("source").disabled = true;
       document.getElementById("target").disabled = true;
       document.getElementById("hour").disabled = true;
-      
+
     } else {
       setRouteFound(false);
       document.getElementById("source").disabled = false;
@@ -111,10 +111,13 @@ export default function RouteForm(props) {
       {(confirm == false) ? <Redirect to="/home" /> :
         (confirm === true) ? <Redirect to="/myroutes" /> : <React.Fragment></React.Fragment>}
       <Paper className={classes.paper}>
-        <Typography variant="h6" component="h3" align="center">
-          Welcome {JSON.parse(localStorage.getItem('loggedUser')).firstName}!
+        {(props.origin && props.destination) ? <React.Fragment /> :
+          <React.Fragment>
+            <Typography variant="h6" component="h3" align="center">
+              Welcome {JSON.parse(localStorage.getItem('loggedUser')).firstName}!
         </Typography>
-        <Divider variant="middle" />
+            <Divider variant="middle" />
+          </React.Fragment>}
         <div className={classes.margin}>
           <Grid container spacing={1} alignItems="flex-end">
             <Grid item style={{ width: "10%" }}>
@@ -152,7 +155,7 @@ export default function RouteForm(props) {
             <TextField label="Hour"
               fullWidth
               id="hour"
-              value={props.hour }
+              value={props.hour}
               style={{ color: "#212121" }}
             />
           </div>
