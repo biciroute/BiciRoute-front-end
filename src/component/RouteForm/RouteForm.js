@@ -33,6 +33,8 @@ export default function RouteForm(props) {
       document.getElementById("source").disabled = true;
       document.getElementById("target").disabled = true;
       document.getElementById("hour").disabled = true;
+      document.getElementById("commonRouteOrigin").disabled = true;
+      document.getElementById("commonRouteDestination").disabled = true;
 
     } else {
       setRouteFound(false);
@@ -121,18 +123,46 @@ export default function RouteForm(props) {
         
         {(props.origin && props.destination) ?
           <React.Fragment>
-            <TextField label="Origin"
-              fullWidth
-              id="source"
-              value={props.origin}
-              style={{ color: "#212121" }}
-            />
-            <TextField label="Destination"
-              fullWidth
-              id="target"
-              value={props.destination}
-              style={{ color: "#212121" }}
-            />
+            <div className={classes.margin}>
+              <Grid container spacing={1} alignItems="flex-end">
+                <Grid item style={{ width: "50%" }}>
+                  <TextField label="Origin"
+                    fullWidth
+                    id="source"
+                    value={props.origin}
+                    style={{ color: "#212121" }}
+                  />
+                </Grid>
+                <Grid item style={{ width: "50%" }}>
+                  <TextField label="Meeting place"
+                    fullWidth
+                    id="commonRouteOrigin"
+                    value={props.commonRouteOrigin}
+                    style={{ color: "#212121" }}
+                  />
+                </Grid>
+              </Grid>
+            </div>
+            <div className={classes.margin}>
+              <Grid container spacing={1} alignItems="flex-end">
+                <Grid item style={{ width: "50%" }}>
+                  <TextField label="Destination"
+                    fullWidth
+                    id="target"
+                    value={props.destination}
+                    style={{ color: "#212121" }}
+                  />
+                </Grid>
+                <Grid item style={{ width: "50%" }}>
+                  <TextField label="Say Goodbye fellas!"
+                    fullWidth
+                    id="commonRouteDestination"
+                    value={props.commonRouteDestination}
+                    style={{ color: "#212121" }}
+                  />
+                </Grid>
+              </Grid>
+            </div>            
             <TextField label="Hour"
               fullWidth
               id="hour"

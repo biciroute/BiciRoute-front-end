@@ -86,7 +86,11 @@ export class MapComponent extends React.Component {
                 },
             ],
             carres: [],
-            wantToRide: null
+            wantToRide: null,
+            addresses: {
+                origin: null, destination: null,
+                commonRouteOrigin: null, commonRouteDestionation: null
+            }
         };
         this.axios = axios.create({
             baseURL: 'http://localhost:8080/v1/'
@@ -135,11 +139,19 @@ export class MapComponent extends React.Component {
         var newPathRoute = await this.calculateRoute(commonRouteOriginAddress,commonRouteDestinationAddress);
         var originToCommonRouteOrigin = await this.calculateRoute(placesJSON.origin, commonRouteOriginAddress);
         var CommonRouteDestinationToDestination = await this.calculateRoute(commonRouteDestinationAddress, placesJSON.destination);
-
+        console.log(newPathRoute);
         this.setState({
             pathRoute: newPathRoute.routes[0].overview_path,
             pathRouteDestinationPlace: CommonRouteDestinationToDestination.routes[0].overview_path,
             pathRouteOriginPlace: originToCommonRouteOrigin.routes[0].overview_path
+        });
+        this.setState({
+            addresses: {
+                origin: placesJSON.origin,
+                destination: placesJSON.destination,
+                commonRouteOrigin: newPathRoute.routes[0].legs[0].start_address,
+                commonRouteDestination: newPathRoute.routes[0].legs[0].end_address
+            }
         });
 
         var placesLatLng = [
@@ -152,8 +164,9 @@ export class MapComponent extends React.Component {
                 longitude: newPathRoute.routes[0].legs[0].end_location.lng()
             }
         ];
-        
         this.drawRoutes(placesLatLng, placesJSON);
+        
+        console.log(this.state.addresses);
     }
 
     handleStatusChange(e) {
@@ -365,7 +378,7 @@ export class MapComponent extends React.Component {
             else{
                 newMarker = {
                     location: { lat: latAndLng.latitude, lng: latAndLng.longitude },
-                    title: placesLatLng[i],
+                    title: (i==2)?"Meeting place":"Say goodbye fellas!",
                     name: placesLatLng[i],
                     icon: bicis,
                 }
@@ -614,7 +627,16 @@ export class MapComponent extends React.Component {
                 suggestRoute={this.suggestRoute}/>
         </div>
         : <React.Fragment>
-            <RouteForm origin= {this.props.route.origin.address} destination={this.props.route.destination.address} hour={this.props.route.commonRoute.hour}/>
+            {(this.state.addresses.commonRouteOrigin!==null &&
+              this.state.addresses.commonRouteDestination!==null)?
+              <RouteForm origin= {this.state.addresses.origin}
+                destination={this.state.addresses.destination} hour={this.props.route.commonRoute.hour}
+                commonRouteOrigin = {this.state.addresses.commonRouteOrigin}
+                commonRouteDestination = {this.state.addresses.commonRouteDestination}
+                />
+              :
+              <React.Fragment/>}
+            
             </React.Fragment>}
             
         </React.Fragment>     
