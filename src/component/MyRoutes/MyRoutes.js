@@ -61,10 +61,11 @@ export class MyRoutes extends React.Component{
                 }
                 var route = {origin: origin, destination: destination, commonRoute: commonRoute};
 
-                var timeRoute = new Date(routes[i].commonRoute.hour);
+                
                 var currentTime = new Date();
-                commonRoute.hour = timeRoute.getDay()+"/"+
-                    timeRoute.getMonth()+"/"+timeRoute.getFullYear()+" "+timeRoute.getHours()+":"+timeRoute.getMinutes();
+                var timeRoute = new Date(commonRoute.hour);
+                commonRoute.hour = timeRoute.toDateString()+" "+timeRoute.getHours()+":"+timeRoute.getMinutes();
+                console.log(commonRoute.hour);
                 if(currentTime.getTime()>=timeRoute.getTime()){
                     this.setState(prevState => ({
                         pastRoutes: [...prevState.pastRoutes, route]

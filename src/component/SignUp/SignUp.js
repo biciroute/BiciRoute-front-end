@@ -144,9 +144,11 @@ export class SignUp extends React.Component {
             localStorage.setItem("accessToken", response.data.accessToken);
             var loggedUser = {
               firstName: response.data.firstName,
+              userId: response.data.userId
             }
-            localStorage.setItem("loggedUser", JSON.stringify(loggedUser))
+            localStorage.setItem("loggedUser", JSON.stringify(loggedUser));
             localStorage.setItem("isLoggedIn", true);
+            localStorage.setItem("userId",response.data.userId);
             window.location.href = "/home";
           });
         })

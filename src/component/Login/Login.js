@@ -63,7 +63,7 @@ export class Login extends React.Component {
                     </MDBRow>
 
                     <MDBBtn color="elegant" type="submit" id="submit">
-                      Login in
+                      Login
                           </MDBBtn>
                     <Link to="/signup">Don't you have an account? Sign Up!</Link>
                   </form>

@@ -93,7 +93,7 @@ export class MapComponent extends React.Component {
             }
         };
         this.axios = axios.create({
-            baseURL: 'https://biciroute-api.herokuapp.com /v1/'
+            baseURL: 'https://biciroute-api.herokuapp.com/v1/'
             //headers: { 'Authorization': 'Bearer ' + localStorage.getItem("Bearer") }
         });
 
@@ -116,7 +116,8 @@ export class MapComponent extends React.Component {
         this.getLanLnt = this.getLanLnt.bind(this);
 
         if(this.props.route){
-            this.resolvePaintingRoute();            
+            //alert("resolving painting route");
+            this.resolvePaintingRoute();         
         }
     }
 
@@ -258,6 +259,8 @@ export class MapComponent extends React.Component {
         
         const origin =  document.getElementById("source").value;
         const destination = document.getElementById("target").value;
+        //alert(origin+" -> "+destination);
+
         var commonRoutePlace = [];
         var commonRouteID = [];
         
@@ -464,7 +467,10 @@ export class MapComponent extends React.Component {
     }
 
     calculateRoute(origin, destination) {
-
+        console.log("-- CALCULATING ROUTE BETWEEN --");
+        console.log(origin);
+        console.log(destination);
+        console.log("-------------------------------");
         const { google, map } = this.props;
         if (!google || !map) return;
         const directionsService = new google.maps.DirectionsService();
