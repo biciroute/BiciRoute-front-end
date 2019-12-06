@@ -56,13 +56,16 @@ export class MyRoutes extends React.Component{
                         lng: parseFloat(routes[i].commonRoute.destination.longitude),
                         address: routes[i].commonRoute.destination.address
                     },
-                    hour: routes[i].commonRoute.hour
+                    hour: routes[i].commonRoute.hour,
+                    timestamp:  new Date(routes[i].commonRoute.hour).getTime()
                 }
-                var timestamp = routes[i]._id.timestamp;
                 var route = {origin: origin, destination: destination, commonRoute: commonRoute};
 
-                var currentTimeInMs = Math.floor(Date.now() / 1000);
-                if(currentTimeInMs>=timestamp){
+                var timeRoute = new Date(routes[i].commonRoute.hour);
+                var currentTime = new Date();
+                commonRoute.hour = timeRoute.getDay()+"/"+
+                    timeRoute.getMonth()+"/"+timeRoute.getFullYear()+" "+timeRoute.getHours()+":"+timeRoute.getMinutes();
+                if(currentTime.getTime()>=timeRoute.getTime()){
                     this.setState(prevState => ({
                         pastRoutes: [...prevState.pastRoutes, route]
                     }))

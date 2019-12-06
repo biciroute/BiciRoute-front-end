@@ -23,12 +23,15 @@ export default function RouteForm(props) {
   const [state, setState] = React.useState({origin: null, destination: null});
   const [routeFound, setRouteFound] = React.useState(false);
   const [confirm, setConfirm] = React.useState(null);
+  const [enableDatepicker, setEnableDatepicker] = React.useState(true);
+
 
   useEffect(() => { //didMount in a functional component
     setRouteFound(false);
     document.getElementById("source").disabled = false;
     document.getElementById("target").disabled = false;
     document.getElementById("hour").disabled = false;
+    setEnableDatepicker(true);
   }, []);
 
   const handleChangeState = prop => event =>{
@@ -66,6 +69,7 @@ export default function RouteForm(props) {
           document.getElementById("source").disabled = true;
           document.getElementById("target").disabled = true;
           document.getElementById("hour").disabled = true;
+          setEnableDatepicker(false);
         });
       });
     }
@@ -79,6 +83,16 @@ export default function RouteForm(props) {
   const handleOnCancel = () =>{
     setConfirm(false);
     window.location.reload();
+  }
+
+  const doNothing = () =>{
+    swal({
+      title: "Ooops!",
+      text: "Sorry. You can't change the time.\nIf you want to change it you have to go back\nclicking the cancel button and selecting again the date",
+      icon: "error",
+      button: false,
+      timer: 3000
+    });
   }
 
   return (
@@ -126,8 +140,10 @@ export default function RouteForm(props) {
                 <Grid item style={{width: "10%"}}>
                     <DirectionsBikeIcon />
                 </Grid>
+
                 <Grid item style={{width: "30%"}}>
-                    <MuiPickersUtilsProvider utils={DateFnsUtils} style={{width: "100%"}}>
+                    <MuiPickersUtilsProvider utils={DateFnsUtils}
+                       style={{width: "100%"}}>
                       <KeyboardTimePicker
                           id = "hour"
                           ampm = {false}
@@ -135,7 +151,7 @@ export default function RouteForm(props) {
                           margin="normal"
                           label="Departure time"
                           value={selectedHour}
-                          onChange={handleHourChange}
+                          onChange={(enableDatepicker)?handleHourChange:doNothing}
                           KeyboardButtonProps={{
                             'aria-label': 'change time',
                             'fill': 'white',

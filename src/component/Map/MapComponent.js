@@ -117,7 +117,6 @@ export class MapComponent extends React.Component {
     }
 
     async resolvePaintingRoute(){
-
         var placesLatLng = [
             await this.getLanLnt(this.props.route.origin.address),
             await this.getLanLnt(this.props.route.destination.address),
@@ -130,10 +129,6 @@ export class MapComponent extends React.Component {
                 longitude: this.props.route.commonRoute.destination.lng
             }
         ];
-        console.log("PLACES IN LATITUDE AND LONGITUDE");
-        for(var i=0; i<placesLatLng.length; i++){
-            console.log(placesLatLng[i]);
-        }
         var placesJSON = {
             origin: this.props.route.origin.address,
             destination: this.props.route.destination.address
@@ -142,9 +137,7 @@ export class MapComponent extends React.Component {
     }
 
     handleStatusChange(e) {
-        this.setState({
-            status: e.target.value
-        });
+        this.setState({ status: e.target.value });
     }
 
     handleOpen(e) {
@@ -310,12 +303,12 @@ export class MapComponent extends React.Component {
             "origin" :{
                 "latitude"  : newJSON.latLngOrigin.lat(),
                 "longitude" : newJSON.latLngOrigin.lng(),
-                "address": newJSON.origin
+                "address": newJSON.origin,
             },
             "destination" : {
                 "latitude"  : newJSON.latLngDestination.lat(),
                 "longitude" : newJSON.latLngDestination.lng(),
-                "address": newJSON.destination
+                "address": newJSON.destination,
             },
             "user" :{
                 "_id" : localStorage.getItem("userId"),
@@ -376,37 +369,35 @@ export class MapComponent extends React.Component {
     async suggestRoute(newJSON){
         //alert("SUGGEST ROUTE-----------------");
         console.log(newJSON);
-        var self = this;
         var suggestJSON = {
             "origin": {
                 "_id": this.jsonToStringId(newJSON.idpathRouteOriginPlace),
-                "address": newJSON.origin
+                "address": newJSON.pathRouteOriginPlace
             },
             "destination" : {
                 "_id": this.jsonToStringId(newJSON.idpathRouteDestinationPlace),
-                "address": newJSON.destination
+                "address": newJSON.pathRouteDestinationPlace
             },
             "hour" : new Date(document.getElementById("hour").value),
         }
         console.log(suggestJSON);
         this.axios.post('/routes/suggest' , (suggestJSON) )
-            .then(function (response) {
+            .then( (response) => {
                 console.log(response.data);
                 var listSuggest = response.data;
                 console.log(listSuggest.length == 0);
                 if(listSuggest.length == 0){
-                    //swal.close()
-                    suggestJSON["_id"] = null
-                    self.state.createRouteST["commonRoute"] = suggestJSON
-                    self.handleDialogNoRouteOpen();
+                    suggestJSON["_id"] = null;
+                    this.state.createRouteST["commonRoute"] = suggestJSON;
+                    this.handleDialogNoRouteOpen();
                 }else{
-                    suggestJSON["_id"] = self.jsonToStringId(listSuggest[0]._id)
-                    self.state.createRouteST["commonRoute"] = suggestJSON
-                    console.log(self.state.createRouteST)
-                    self.state.msgSuggestRoute = "We offer you the following common points, starting at "+ newJSON.pathRouteOriginPlace +" and ending the route at " + newJSON.pathRouteDestinationPlace +"."
-                    self.handleDialogRouteOpen();
-                } 
-        }).catch(function (error) {
+                    suggestJSON["_id"] = this.jsonToStringId(listSuggest[0]._id);
+                    this.state.createRouteST["commonRoute"] = suggestJSON;
+                    console.log(this.state.createRouteST);
+                    this.state.msgSuggestRoute = "We offer you the following common points, starting at "+ newJSON.pathRouteOriginPlace +" and ending the route at " + newJSON.pathRouteDestinationPlace +"."
+                    this.handleDialogRouteOpen();
+                }
+        }).catch((error) => {
             console.log(error);
         });
     }
@@ -465,11 +456,10 @@ export class MapComponent extends React.Component {
     }
 
     getAllCommonRoutes(){
-        var self = this;
         this.axios.get('/point/commonRoute')
-            .then(function (response) {
-            self.setState({ carres: response.data });
-        }).catch(function (error) {
+            .then((response)=> {
+            this.setState({ carres: response.data });
+        }).catch((error)=> {
             console.log(error);
         });
     }
